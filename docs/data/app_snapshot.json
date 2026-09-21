@@ -1,16 +1,39 @@
 {
   "schema_version": 1,
-  "app_version": "1.2.3",
-  "engine_version": "1.2.1",
-  "analytics_version": "1.1.0-shadow",
+  "app_version": "1.3.0",
+  "engine_version": "1.3.0",
+  "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
   "run_id": "NOT_RUN",
   "run_status": "NOT_RUN",
   "latest_decision_run_id": null,
   "latest_decision_as_of": null,
+  "securities": [],
   "market_run_id": "RUN_20260921_1700",
   "market_run_status": "NO_NEW_TARGET",
   "market_message": "JPX_HOLIDAY",
   "market_checked_at": "2026-09-21T23:53:47.213521+09:00",
-  "securities": []
+  "shadow_validation": {
+    "run_count": 0,
+    "security_check_count": 0,
+    "source_fetch_rate": null,
+    "ohlcv_match_rate": null,
+    "decision_sample_count": 0,
+    "decision_match_rate": null,
+    "production_candidate": false,
+    "readiness_reasons": [
+      "MIN_RUNS_NOT_MET",
+      "SOURCE_FETCH_RATE_NOT_MET",
+      "OHLCV_MATCH_RATE_NOT_MET",
+      "MIN_DECISION_SAMPLES_NOT_MET",
+      "PRODUCTION_REFERENCE_NOT_AVAILABLE"
+    ],
+    "thresholds": {
+      "min_runs": 20,
+      "min_decision_samples": 60,
+      "source_fetch_rate_min": 0.95,
+      "ohlcv_match_rate_min": 0.98,
+      "decision_match_rate_min": 0.95
+    }
+  }
 }
