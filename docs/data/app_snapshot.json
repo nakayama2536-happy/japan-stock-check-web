@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "app_version": "1.2.3",
+  "engine_version": "1.2.1",
+  "analytics_version": "1.1.0-shadow",
+  "decision_mode": "SHADOW",
+  "run_id": "NOT_RUN",
+  "run_status": "NOT_RUN",
+  "latest_decision_run_id": null,
+  "latest_decision_as_of": null,
+  "market_run_id": "RUN_20260921_1700",
+  "market_run_status": "NO_NEW_TARGET",
+  "market_message": "JPX_HOLIDAY",
+  "market_checked_at": null,
+  "securities": []
+}
