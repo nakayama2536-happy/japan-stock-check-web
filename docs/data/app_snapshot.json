@@ -8,7 +8,6 @@
   "run_status": "NOT_RUN",
   "latest_decision_run_id": null,
   "latest_decision_as_of": null,
-  "securities": [],
   "market_run_id": "RUN_20260921_1700",
   "market_run_status": "NO_NEW_TARGET",
   "market_message": "JPX_HOLIDAY",
@@ -35,5 +34,6 @@
       "ohlcv_match_rate_min": 0.98,
       "decision_match_rate_min": 0.95
     }
-  }
+  },
+  "securities": []
 }
