@@ -1,4 +1,5 @@
 const arrows={STRONG_UP:'↑↑',UP:'↑',NEUTRAL:'→',DOWN:'↓',STRONG_DOWN:'↓↓'};
+const pct=v=>v==null?'—':(v*100).toFixed(1)+'%';
 async function load(){try{
  const r=await fetch('data/app_snapshot.json',{cache:'no-store'}); const d=await r.json();
  const marketStatus=d.market_run_status||d.run_status||'—'; const latest=d.latest_decision_as_of||null;
@@ -7,7 +8,10 @@ async function load(){try{
  let msg=d.market_message||'';
  if(marketStatus==='NO_NEW_TARGET') msg=latest?`本日は休場日です。直近判断 ${latest} を表示しています。`:'本日は休場日です。直近判断はまだありません。';
  if(marketStatus==='RUN_UNCONFIRMED') msg=latest?`市場日判定未確認。直近判断 ${latest} を表示しています。`:'市場日判定未確認。直近判断はまだありません。';
- document.getElementById('banner').innerHTML=`<div class="banner"><b>${mode}</b><br>${msg}<br><small>市場Run: ${d.market_run_id||d.run_id||'—'} / 判断Run: ${d.latest_decision_run_id||d.run_id||'—'}</small></div>`;
+ const v=d.shadow_validation||{};
+ const ready=v.production_candidate?'候補条件達成':'未達';
+ const validation=`Shadow実績 ${v.run_count??0}回 / Source ${pct(v.source_fetch_rate)} / OHLCV ${pct(v.ohlcv_match_rate)} / 判断 ${pct(v.decision_match_rate)} / Production候補 ${ready}`;
+ document.getElementById('banner').innerHTML=`<div class="banner"><b>${mode}</b><br>${msg}<br><small>市場Run: ${d.market_run_id||d.run_id||'—'} / 判断Run: ${d.latest_decision_run_id||d.run_id||'—'}</small><br><small>${validation}</small></div>`;
  const cards=document.getElementById('cards'); cards.innerHTML='';
  if(!d.securities?.length){cards.innerHTML='<div class="card">直近の銘柄判断はまだありません。次の営業日Run後に表示されます。</div>'; return;}
  for(const s of d.securities){
