@@ -8,10 +8,10 @@
   "run_status": "NOT_RUN",
   "latest_decision_run_id": null,
   "latest_decision_as_of": null,
-  "market_run_id": "RUN_20260922_1700",
+  "market_run_id": "RUN_20260923_1700",
   "market_run_status": "NO_NEW_TARGET",
   "market_message": "JPX_HOLIDAY",
-  "market_checked_at": "2026-09-22T22:09:37.121082+09:00",
+  "market_checked_at": "2026-09-23T22:24:18.304429+09:00",
   "shadow_validation": {
     "run_count": 0,
     "security_check_count": 0,
