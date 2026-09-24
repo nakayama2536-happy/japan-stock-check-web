@@ -23,6 +23,7 @@ const runStatusLabels={
 };
 
 const pct=v=>v==null?"—":(v*100).toFixed(1)+"%";
+const pctPoint=v=>v==null?"—":(Number(v)>0?"+":"")+Number(v).toFixed(2)+"%";
 const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
 const fmtDate=v=>v?String(v).replace(/-/g,"/"):"—";
 const fmtDateTime=v=>{
@@ -85,6 +86,33 @@ function renderBanner(d){
         '<div>判断一致率：'+esc(pct(v.decision_match_rate))+' / 目標 '+esc(pct(t.decision_match_rate_min??0.95))+'</div>'+
       '</details>'+
     '</div>';
+}
+
+
+function renderMarketEnvironment(d){
+  const root=document.getElementById("market-environment");
+  const items=d.market_environment||[];
+  if(!items.length){
+    root.innerHTML='<article class="market-panel"><div class="section-heading"><div><span class="eyebrow">MARKET CONTEXT</span><h2>市場環境</h2></div><span class="reference-pill">参照</span></div><div class="market-empty">次回17:00 Runから日経平均・TOPIX・USD/JPYを表示します。</div></article>';
+    return;
+  }
+  const cards=items.map(m=>{
+    const decimals=Number.isInteger(m.display_decimals)?m.display_decimals:2;
+    const value=m.value==null?"—":Number(m.value).toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+    const dir=(m.direction||"UNKNOWN").toLowerCase();
+    const status=m.status==="OK"?"":'<span class="market-status">'+esc(m.status||"—")+'</span>';
+    return '<div class="market-item">'+
+      '<div class="market-name">'+esc(m.name)+status+'</div>'+
+      '<div class="market-value">'+value+(m.unit?'<small>'+esc(m.unit)+'</small>':"")+'</div>'+
+      '<div class="market-change '+dir+'">'+esc(pctPoint(m.change_pct))+'</div>'+
+      '<div class="market-date">'+esc(fmtDate(m.as_of))+'</div>'+
+    '</div>';
+  }).join("");
+  root.innerHTML='<article class="market-panel">'+
+    '<div class="section-heading"><div><span class="eyebrow">MARKET CONTEXT</span><h2>市場環境</h2></div><span class="reference-pill">売買判断外・参照</span></div>'+
+    '<div class="market-grid">'+cards+'</div>'+
+    '<p class="market-note">個別銘柄の背景確認用です。このパネル単独ではBUY / SELL等の正式判断を変更しません。</p>'+
+  '</article>';
 }
 
 function renderCards(d){
@@ -150,6 +178,11 @@ function renderHelp(d){
     '</article>'+
 
     '<article class="help-card">'+
+      '<h2>市場環境</h2>'+
+      '<p>日経平均、TOPIX、USD/JPYを個別株判断の背景確認用として表示します。市場環境は参照情報であり、この表示だけで正式判断を変更しません。</p>'+
+    '</article>'+
+
+    '<article class="help-card">'+
       '<h2>正式判断と参考分析</h2>'+
       '<div class="help-row"><b>正式判断</b><p>実運用で採用する判定です。現在はProduction Source Contract未接続のため、検証結果を正式判断へ自動反映しません。</p></div>'+
       '<div class="help-row"><b>参考分析（Shadow）</b><p>新しい分析ロジックを本番に影響させず検証する結果です。WAIT、HOLDなどが表示されても、現段階では参考情報です。</p></div>'+
@@ -203,6 +236,7 @@ async function load(){
     if(!r.ok)throw new Error("snapshot "+r.status);
     const d=await r.json();
     renderBanner(d);
+    renderMarketEnvironment(d);
     renderCards(d);
     renderHelp(d);
   }catch(e){
@@ -212,4 +246,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.3.1");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.0");
