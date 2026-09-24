@@ -4,19 +4,20 @@
   "engine_version": "1.3.0",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
-  "run_id": "NOT_RUN",
-  "run_status": "NOT_RUN",
-  "latest_decision_run_id": null,
-  "latest_decision_as_of": null,
-  "market_run_id": "RUN_20260923_1700",
-  "market_run_status": "NO_NEW_TARGET",
-  "market_message": "JPX_HOLIDAY",
-  "market_checked_at": "2026-09-23T22:24:18.304429+09:00",
+  "run_id": "RUN_20260924_1700",
+  "run_status": "SHADOW_COMMITTED",
+  "latest_decision_run_id": "RUN_20260924_1700",
+  "latest_decision_as_of": "2026-09-24",
+  "market_run_id": "RUN_20260924_1700",
+  "market_run_status": "SHADOW_COMMITTED",
+  "updated_at": "2026-09-24T22:18:25.148054+09:00",
+  "market_checked_at": "2026-09-24T22:18:25.148054+09:00",
+  "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
   "shadow_validation": {
-    "run_count": 0,
-    "security_check_count": 0,
-    "source_fetch_rate": null,
-    "ohlcv_match_rate": null,
+    "run_count": 1,
+    "security_check_count": 6,
+    "source_fetch_rate": 0.8333,
+    "ohlcv_match_rate": 0.8,
     "decision_sample_count": 0,
     "decision_match_rate": null,
     "production_candidate": false,
@@ -35,5 +36,500 @@
       "decision_match_rate_min": 0.95
     }
   },
-  "securities": []
+  "securities": [
+    {
+      "security_id": "SEC_JP_6841",
+      "ticker": "6841.T",
+      "code": "6841",
+      "name": "横河電機",
+      "price": 4693.0,
+      "formal_decision": "WAIT",
+      "shadow_action": "WAIT",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "REVERSAL_WATCH",
+      "secondary_state": "REVERSAL_WATCH",
+      "outlook": {
+        "1": {
+          "direction": "UP",
+          "score": 25.2,
+          "confidence": "MEDIUM",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.37,
+            "historical_up_share_pct": 57.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "UP",
+          "score": 15.2,
+          "confidence": "MEDIUM",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.02,
+            "historical_up_share_pct": 57.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "NEUTRAL",
+          "score": -4.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.41,
+            "historical_up_share_pct": 65.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "STRONG_DOWN",
+          "score": -41.5,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.71,
+            "historical_up_share_pct": 57.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [
+        {
+          "label": "参考：4,759円方向への回復",
+          "status": "PENDING",
+          "required": false,
+          "purpose": "ENTRY"
+        },
+        {
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "ENTRY"
+        }
+      ],
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "KABUTAN",
+        "crosscheck_match": true,
+        "diffs": {
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
+        }
+      },
+      "as_of": "2026-09-24"
+    },
+    {
+      "security_id": "SEC_JP_6954",
+      "ticker": "6954.T",
+      "code": "6954",
+      "name": "ファナック",
+      "price": 6021.0,
+      "formal_decision": "WAIT",
+      "shadow_action": "HOLD",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "REVERSAL_WATCH",
+      "secondary_state": "ADD_WAIT",
+      "outlook": {
+        "1": {
+          "direction": "STRONG_UP",
+          "score": 45.2,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.3,
+            "historical_up_share_pct": 45.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "STRONG_UP",
+          "score": 40.2,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.55,
+            "historical_up_share_pct": 40.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "UP",
+          "score": 20.2,
+          "confidence": "MEDIUM",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.04,
+            "historical_up_share_pct": 50.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "DOWN",
+          "score": -21.5,
+          "confidence": "HIGH",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -1.51,
+            "historical_up_share_pct": 40.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [
+        {
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "ADD"
+        }
+      ],
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "MONEX_SCOUTER",
+        "crosscheck_match": true,
+        "diffs": {
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
+        }
+      },
+      "as_of": "2026-09-24"
+    },
+    {
+      "security_id": "SEC_JP_3038",
+      "ticker": "3038.T",
+      "code": "3038",
+      "name": "神戸物産",
+      "price": 2963.0,
+      "formal_decision": "WAIT",
+      "shadow_action": "HOLD",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "NEUTRAL",
+      "secondary_state": "EVENT_REVIEW",
+      "outlook": {
+        "1": {
+          "direction": "NEUTRAL",
+          "score": -14.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.36,
+            "historical_up_share_pct": 55.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "NEUTRAL",
+          "score": -4.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.01,
+            "historical_up_share_pct": 62.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "UP",
+          "score": 15.2,
+          "confidence": "HIGH",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.87,
+            "historical_up_share_pct": 60.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "STRONG_UP",
+          "score": 48.5,
+          "confidence": "HIGH",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 2.25,
+            "historical_up_share_pct": 55.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [],
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "KABUTAN",
+        "crosscheck_match": true,
+        "diffs": {
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
+        }
+      },
+      "as_of": "2026-09-24"
+    },
+    {
+      "security_id": "SEC_JP_9432",
+      "ticker": "9432.T",
+      "code": "9432",
+      "name": "NTT",
+      "price": 174.9,
+      "formal_decision": "WAIT",
+      "shadow_action": "HOLD",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "DC_WATCH",
+      "secondary_state": "SELL_WATCH",
+      "outlook": {
+        "1": {
+          "direction": "NEUTRAL",
+          "score": -14.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.6,
+            "historical_up_share_pct": 32.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "NEUTRAL",
+          "score": -4.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.35,
+            "historical_up_share_pct": 42.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "UP",
+          "score": 15.2,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": -0.27,
+            "historical_up_share_pct": 45.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "STRONG_UP",
+          "score": 48.5,
+          "confidence": "HIGH",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.18,
+            "historical_up_share_pct": 52.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [
+        {
+          "label": "終値で転換線割れ",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "REDUCE"
+        },
+        {
+          "label": "価格構造悪化",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "REDUCE"
+        }
+      ],
+      "data_quality": "HOLD",
+      "source_gate_reason": "HIGH_MISMATCH",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "KABUTAN",
+        "crosscheck_match": false,
+        "diffs": {
+          "open": 0.0,
+          "high": 3.0517578011313162e-06
+        }
+      },
+      "as_of": "2026-09-24"
+    },
+    {
+      "security_id": "SEC_JP_1812",
+      "ticker": "1812.T",
+      "code": "1812",
+      "name": "鹿島建設",
+      "price": 4982.0,
+      "formal_decision": "WAIT",
+      "shadow_action": "HOLD",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "NEUTRAL",
+      "secondary_state": "ADD_WAIT",
+      "outlook": {
+        "1": {
+          "direction": "NEUTRAL",
+          "score": 1.0,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.12,
+            "historical_up_share_pct": 50.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "NEUTRAL",
+          "score": 3.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.39,
+            "historical_up_share_pct": 65.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "NEUTRAL",
+          "score": -0.8,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.7,
+            "historical_up_share_pct": 60.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "NEUTRAL",
+          "score": 13.0,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 2.13,
+            "historical_up_share_pct": 65.0,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [
+        {
+          "label": "主要抵抗帯を回復",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "label": "出来高20日平均以上",
+          "status": "PENDING",
+          "required": false,
+          "purpose": "ADD"
+        }
+      ],
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "KABUTAN",
+        "crosscheck_match": true,
+        "diffs": {
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
+        }
+      },
+      "as_of": "2026-09-24"
+    },
+    {
+      "security_id": "SEC_JP_5805",
+      "ticker": "5805.T",
+      "code": "5805",
+      "name": "SWCC",
+      "price": 13410.0,
+      "formal_decision": "WAIT",
+      "shadow_action": "WAIT",
+      "confidence": "NOT_AVAILABLE",
+      "reference_signal": "REVERSAL_WATCH",
+      "secondary_state": "REVERSAL_WATCH",
+      "outlook": {
+        "1": {
+          "direction": "UP",
+          "score": 29.5,
+          "confidence": "MEDIUM",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.08,
+            "historical_up_share_pct": 67.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "3": {
+          "direction": "UP",
+          "score": 31.8,
+          "confidence": "MEDIUM",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 1.38,
+            "historical_up_share_pct": 62.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "5": {
+          "direction": "UP",
+          "score": 36.2,
+          "confidence": "HIGH",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.46,
+            "historical_up_share_pct": 57.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        },
+        "14": {
+          "direction": "NEUTRAL",
+          "score": 14.0,
+          "confidence": "LOW",
+          "analog": {
+            "sample_count": 40,
+            "median_return_pct": 0.44,
+            "historical_up_share_pct": 52.5,
+            "note": "過去類似局面の割合であり将来確率ではありません"
+          }
+        }
+      },
+      "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
+      "next_conditions": [
+        {
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "ENTRY"
+        }
+      ],
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "INDEPENDENT_SOURCE_UNAVAILABLE",
+      "source_evidence": {
+        "primary": "YFINANCE_REFERENCE",
+        "independent": "INVESTING",
+        "crosscheck_match": false,
+        "diffs": {}
+      },
+      "as_of": "2026-09-24"
+    }
+  ]
 }
