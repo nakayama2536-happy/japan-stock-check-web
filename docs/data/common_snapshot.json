@@ -1,0 +1,308 @@
+{
+  "schema_version": "1.0",
+  "common_spec_version": "1.0-draft",
+  "market": "JAPAN",
+  "adapter_status": "PARALLEL_SHADOW",
+  "market_state": {
+    "state": "CONFIRMED"
+  },
+  "snapshot": {
+    "state": "CURRENT"
+  },
+  "incident": {
+    "level": "BLOCKED",
+    "error_codes": []
+  },
+  "data_quality": {
+    "data_state": "FRESH",
+    "qc_state": "FAIL",
+    "completeness_pct": null
+  },
+  "decision_scope": "MULTI",
+  "decision_items": [
+    {
+      "subject_id": "SEC_JP_6841",
+      "subject_type": "SECURITY",
+      "subject_label": "横河電機",
+      "ticker": "6841.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "WAIT",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": null
+      },
+      "strategy_action": "REVERSAL_WATCH",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "参考：4,759円方向への回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": false,
+          "purpose": "ENTRY"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ENTRY"
+        }
+      ],
+      "risk_conditions": [],
+      "blocking_conditions": [],
+      "change_conditions": [
+        {
+          "target_action": "BUY",
+          "label": "週足悪化なし",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "subject_id": "SEC_JP_6954",
+      "subject_type": "SECURITY",
+      "subject_label": "ファナック",
+      "ticker": "6954.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "HOLD",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": "ADD"
+      },
+      "strategy_action": "ADD_WAIT",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "6,000円回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        }
+      ],
+      "risk_conditions": [],
+      "blocking_conditions": [],
+      "change_conditions": [
+        {
+          "target_action": "ADD",
+          "label": "6,000円回復",
+          "priority": 1
+        },
+        {
+          "target_action": "ADD",
+          "label": "週足悪化なし",
+          "priority": 2
+        }
+      ]
+    },
+    {
+      "subject_id": "SEC_JP_3038",
+      "subject_type": "SECURITY",
+      "subject_label": "神戸物産",
+      "ticker": "3038.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "HOLD",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": null
+      },
+      "strategy_action": "EVENT_REVIEW",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [],
+      "risk_conditions": [],
+      "blocking_conditions": [],
+      "change_conditions": []
+    },
+    {
+      "subject_id": "SEC_JP_9432",
+      "subject_type": "SECURITY",
+      "subject_label": "NTT",
+      "ticker": "9432.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "HOLD",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": "SELL"
+      },
+      "strategy_action": "SELL_WATCH",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "終値で転換線割れ",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "REDUCE"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "価格構造悪化",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "REDUCE"
+        }
+      ],
+      "risk_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACDデッドクロス",
+          "status": "WARN",
+          "impact": "NEGATIVE",
+          "required": true,
+          "purpose": "REDUCE"
+        }
+      ],
+      "blocking_conditions": [],
+      "change_conditions": [
+        {
+          "target_action": "REDUCE",
+          "label": "終値で転換線割れ",
+          "priority": 1
+        },
+        {
+          "target_action": "REDUCE",
+          "label": "価格構造悪化",
+          "priority": 2
+        }
+      ]
+    },
+    {
+      "subject_id": "SEC_JP_1812",
+      "subject_type": "SECURITY",
+      "subject_label": "鹿島建設",
+      "ticker": "1812.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "HOLD",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": "ADD"
+      },
+      "strategy_action": "ADD_WAIT",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "主要抵抗帯を回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "出来高20日平均以上",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": false,
+          "purpose": "ADD"
+        }
+      ],
+      "risk_conditions": [],
+      "blocking_conditions": [],
+      "change_conditions": [
+        {
+          "target_action": "ADD",
+          "label": "主要抵抗帯を回復",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "subject_id": "SEC_JP_5805",
+      "subject_type": "SECURITY",
+      "subject_label": "SWCC",
+      "ticker": "5805.T",
+      "as_of": "2026-09-25",
+      "mode": "SHADOW",
+      "phase": "DECISION",
+      "eligibility": "NOT_ELIGIBLE",
+      "analysis_action": "WAIT",
+      "formal_action": null,
+      "monitor": {
+        "state": "WATCH",
+        "target_action": null
+      },
+      "strategy_action": "REVERSAL_WATCH",
+      "reason_summary": [
+        "独立Source Contract未確定のため正式判断には使用しません"
+      ],
+      "pending_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ENTRY"
+        }
+      ],
+      "risk_conditions": [],
+      "blocking_conditions": [],
+      "change_conditions": [
+        {
+          "target_action": "BUY",
+          "label": "週足悪化なし",
+          "priority": 1
+        }
+      ]
+    }
+  ],
+  "timestamps": {
+    "market_as_of": "2026-09-25",
+    "calculated_at": "2026-09-25T22:18:22.764274+09:00"
+  }
+}
