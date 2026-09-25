@@ -45,6 +45,61 @@ const technicalLabels={
   UP:"上向き",DOWN:"下向き",NOT_AVAILABLE:"判定不能"
 };
 
+
+function commonTone(value){
+  const v=String(value||"").toUpperCase();
+  if(["PASS","FRESH","ELIGIBLE","DECISION","CURRENT","CONFIRMED"].includes(v))return "common-ok";
+  if(["FAIL","STALE","MISSING","NOT_ELIGIBLE","BLOCKED"].includes(v))return "common-ng";
+  return "common-warn";
+}
+function renderCommonOverview(c){
+  const root=document.getElementById("common-overview");
+  if(!root)return;
+  if(!c||c.schema_version!=="1.0"){
+    root.innerHTML="";
+    return;
+  }
+  const q=c.data_quality||{};
+  const snap=c.snapshot||{};
+  const ms=c.market_state||{};
+  const items=c.decision_items||[];
+  const eligible=items.filter(x=>x.eligibility==="ELIGIBLE").length;
+  const blocked=items.length-eligible;
+  const watch=items.filter(x=>x.monitor?.state==="WATCH").length;
+  const next=items.flatMap(x=>(x.change_conditions||[]).map(y=>({
+    code:x.ticker||x.subject_id||"",
+    label:y.label||"",
+    target:y.target_action||""
+  }))).filter(x=>x.label).slice(0,3);
+  const analyses={};
+  items.forEach(x=>{
+    const a=x.analysis_action||"—";
+    analyses[a]=(analyses[a]||0)+1;
+  });
+  const analysisSummary=Object.entries(analyses).map(([k,v])=>k+" "+v).join(" / ")||"—";
+  const nextHtml=next.length
+    ? next.map(x=>'<div class="common-next-row"><b>'+esc(x.code)+'</b><span>'+esc(x.target?x.target+"：":"")+esc(x.label)+'</span></div>').join("")
+    : '<div class="common-next-empty">変化条件はありません。</div>';
+
+  root.innerHTML='<article class="common-overview">'+
+    '<div class="section-heading"><div><span class="eyebrow">COMMON 10-SECOND VIEW</span><h2>判断できる状態か</h2></div><span class="reference-pill">Common Spec '+esc(c.common_spec_version||"—")+'</span></div>'+
+    '<div class="common-grid">'+
+      '<div class="common-box '+commonTone(q.qc_state)+'"><span>QC</span><b>'+esc(q.qc_state||"—")+'</b></div>'+
+      '<div class="common-box '+commonTone(q.data_state)+'"><span>Data</span><b>'+esc(q.data_state||"—")+'</b></div>'+
+      '<div class="common-box '+commonTone(ms.state)+'"><span>Market</span><b>'+esc(ms.state||"—")+'</b></div>'+
+      '<div class="common-box '+commonTone(snap.state)+'"><span>Snapshot</span><b>'+esc(snap.state||"—")+'</b></div>'+
+    '</div>'+
+    '<div class="common-summary">'+
+      '<div><span>判断可能</span><b>'+eligible+'/'+items.length+'</b></div>'+
+      '<div><span>要確認</span><b>'+blocked+'</b></div>'+
+      '<div><span>WATCH</span><b>'+watch+'</b></div>'+
+      '<div><span>参考分析</span><b>'+esc(analysisSummary)+'</b></div>'+
+    '</div>'+
+    '<div class="common-next"><div class="common-next-title">次に判断が変わる条件</div>'+nextHtml+'</div>'+
+    '<div class="common-time">基準 '+esc(fmtDate(c.timestamps?.market_as_of))+' / 計算 '+esc(fmtDateTime(c.timestamps?.calculated_at))+'</div>'+
+  '</article>';
+}
+
 function setupNav(){
   document.querySelectorAll("nav [data-view]").forEach(btn=>{
     btn.addEventListener("click",()=>{
@@ -392,10 +447,14 @@ function renderHelp(d){
 
 async function load(){
   try{
-    const r=await fetch("data/app_snapshot.json",{cache:"no-store"});
+    const [r,commonResult]=await Promise.all([
+      fetch("data/app_snapshot.json",{cache:"no-store"}),
+      fetch("data/common_snapshot.json",{cache:"no-store"}).then(x=>x.ok?x.json():null).catch(()=>null)
+    ]);
     if(!r.ok)throw new Error("snapshot "+r.status);
     const d=await r.json();
     renderBanner(d);
+    renderCommonOverview(commonResult);
     renderTodayOverview(d);
     renderMarketEnvironment(d);
     renderCards(d);
@@ -408,4 +467,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.3");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.4");
