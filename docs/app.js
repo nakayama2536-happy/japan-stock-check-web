@@ -12,7 +12,11 @@ const signalLabels={
 const qualityLabels={PROVISIONAL:"暫定",HOLD:"要確認",FINAL:"確認済み",CONFIRMED:"確認済み",ERROR:"取得失敗",STALE:"更新遅延"};
 const sourceReasonLabels={
   SHADOW_SOURCE_MATCH:"独立データ照合一致",
-  HIGH_MISMATCH:"データ差異あり",
+  HIGH_MISMATCH:"高値データ差異あり",
+  LOW_MISMATCH:"安値データ差異あり",
+  OPEN_MISMATCH:"始値データ差異あり",
+  CLOSE_MISMATCH:"終値データ差異あり",
+  VOLUME_MISMATCH:"出来高データ差異あり",
   INDEPENDENT_SOURCE_UNAVAILABLE:"独立データ取得不可",
   PRIMARY_FETCH_FAILED:"Primaryデータ取得失敗",
   HISTORY_TOO_SHORT:"テクニカル履歴不足",
@@ -21,6 +25,8 @@ const sourceReasonLabels={
 };
 const runStatusLabels={
   SHADOW_COMMITTED:"検証結果保存済み",
+  SHADOW_PARTIAL:"検証結果保存済み・要確認",
+  RUN_FAILED:"実行失敗",
   NO_NEW_TARGET:"休場日",
   RUN_UNCONFIRMED:"市場日未確認",
   NOT_RUN:"未実行"
@@ -477,4 +483,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.5");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.6");
