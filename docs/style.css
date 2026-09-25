@@ -169,3 +169,26 @@ nav button:disabled{color:#d1d5db}
   .market-item{background:#1f2937;border-color:#374151}
   .reference-pill{background:#172554;color:#bfdbfe}
 }
+
+.technical-panel{
+  margin-top:12px;border-top:1px solid #e5e7eb;padding-top:10px;
+  font-size:12px
+}
+.technical-panel summary{cursor:pointer;font-weight:700;color:#374151;list-style-position:outside}
+.technical-empty{color:#9ca3af;padding:10px 0 2px}
+.tech-section{margin-top:10px;border:1px solid #eef2f7;border-radius:12px;overflow:hidden}
+.tech-title{padding:7px 10px;background:#f8fafc;font-size:10px;font-weight:700;color:#6b7280;letter-spacing:.04em}
+.tech-row{display:grid;grid-template-columns:1fr auto;column-gap:10px;row-gap:2px;padding:8px 10px;border-top:1px solid #f3f4f6;align-items:baseline}
+.tech-row:first-of-type{border-top:0}
+.tech-row>span{color:#6b7280}
+.tech-row>b{font-size:13px;text-align:right}
+.tech-row>small{grid-column:1/-1;text-align:right;color:#9ca3af;font-size:9px}
+.tech-note{font-size:10px;line-height:1.5;color:#9ca3af;margin-top:8px}
+@media(prefers-color-scheme:dark){
+  .technical-panel{border-color:#374151}
+  .technical-panel summary{color:#d1d5db}
+  .tech-section{border-color:#374151}
+  .tech-title{background:#1f2937;color:#9ca3af}
+  .tech-row{border-color:#1f2937}
+  .tech-row>span{color:#9ca3af}
+}

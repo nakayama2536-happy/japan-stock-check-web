@@ -32,6 +32,14 @@ const fmtDateTime=v=>{
   catch(_){return String(v);}
 };
 const metric=(label,value,target,ok)=>"<div class=\"metric "+(ok?"ok":"")+"\"><span>"+esc(label)+"</span><b>"+esc(value)+"</b><small>目標 "+esc(target)+"</small></div>";
+const num=(v,d=2)=>v==null?"—":Number(v).toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});
+const ratio=v=>v==null?"—":Number(v).toFixed(2)+"倍";
+const technicalLabels={
+  BULLISH:"強気",IMPROVING:"改善",BEARISH:"弱気",WEAKENING:"鈍化",NEUTRAL:"中立",
+  GC_NEW:"GC発生",GC_ACTIVE:"GC継続",DC_NEW:"DC発生",DC_ACTIVE:"DC継続",NONE:"なし",
+  UPTREND:"上昇構造",DOWNTREND:"下降構造",HIGHER_LOW:"安値切上げ",LOWER_HIGH:"高値切下げ",RANGE:"レンジ",
+  UP:"上向き",DOWN:"下向き",NOT_AVAILABLE:"判定不能"
+};
 
 function setupNav(){
   document.querySelectorAll("nav [data-view]").forEach(btn=>{
@@ -115,6 +123,44 @@ function renderMarketEnvironment(d){
   '</article>';
 }
 
+
+function technicalPanel(s){
+  const t=s.technical||{};
+  const l=s.levels||{};
+  const has=Object.keys(t).length>0||Object.keys(l).length>0||s.weekly_trend;
+  if(!has){
+    return '<details class="technical-panel"><summary>テクニカル詳細</summary><div class="technical-empty">次回17:00 Runから詳細指標を表示します。</div></details>';
+  }
+  const row=(label,value,note="")=>'<div class="tech-row"><span>'+esc(label)+'</span><b>'+esc(value)+'</b>'+(note?'<small>'+esc(note)+'</small>':"")+'</div>';
+  const trend=technicalLabels[s.weekly_trend]||s.weekly_trend||"—";
+  const macd=(technicalLabels[t.macd_state]||t.macd_state||"—")+' / '+(technicalLabels[t.macd_cross_state]||t.macd_cross_state||"—");
+  const structure=technicalLabels[t.price_structure]||t.price_structure||"—";
+  return '<details class="technical-panel">'+
+    '<summary>テクニカル詳細</summary>'+
+    '<div class="tech-section"><div class="tech-title">トレンド</div>'+
+      row("日足構造",structure)+
+      row("週足トレンド",trend)+
+    '</div>'+
+    '<div class="tech-section"><div class="tech-title">移動平均</div>'+
+      row("MA5",num(t.ma5,2),"円")+
+      row("MA25",num(t.ma25,2),"円 / 5日傾き "+(t.ma25_slope5_pct==null?"—":Number(t.ma25_slope5_pct).toFixed(2)+"%"))+
+      row("MA75",num(t.ma75,2),"円 / 5日傾き "+(t.ma75_slope5_pct==null?"—":Number(t.ma75_slope5_pct).toFixed(2)+"%"))+
+    '</div>'+
+    '<div class="tech-section"><div class="tech-title">モメンタム</div>'+
+      row("MACD",macd,"MACD "+num(t.macd,3)+" / Signal "+num(t.macd_signal,3))+
+      row("RSI14",num(t.rsi14,1))+
+      row("出来高20日比",ratio(t.volume_ratio20))+
+    '</div>'+
+    '<div class="tech-section"><div class="tech-title">一目・価格帯</div>'+
+      row("転換線",num(t.ichimoku_tenkan,2),"円")+
+      row("基準線",num(t.ichimoku_kijun,2),"円")+
+      row("支持線",num(l.support_1,2),"円")+
+      row("抵抗線",num(l.resistance_1,2),"円")+
+    '</div>'+
+    '<div class="tech-note">表示値は判断時点のテクニカル確認用です。単独の売買シグナルではありません。</div>'+
+  '</details>';
+}
+
 function renderCards(d){
   const cards=document.getElementById("cards");
   cards.innerHTML="";
@@ -153,6 +199,7 @@ function renderCards(d){
         '<div class="reference">参考シグナル：<b>'+esc(signalLabels[signal]||signal)+'</b><small>'+esc(signal)+'</small></div>'+
         '<div class="grid">'+os+'</div>'+
         '<div class="conditions"><b>次の条件</b>'+nc+'</div>'+
+        technicalPanel(s)+
         '<details class="data-details"><summary>データ詳細</summary>'+
           '<div>品質：'+esc(qText)+'（'+esc(q)+'）</div>'+
           '<div>照合：'+esc(sourceReason)+'</div>'+
@@ -206,6 +253,11 @@ function renderHelp(d){
     '</article>'+
 
     '<article class="help-card">'+
+      '<h2>テクニカル詳細</h2>'+
+      '<p>各銘柄のカードを開くと、日足・週足、MA5/25/75、MACD、RSI14、出来高20日比、一目の転換線・基準線、支持線・抵抗線を確認できます。正式判断の根拠確認用で、各指標単独では売買判断にしません。</p>'+
+    '</article>'+
+
+    '<article class="help-card">'+
       '<h2>次の条件</h2>'+
       '<p><b>△</b> は監視中・未確定、<b>○</b> は条件成立、<b>×</b> は条件非成立、<b>—</b> は判定不能を表します。条件が複数ある場合は、必要条件がそろうかを確認します。</p>'+
     '</article>'+
@@ -246,4 +298,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.0");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.1");
