@@ -312,3 +312,24 @@ nav button:disabled{color:#d1d5db}
   .common-box.common-warn{background:#451a03;border-color:#92400e;color:#fde68a}
   .common-box.common-ng{background:#450a0a;border-color:#991b1b;color:#fecaca}
 }
+
+/* v1.4.7 Common UI: progressive disclosure + fixed 28-day market charts */
+.supplement-details{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:rgba(248,250,252,.8);overflow:hidden}
+.supplement-details summary{cursor:pointer;padding:11px 12px;font-size:13px;font-weight:700;color:#374151}
+.disclosure-body{padding:0 12px 12px;font-size:13px;line-height:1.65;color:#6b7280}
+.market-chart-list{display:grid;gap:10px;margin-top:4px}
+.market-chart-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:10px}
+.market-chart-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:4px}
+.market-chart-head b{font-size:12px}.market-chart-head span{font-size:10px;color:#6b7280}
+.market-chart{display:block;width:100%;height:140px;overflow:visible}
+.market-chart text{font-size:9px;fill:#6b7280}
+.chart-grid{stroke:#dbe3ed;stroke-width:1}
+.chart-week{stroke:#9ca3af;stroke-width:1;stroke-dasharray:3 5;opacity:.8}
+.chart-line{fill:none;stroke:#0a84ff;stroke-width:2.2}
+.history-wait{padding:22px;text-align:center;color:#9ca3af;font-size:12px}
+@media(prefers-color-scheme:dark){
+  .supplement-details,.market-chart-card{background:#1f2937;border-color:#374151}
+  .supplement-details summary{color:#e5e7eb}
+  .disclosure-body,.market-chart-head span{color:#9ca3af}
+  .chart-grid{stroke:#374151}.chart-week{stroke:#6b7280}.market-chart text{fill:#9ca3af}
+}
