@@ -42,6 +42,25 @@ const fmtDateTime=v=>{
   catch(_){return String(v);}
 };
 const metric=(label,value,target,ok)=>"<div class=\"metric "+(ok?"ok":"")+"\"><span>"+esc(label)+"</span><b>"+esc(value)+"</b><small>目標 "+esc(target)+"</small></div>";
+
+const chart28Svg=history=>{
+  const xs=(history||[]).filter(p=>p&&/^\d{4}-\d{2}-\d{2}$/.test(String(p.date||""))&&Number.isFinite(Number(p.value))).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  if(xs.length<2)return '<div class="history-wait">28日履歴を準備中です。</div>';
+  const day=86400000,w=640,h=150,pl=28,pr=18,pt=15,pb=24;
+  const ms=d=>Date.parse(String(d)+"T00:00:00Z");
+  const end=ms(xs[xs.length-1].date),start=end-27*day;
+  const vis=xs.filter(p=>ms(p.date)>=start&&ms(p.date)<=end);
+  const vals=vis.map(p=>Number(p.value));
+  let lo=Math.min(...vals),hi=Math.max(...vals);if(lo===hi){lo-=1;hi+=1}
+  const pad=(hi-lo)*.08;lo-=pad;hi+=pad;
+  const x=d=>pl+(ms(d)-start)*(w-pl-pr)/(27*day),y=v=>pt+(hi-Number(v))*(h-pt-pb)/(hi-lo);
+  const grid=[.25,.5,.75].map(t=>{const yy=(pt+t*(h-pt-pb)).toFixed(1);return '<line class="chart-grid" x1="'+pl+'" y1="'+yy+'" x2="'+(w-pr)+'" y2="'+yy+'"/>';}).join("");
+  const sd=new Date(start);let sunday=start+((7-sd.getUTCDay())%7)*day,weeks="";
+  for(;sunday<=end;sunday+=7*day){const xx=(pl+(sunday-start)*(w-pl-pr)/(27*day)).toFixed(1),d=new Date(sunday),lab=(d.getUTCMonth()+1)+"/"+d.getUTCDate();weeks+='<line class="chart-week" x1="'+xx+'" y1="'+pt+'" x2="'+xx+'" y2="'+(h-pb)+'"/><text x="'+xx+'" y="'+(h-5)+'" text-anchor="middle">'+lab+'</text>';}
+  let path="";vis.forEach((p,i)=>{path+=(i?" L ":"M ")+x(p.date).toFixed(1)+","+y(p.value).toFixed(1);});
+  return '<svg class="market-chart" viewBox="0 0 '+w+' '+h+'" role="img">'+grid+weeks+'<path class="chart-line" d="'+path+'"/></svg>';
+};
+
 const num=(v,d=2)=>v==null?"—":Number(v).toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});
 const ratio=v=>v==null?"—":Number(v).toFixed(2)+"倍";
 const technicalLabels={
@@ -102,7 +121,7 @@ function renderCommonOverview(c){
       '<div><span>参考分析</span><b>'+esc(analysisSummary)+'</b></div>'+
     '</div>'+
     '<div class="common-next"><div class="common-next-title">次に判断が変わる条件</div>'+nextHtml+'</div>'+
-    '<div class="common-time">基準 '+esc(fmtDate(c.timestamps?.market_as_of))+' / 計算 '+esc(fmtDateTime(c.timestamps?.calculated_at))+'</div>'+
+    '<details class="supplement-details"><summary>基準時刻・共通仕様を見る</summary><div class="disclosure-body">基準 '+esc(fmtDate(c.timestamps?.market_as_of))+' / 計算 '+esc(fmtDateTime(c.timestamps?.calculated_at))+' / Common Spec '+esc(c.common_spec_version||"—")+'</div></details>'+
   '</article>';
 }
 
@@ -234,10 +253,16 @@ function renderMarketEnvironment(d){
       '<div class="market-date">'+esc(fmtDate(m.as_of))+'</div>'+
     '</div>';
   }).join("");
+  const chartItems=items.filter(m=>Array.isArray(m.history)&&m.history.length>=2).map(m=>{
+    const decimals=Number.isInteger(m.display_decimals)?m.display_decimals:2;
+    const latest=m.value==null?"—":Number(m.value).toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+    return '<div class="market-chart-card"><div class="market-chart-head"><b>'+esc(m.name)+'</b><span>28日 / 最新 '+esc(latest)+'</span></div>'+chart28Svg(m.history)+'</div>';
+  }).join("");
   root.innerHTML='<article class="market-panel">'+
     '<div class="section-heading"><div><span class="eyebrow">MARKET CONTEXT</span><h2>市場環境</h2></div><span class="reference-pill">売買判断外・参照</span></div>'+
     '<div class="market-grid">'+cards+'</div>'+
-    '<p class="market-note">個別銘柄の背景確認用です。このパネル単独ではBUY / SELL等の正式判断を変更しません。</p>'+
+    (chartItems?'<details class="supplement-details"><summary>市場環境の28日チャートを見る</summary><div class="disclosure-body"><div class="market-chart-list">'+chartItems+'</div><p>横線＝値の目安、縦の点線＝日曜始まりの週区切り。欠損日は補完せず、取得済みデータだけを実際の日付位置に表示します。</p></div></details>':'')+
+    '<details class="supplement-details"><summary>市場環境の見方</summary><div class="disclosure-body">個別銘柄の背景確認用です。このパネル単独ではBUY / SELL等の正式判断を変更しません。</div></details>'+
   '</article>';
 }
 
@@ -296,7 +321,7 @@ function renderDataQuality(d){
     '<div class="quality-counts">'+summary+'</div>'+
     issueHtml+
     '<details class="quality-details"><summary>6銘柄の照合結果</summary>'+rows+'</details>'+
-    '<p class="quality-note">PASSは独立Sourceとの照合結果を示します。Production Source Contractの確定や正式売買判断への採用を意味しません。</p>'+
+    '<details class="supplement-details"><summary>データ品質の見方</summary><div class="disclosure-body">PASSは独立Sourceとの照合結果を示します。Production Source Contractの確定や正式売買判断への採用を意味しません。</div></details>'+
   '</article>';
 }
 
@@ -483,4 +508,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.6");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.7");
