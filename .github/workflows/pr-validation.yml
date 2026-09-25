@@ -30,16 +30,18 @@ jobs:
           app=Path("docs/app.js").read_text(encoding="utf-8")
           sw=Path("docs/sw.js").read_text(encoding="utf-8")
           manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
-          assert "v1.4.5" in index
-          assert "v=1.4.5" in index
-          assert "v=1.4.5" in manifest["start_url"]
-          assert "jpstock-v1-4-5" in sw
+          assert "v1.4.6" in index
+          assert "v=1.4.6" in index
+          assert "v=1.4.6" in manifest["start_url"]
+          assert "jpstock-v1-4-6" in sw
           assert 'id="common-overview"' in index
           assert 'function renderCommonOverview(c)' in app
           assert 'fetch("data/common_snapshot.json"' in app
           assert '.catch(()=>null)' in app
           assert 'function formalDecisionText(d,s)' in app
           assert 'なし（Shadow検証中）' in app
+          assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
+          assert 'LOW_MISMATCH:"安値データ差異あり"' in app
           assert 'Pre-deploy public safety gate' in Path(".github/workflows/deploy-pages.yml").read_text(encoding="utf-8")
           print("Japan P0 hardening validation PASS")
           PY
