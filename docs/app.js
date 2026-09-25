@@ -128,6 +128,16 @@ function actionSummary(items,key){
   return order.filter(a=>counts[a]).map(a=>a+" "+counts[a]).join(" / ")||"—";
 }
 
+function formalDecisionText(d,s){
+  if(d?.decision_mode==="SHADOW")return "なし";
+  return s?.formal_decision||"WAIT";
+}
+
+function formalSummaryText(d,items){
+  if(d?.decision_mode==="SHADOW")return "なし（Shadow検証中）";
+  return actionSummary(items,"formal_decision");
+}
+
 function renderBanner(d){
   const marketStatus=d.market_run_status||d.run_status||"—";
   const latest=d.latest_decision_as_of||null;
@@ -173,14 +183,14 @@ function renderTodayOverview(d){
     return;
   }
   const issueCount=items.filter(s=>sourceCheckState(s)!=="PASS").length;
-  const formalSummary=actionSummary(items,"formal_decision");
+  const formalSummary=formalSummaryText(d,items);
   const shadowSummary=actionSummary(items,"shadow_action");
   const rows=items.map(s=>{
     const qState=sourceCheckState(s);
     const one=s.outlook?.["1"]||{};
     return '<div class="overview-stock">'+
       '<div><b>'+esc(s.code+" "+s.name)+'</b><small>'+esc(cardQualityText(s))+'</small></div>'+
-      '<div class="overview-actions"><span>正式 '+esc(s.formal_decision||"WAIT")+'</span><span>参考 '+esc(s.shadow_action||"WAIT")+'</span></div>'+
+      '<div class="overview-actions"><span>正式 '+esc(formalDecisionText(d,s))+'</span><span>参考 '+esc(s.shadow_action||"WAIT")+'</span></div>'+
       '<div class="overview-arrow">'+(arrows[one.direction]||"—")+'<small>1日</small></div>'+
       '<span class="check-pill '+qState.toLowerCase()+'">'+qState+'</span>'+
     '</div>';
@@ -343,7 +353,7 @@ function renderCards(d){
     const q=s.data_quality||"—";
     const qText=cardQualityText(s);
     const qClass=["HOLD","ERROR","STALE"].includes(q)?"quality-hold":["FINAL","CONFIRMED"].includes(q)?"quality-ok":"quality-provisional";
-    const formal=s.formal_decision||"WAIT";
+    const formal=formalDecisionText(d,s);
     const shadow=s.shadow_action||"WAIT";
     const signal=s.reference_signal||"—";
     const sourceReason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"—";
@@ -355,7 +365,7 @@ function renderCards(d){
         '<div class="section-label">参考分析（Shadow）</div>'+
         '<div class="decision shadow">'+esc(shadow)+'</div>'+
         '<div class="decision-ja">'+esc(actionLabels[shadow]||shadow)+'</div>'+
-        '<div class="formal">正式判断：<b>'+esc(formal)+'</b><span>'+esc(actionLabels[formal]||formal)+'</span></div>'+
+        '<div class="formal">正式判断：<b>'+esc(formal)+'</b><span>'+esc(d.decision_mode==="SHADOW"?"Shadow検証中":(actionLabels[formal]||formal))+'</span></div>'+
         '<div class="reference">参考シグナル：<b>'+esc(signalLabels[signal]||signal)+'</b><small>'+esc(signal)+'</small></div>'+
         '<div class="grid">'+os+'</div>'+
         '<div class="conditions"><b>次の条件</b>'+nc+'</div>'+
@@ -467,4 +477,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.4");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.5");

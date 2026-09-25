@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          patterns='(ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|sk-[A-Za-z0-9_-]{20,})'
+          patterns='(ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|sk-[A-Za-z0-9_-]{20,})'
           if git grep -nEI "$patterns" -- . ':!*.png' ':!*.jpg' ':!*.jpeg' ':!*.webp' ':!*.ico'; then
             echo "Potential credential detected. Review before publishing."
             exit 1
@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          private_fields='"(shares|quantity|position_size|average_cost|cost_basis|purchase_price|account_type|position_id|planned_total_shares|stage_size|completed_stages|max_stages|opened_at|closed_at|brokerage_account|brokerage_account_id|portfolio_id)"[[:space:]]*:'
+          private_fields='"(shares|quantity|position_size|average_cost|cost_basis|purchase_price|account_type|position_id|planned_total_shares|stage_size|completed_stages|max_stages|opened_at|closed_at|brokerage_account|brokerage_account_id|portfolio_id|api_key|apikey|access_token|token|password|secret)"[[:space:]]*:'
           if grep -nEI "$private_fields" docs/data/*.json; then
             echo "Private portfolio field detected in public snapshot."
             exit 1
