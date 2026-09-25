@@ -9,11 +9,15 @@ const signalLabels={
   SELL_WATCH:"売却監視",
   EVENT_REVIEW:"イベント確認"
 };
-const qualityLabels={PROVISIONAL:"暫定",HOLD:"要確認",CONFIRMED:"確認済み"};
+const qualityLabels={PROVISIONAL:"暫定",HOLD:"要確認",FINAL:"確認済み",CONFIRMED:"確認済み",ERROR:"取得失敗",STALE:"更新遅延"};
 const sourceReasonLabels={
   SHADOW_SOURCE_MATCH:"独立データ照合一致",
   HIGH_MISMATCH:"データ差異あり",
-  INDEPENDENT_SOURCE_UNAVAILABLE:"独立データ取得不可"
+  INDEPENDENT_SOURCE_UNAVAILABLE:"独立データ取得不可",
+  PRIMARY_FETCH_FAILED:"Primaryデータ取得失敗",
+  HISTORY_TOO_SHORT:"テクニカル履歴不足",
+  DATE_MISMATCH:"基準日不一致",
+  FIELD_MISMATCH:"データ項目差異あり"
 };
 const runStatusLabels={
   SHADOW_COMMITTED:"検証結果保存済み",
@@ -124,6 +128,64 @@ function renderMarketEnvironment(d){
 }
 
 
+
+function sourceCheckState(s){
+  const q=(s.data_quality||"").toUpperCase();
+  const reason=(s.source_gate_reason||"").toUpperCase();
+  if(["ERROR","STALE","HOLD"].includes(q)||reason.includes("MISMATCH")||reason==="PRIMARY_FETCH_FAILED")return "FAIL";
+  if(s.source_evidence?.crosscheck_match===true||reason==="SHADOW_SOURCE_MATCH")return "PASS";
+  return "PENDING";
+}
+
+function cardQualityText(s){
+  const q=s.data_quality||"—";
+  if(q==="PROVISIONAL"&&sourceCheckState(s)==="PASS")return "暫定一致";
+  return qualityLabels[q]||q;
+}
+
+function renderDataQuality(d){
+  const root=document.getElementById("data-quality");
+  const items=d.securities||[];
+  if(!items.length){
+    root.innerHTML="";
+    return;
+  }
+  const states=items.map(s=>({s,state:sourceCheckState(s)}));
+  const counts={PASS:0,PENDING:0,FAIL:0};
+  states.forEach(x=>counts[x.state]=(counts[x.state]||0)+1);
+  const issues=states.filter(x=>x.state!=="PASS");
+
+  const summary=["PASS","PENDING","FAIL"].map(k=>
+    '<div class="quality-count '+k.toLowerCase()+'"><span>'+k+'</span><b>'+counts[k]+'</b><small>/ '+items.length+'銘柄</small></div>'
+  ).join("");
+
+  const rows=states.map(({s,state})=>{
+    const reason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"確認待ち";
+    const src=(s.source_evidence?.primary||"—")+" ↔ "+(s.source_evidence?.independent||"—");
+    return '<div class="quality-row">'+
+      '<div><b>'+esc(s.code+" "+s.name)+'</b><small>'+esc(reason)+'</small></div>'+
+      '<span class="check-pill '+state.toLowerCase()+'">'+state+'</span>'+
+      '<div class="quality-source">'+esc(src)+'</div>'+
+    '</div>';
+  }).join("");
+
+  const issueHtml=issues.length
+    ? '<div class="quality-alert"><div class="alert-title">確認事項 '+issues.length+'件</div>'+
+      issues.map(({s,state})=>{
+        const reason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"確認待ち";
+        return '<div class="alert-row"><span class="check-pill '+state.toLowerCase()+'">'+state+'</span><b>'+esc(s.code+" "+s.name)+'</b><span>'+esc(reason)+'</span></div>';
+      }).join("")+'</div>'
+    : '<div class="quality-all-clear">独立Source照合で要確認項目はありません。</div>';
+
+  root.innerHTML='<article class="quality-panel">'+
+    '<div class="section-heading"><div><span class="eyebrow">DATA QUALITY</span><h2>データ品質</h2></div><span class="reference-pill">Source照合</span></div>'+
+    '<div class="quality-counts">'+summary+'</div>'+
+    issueHtml+
+    '<details class="quality-details"><summary>6銘柄の照合結果</summary>'+rows+'</details>'+
+    '<p class="quality-note">PASSは独立Sourceとの照合結果を示します。Production Source Contractの確定や正式売買判断への採用を意味しません。</p>'+
+  '</article>';
+}
+
 function technicalPanel(s){
   const t=s.technical||{};
   const l=s.levels||{};
@@ -181,8 +243,8 @@ function renderCards(d){
     }).join("")||'<div class="muted">追加条件なし</div>';
 
     const q=s.data_quality||"—";
-    const qText=qualityLabels[q]||q;
-    const qClass=q==="HOLD"?"quality-hold":q==="CONFIRMED"?"quality-ok":"quality-provisional";
+    const qText=cardQualityText(s);
+    const qClass=["HOLD","ERROR","STALE"].includes(q)?"quality-hold":["FINAL","CONFIRMED"].includes(q)?"quality-ok":"quality-provisional";
     const formal=s.formal_decision||"WAIT";
     const shadow=s.shadow_action||"WAIT";
     const signal=s.reference_signal||"—";
@@ -200,11 +262,8 @@ function renderCards(d){
         '<div class="grid">'+os+'</div>'+
         '<div class="conditions"><b>次の条件</b>'+nc+'</div>'+
         technicalPanel(s)+
-        '<details class="data-details"><summary>データ詳細</summary>'+
-          '<div>品質：'+esc(qText)+'（'+esc(q)+'）</div>'+
-          '<div>照合：'+esc(sourceReason)+'</div>'+
-          '<div>Source：'+esc(s.source_evidence?.primary||"—")+' ↔ '+esc(s.source_evidence?.independent||"—")+'</div>'+
-          '<div>判断データ：'+esc(fmtDate(s.as_of))+'</div>'+
+        '<details class="data-details"><summary>判断データ</summary>'+
+          '<div>基準日：'+esc(fmtDate(s.as_of))+'</div>'+
           '<div class="detail-note">'+esc(s.reason_summary||"")+'</div>'+
         '</details>'+
       '</article>'
@@ -276,9 +335,10 @@ function renderHelp(d){
 
     '<article class="help-card">'+
       '<h2>データ品質</h2>'+
-      '<div class="help-row"><b>暫定</b><p>検証データとして表示可能ですが、正式判断には未採用です。</p></div>'+
-      '<div class="help-row"><b>要確認</b><p>独立データ源との不一致などがあり、判断材料として一段慎重に扱う状態です。</p></div>'+
-      '<div class="help-row"><b>確認済み</b><p>所定の品質確認を通過した状態です。</p></div>'+
+      '<div class="help-row"><b>暫定一致</b><p>独立Sourceとの値照合は一致していますが、Production Source Contract確定前なので正式判断には未採用です。</p></div>'+
+      '<div class="help-row"><b>PASS</b><p>Primaryと独立Sourceの照合が一致した状態です。Production確定を意味しません。</p></div>'+
+      '<div class="help-row"><b>PENDING</b><p>独立Source未取得などで照合が完了していない状態です。</p></div>'+
+      '<div class="help-row"><b>FAIL</b><p>データ差異、取得失敗、更新遅延などがあり確認が必要な状態です。</p></div>'+
     '</article>';
 }
 
@@ -290,6 +350,7 @@ async function load(){
     renderBanner(d);
     renderMarketEnvironment(d);
     renderCards(d);
+    renderDataQuality(d);
     renderHelp(d);
   }catch(e){
     document.getElementById("banner").innerHTML='<div class="banner error">データ読み込みに失敗しました。通信状態を確認して再度お試しください。</div>';
@@ -298,4 +359,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.1");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.2");
