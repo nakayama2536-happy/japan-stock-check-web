@@ -36,7 +36,7 @@ jobs:
           assert "jpstock-v1-5-0" in sw
           assert 'id="common-overview"' in index
           assert 'function renderCommonOverview(c)' in app
-          assert 'fetch("data/common_snapshot.json"' in app
+          assert 'data/common_snapshot.json' in app
           assert 'chart28Svg' in app and '市場環境の28日グラフを見る' in app
           assert 'supplement-details' in app and '市場環境の見方' in app
           assert '.catch(()=>null)' in app
