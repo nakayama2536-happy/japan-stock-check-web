@@ -30,13 +30,15 @@ jobs:
           app=Path("docs/app.js").read_text(encoding="utf-8")
           sw=Path("docs/sw.js").read_text(encoding="utf-8")
           manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
-          assert "v1.4.6" in index
-          assert "v=1.4.6" in index
-          assert "v=1.4.6" in manifest["start_url"]
-          assert "jpstock-v1-4-6" in sw
+          assert "v1.4.7" in index
+          assert "v=1.4.7" in index
+          assert "v=1.4.7" in manifest["start_url"]
+          assert "jpstock-v1-4-7" in sw
           assert 'id="common-overview"' in index
           assert 'function renderCommonOverview(c)' in app
           assert 'fetch("data/common_snapshot.json"' in app
+          assert 'chart28Svg' in app and '市場環境の28日チャートを見る' in app
+          assert 'supplement-details' in app and '市場環境の見方' in app
           assert '.catch(()=>null)' in app
           assert 'function formalDecisionText(d,s)' in app
           assert 'なし（Shadow検証中）' in app
