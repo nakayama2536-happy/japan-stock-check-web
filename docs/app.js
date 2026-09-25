@@ -63,6 +63,16 @@ function friendlyMessage(d,status,latest){
   return d.market_message||"最新データを表示しています。";
 }
 
+function actionSummary(items,key){
+  const order=["BUY","ADD","HOLD","WAIT","REDUCE","SELL"];
+  const counts={};
+  (items||[]).forEach(s=>{
+    const a=(s[key]||"WAIT").toUpperCase();
+    counts[a]=(counts[a]||0)+1;
+  });
+  return order.filter(a=>counts[a]).map(a=>a+" "+counts[a]).join(" / ")||"—";
+}
+
 function renderBanner(d){
   const marketStatus=d.market_run_status||d.run_status||"—";
   const latest=d.latest_decision_as_of||null;
@@ -87,12 +97,12 @@ function renderBanner(d){
     "</div>";
 
   document.getElementById("banner").innerHTML=
-    '<div class="banner">'+
+    '<div class="banner compact-banner">'+
       '<div class="banner-head"><div><b>'+esc(mode)+'</b><div class="banner-sub">'+esc(friendlyMessage(d,marketStatus,latest))+'</div></div>'+
       '<span class="status-pill '+(ready?"ready":"pending")+'">Production '+(ready?"候補":"未達")+'</span></div>'+
-      metrics+
       '<div class="updated">更新 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+'</div>'+
-      '<details class="technical"><summary>検証詳細</summary>'+
+      '<details class="technical validation-details"><summary>検証の進み具合</summary>'+
+        metrics+
         '<div>市場Run：'+esc(d.market_run_id||d.run_id||"—")+'</div>'+
         '<div>判断Run：'+esc(d.latest_decision_run_id||d.run_id||"—")+'</div>'+
         '<div>判断一致率：'+esc(pct(v.decision_match_rate))+' / 目標 '+esc(pct(t.decision_match_rate_min??0.95))+'</div>'+
@@ -100,6 +110,39 @@ function renderBanner(d){
     '</div>';
 }
 
+function renderTodayOverview(d){
+  const root=document.getElementById("today-overview");
+  const items=d.securities||[];
+  if(!items.length){
+    root.innerHTML='<article class="overview-panel"><div class="section-heading"><div><span class="eyebrow">TODAY</span><h2>今日の要点</h2></div></div><div class="overview-empty">銘柄判断データ待ちです。</div></article>';
+    return;
+  }
+  const issueCount=items.filter(s=>sourceCheckState(s)!=="PASS").length;
+  const formalSummary=actionSummary(items,"formal_decision");
+  const shadowSummary=actionSummary(items,"shadow_action");
+  const rows=items.map(s=>{
+    const qState=sourceCheckState(s);
+    const one=s.outlook?.["1"]||{};
+    return '<div class="overview-stock">'+
+      '<div><b>'+esc(s.code+" "+s.name)+'</b><small>'+esc(cardQualityText(s))+'</small></div>'+
+      '<div class="overview-actions"><span>正式 '+esc(s.formal_decision||"WAIT")+'</span><span>参考 '+esc(s.shadow_action||"WAIT")+'</span></div>'+
+      '<div class="overview-arrow">'+(arrows[one.direction]||"—")+'<small>1日</small></div>'+
+      '<span class="check-pill '+qState.toLowerCase()+'">'+qState+'</span>'+
+    '</div>';
+  }).join("");
+
+  root.innerHTML='<article class="overview-panel">'+
+    '<div class="section-heading"><div><span class="eyebrow">TODAY</span><h2>今日の要点</h2></div><span class="reference-pill">約30秒確認</span></div>'+
+    '<div class="overview-grid">'+
+      '<div class="overview-metric"><span>正式判断</span><b>'+esc(formalSummary)+'</b></div>'+
+      '<div class="overview-metric"><span>参考分析</span><b>'+esc(shadowSummary)+'</b></div>'+
+      '<div class="overview-metric '+(issueCount?"warn":"ok")+'"><span>要確認</span><b>'+issueCount+'銘柄</b></div>'+
+      '<div class="overview-metric"><span>判断基準日</span><b>'+esc(fmtDate(d.latest_decision_as_of))+'</b></div>'+
+    '</div>'+
+    '<details class="overview-list"><summary>6銘柄を一覧で確認</summary>'+rows+'</details>'+
+    '<p class="overview-note">「参考分析」はShadow検証結果です。正式判断とは分けて確認してください。</p>'+
+  '</article>';
+}
 
 function renderMarketEnvironment(d){
   const root=document.getElementById("market-environment");
@@ -279,8 +322,13 @@ function renderHelp(d){
   document.getElementById("help").innerHTML=
     '<article class="help-card hero-help">'+
       '<h1>画面の見方</h1>'+
-      '<p>ホームは「正式判断 → 参考分析 → 1/3/5/14日の方向 → 次の条件」の順に確認すると迷いにくくなります。</p>'+
-      '<div class="help-flow"><span>① 正式判断</span><span>② 参考分析</span><span>③ 方向</span><span>④ 次の条件</span></div>'+
+      '<p>最初に「今日の要点」で全体を確認し、その後に市場環境と必要な銘柄だけ詳細を見る構成です。</p>'+
+      '<div class="help-flow"><span>① 今日の要点</span><span>② 市場環境</span><span>③ 銘柄詳細</span><span>④ データ品質</span></div>'+
+    '</article>'+
+
+    '<article class="help-card">'+
+      '<h2>今日の要点</h2>'+
+      '<p>正式判断、参考分析、要確認銘柄数、判断基準日を最初に確認します。「6銘柄を一覧で確認」を開くと、各銘柄の正式判断・参考分析・1日方向・Source照合状態を一覧できます。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
@@ -348,6 +396,7 @@ async function load(){
     if(!r.ok)throw new Error("snapshot "+r.status);
     const d=await r.json();
     renderBanner(d);
+    renderTodayOverview(d);
     renderMarketEnvironment(d);
     renderCards(d);
     renderDataQuality(d);
@@ -359,4 +408,4 @@ async function load(){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.2");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.4.3");
