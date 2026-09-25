@@ -333,3 +333,37 @@ nav button:disabled{color:#d1d5db}
   .disclosure-body,.market-chart-head span{color:#9ca3af}
   .chart-grid{stroke:#374151}.chart-week{stroke:#6b7280}.market-chart text{fill:#9ca3af}
 }
+
+/* v1.5.0 Readability / India-aligned interaction patterns */
+body{font-size:16px}
+.brand strong{font-size:25px}.brand small{font-size:14px}
+#meta{font-size:15px}#meta small{font-size:13px}
+main{padding:16px}
+.card,.help-card,.market-panel,.overview-panel,.quality-panel,.common-overview{padding:18px;border-radius:18px;margin:14px 0}
+.banner{padding:18px}.banner-head b{font-size:21px}.banner-sub{font-size:16px;line-height:1.65}.status-pill{font-size:13px;padding:7px 10px}.updated{font-size:13px;margin-top:10px}
+.section-heading h2{font-size:25px}.eyebrow{font-size:13px;letter-spacing:.04em}.reference-pill{font-size:12px;padding:6px 9px}
+.code{font-size:16px}.stock-card h2{font-size:28px}.price{font-size:46px;margin:20px 0 14px}.section-label{font-size:16px}.decision{font-size:42px}.formal,.reference{font-size:16px;line-height:1.55}.formal span{font-size:13px}
+.grid{gap:9px}.h{padding:11px 5px;font-size:15px}.arrow{font-size:31px}.h-direction{font-size:12px;font-weight:700;margin:2px 0}.h small{font-size:11px}
+.conditions{font-size:17px;line-height:1.7}.conditions>b{font-size:18px;margin-bottom:5px}.cond-symbol{width:24px}
+.overview-metric{padding:13px}.overview-metric span{font-size:14px}.overview-metric b{font-size:18px}.overview-list summary{font-size:16px}.overview-note,.overview-empty{font-size:14px}
+.overview-stock>div:first-child b{font-size:14px}.overview-stock>div:first-child small{font-size:12px}.overview-actions span{font-size:12px}.overview-arrow{font-size:23px}.overview-arrow small{font-size:10px}
+.common-summary>div{padding:12px}.common-summary span{font-size:13px}.common-summary b{font-size:17px}.common-next{padding:12px}.common-next-title{font-size:14px}.common-next-row{font-size:14px;grid-template-columns:82px 1fr;padding:8px 0}.common-box span{font-size:12px}.common-box b{font-size:16px}
+.market-name{font-size:14px}.market-value{font-size:23px}.market-change{font-size:17px}.market-date{font-size:12px}.market-status{font-size:11px}.market-note,.market-empty{font-size:14px}
+.quality-count span{font-size:13px}.quality-count b{font-size:25px}.quality-count small{font-size:11px}.alert-title{font-size:15px}.alert-row{font-size:14px}.quality-details{font-size:14px}.quality-details summary{font-size:16px}.quality-row small,.quality-source{font-size:12px}
+.supplement-details summary,.technical-panel summary,.data-details summary,.forecast-details summary{font-size:16px;padding:13px 12px}.disclosure-body{font-size:15px;line-height:1.7}
+.technical-panel,.data-details{font-size:15px}.tech-title{font-size:13px;padding:9px 11px}.tech-row{padding:10px 11px}.tech-row>span{font-size:14px}.tech-row>b{font-size:15px}.tech-row>small{font-size:12px}
+.update-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.primary-action,.secondary-action{border-radius:14px;padding:13px 10px;font-size:15px;font-weight:800;cursor:pointer}.primary-action{border:0;background:#0a84ff;color:#fff}.secondary-action{background:#fff;color:#1f2937;border:1px solid #cbd5e1}.primary-action:disabled,.secondary-action:disabled{opacity:.55}
+.app-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);z-index:50;max-width:calc(100% - 32px);background:#111827;color:#fff;padding:11px 14px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.2s}.app-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.forecast-details{margin:12px 0}.forecast-list{display:grid;gap:8px;padding-top:9px}.forecast-row{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:12px;display:grid;grid-template-columns:58px 120px 1fr;gap:10px;align-items:center}.forecast-row .fday{font-size:14px;color:#6b7280;font-weight:750}.forecast-row .fdir{font-size:15px;font-weight:850}.forecast-row .fmain{font-size:14px;line-height:1.5}.forecast-row .fsub{font-size:12px;color:#6b7280;margin-top:3px}.forecast-note{font-size:12px;color:#6b7280;line-height:1.6;margin-top:8px}
+.stock-chart-details{margin-top:12px}.stock-chart{display:block;width:100%;height:210px;overflow:visible}.stock-chart text{font-size:10px;fill:#6b7280}.stock-grid{stroke:#dbe3ed;stroke-width:1}.stock-week{stroke:#9ca3af;stroke-width:1;stroke-dasharray:3 5;opacity:.65}.stock-close{fill:none;stroke:#0a84ff;stroke-width:2.5}.stock-ma5{fill:none;stroke:#d97706;stroke-width:1.6}.stock-ma25{fill:none;stroke:#16a34a;stroke-width:1.6}.stock-ma75{fill:none;stroke:#dc2626;stroke-width:1.6}.stock-support{stroke:#16a34a;stroke-width:1.2;stroke-dasharray:5 4}.stock-resistance{stroke:#dc2626;stroke-width:1.2;stroke-dasharray:5 4}.stock-level-label{font-size:9px;fill:#6b7280}.stock-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;font-size:11px;color:#6b7280}.stock-legend span:before{content:"";display:inline-block;width:12px;height:3px;margin-right:4px;vertical-align:middle;background:#9ca3af}.stock-legend .lg-close:before{background:#0a84ff}.stock-legend .lg-ma5:before{background:#d97706}.stock-legend .lg-ma25:before{background:#16a34a}.stock-legend .lg-ma75:before{background:#dc2626}
+nav button{font-size:17px}
+@media(max-width:520px){
+  .update-actions{grid-template-columns:1fr}
+  .forecast-row{grid-template-columns:48px 102px 1fr;gap:7px;padding:10px}
+  .forecast-row .fdir{font-size:13px}.forecast-row .fmain{font-size:13px}.forecast-row .fsub{font-size:11px}
+}
+@media(prefers-color-scheme:dark){
+  .secondary-action{background:#1f2937;color:#f9fafb;border-color:#475569}
+  .forecast-row{background:#1f2937;border-color:#374151}.forecast-row .fday,.forecast-row .fsub,.forecast-note{color:#9ca3af}
+  .stock-grid{stroke:#374151}.stock-week{stroke:#6b7280}.stock-chart text,.stock-level-label,.stock-legend{fill:#9ca3af;color:#9ca3af}
+}

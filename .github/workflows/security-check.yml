@@ -45,8 +45,8 @@ jobs:
         run: |
           set -euo pipefail
           private_fields='"(shares|quantity|position_size|average_cost|cost_basis|purchase_price|account_type|position_id|planned_total_shares|stage_size|completed_stages|max_stages|opened_at|closed_at|brokerage_account|brokerage_account_id|portfolio_id|api_key|apikey|access_token|token|password|secret)"[[:space:]]*:'
-          if grep -nEI "$private_fields" docs/data/*.json; then
-            echo "Private portfolio field detected in public snapshot."
+          if find docs/data -type f -name '*.json' -print0 | xargs -0 -r grep -nEI "$private_fields"; then
+            echo "Private portfolio field detected in public data."
             exit 1
           fi
           echo "No private portfolio fields detected in public JSON."
