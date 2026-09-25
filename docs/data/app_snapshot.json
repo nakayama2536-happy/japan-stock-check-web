@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "app_version": "1.3.0",
-  "engine_version": "1.3.0",
+  "app_version": "1.4.3",
+  "engine_version": "1.3.2",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
   "run_id": "RUN_20260924_1700",
@@ -42,7 +42,7 @@
       "ticker": "6841.T",
       "code": "6841",
       "name": "横河電機",
-      "price": 4693.0,
+      "price": 4693,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -78,7 +78,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 1.41,
-            "historical_up_share_pct": 65.0,
+            "historical_up_share_pct": 65,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -116,11 +116,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-24"
@@ -130,7 +130,7 @@
       "ticker": "6954.T",
       "code": "6954",
       "name": "ファナック",
-      "price": 6021.0,
+      "price": 6021,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -144,7 +144,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.3,
-            "historical_up_share_pct": 45.0,
+            "historical_up_share_pct": 45,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -155,7 +155,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.55,
-            "historical_up_share_pct": 40.0,
+            "historical_up_share_pct": 40,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -166,7 +166,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.04,
-            "historical_up_share_pct": 50.0,
+            "historical_up_share_pct": 50,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -177,7 +177,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -1.51,
-            "historical_up_share_pct": 40.0,
+            "historical_up_share_pct": 40,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
@@ -198,11 +198,11 @@
         "independent": "MONEX_SCOUTER",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-24"
@@ -212,7 +212,7 @@
       "ticker": "3038.T",
       "code": "3038",
       "name": "神戸物産",
-      "price": 2963.0,
+      "price": 2963,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -226,7 +226,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.36,
-            "historical_up_share_pct": 55.0,
+            "historical_up_share_pct": 55,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -248,7 +248,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.87,
-            "historical_up_share_pct": 60.0,
+            "historical_up_share_pct": 60,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -259,7 +259,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 2.25,
-            "historical_up_share_pct": 55.0,
+            "historical_up_share_pct": 55,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
@@ -273,11 +273,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-24"
@@ -323,7 +323,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.27,
-            "historical_up_share_pct": 45.0,
+            "historical_up_share_pct": 45,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -361,7 +361,7 @@
         "independent": "KABUTAN",
         "crosscheck_match": false,
         "diffs": {
-          "open": 0.0,
+          "open": 0,
           "high": 3.0517578011313162e-06
         }
       },
@@ -372,7 +372,7 @@
       "ticker": "1812.T",
       "code": "1812",
       "name": "鹿島建設",
-      "price": 4982.0,
+      "price": 4982,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -381,12 +381,12 @@
       "outlook": {
         "1": {
           "direction": "NEUTRAL",
-          "score": 1.0,
+          "score": 1,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.12,
-            "historical_up_share_pct": 50.0,
+            "historical_up_share_pct": 50,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -397,7 +397,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.39,
-            "historical_up_share_pct": 65.0,
+            "historical_up_share_pct": 65,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -408,18 +408,18 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.7,
-            "historical_up_share_pct": 60.0,
+            "historical_up_share_pct": 60,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
           "direction": "NEUTRAL",
-          "score": 13.0,
+          "score": 13,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
             "median_return_pct": 2.13,
-            "historical_up_share_pct": 65.0,
+            "historical_up_share_pct": 65,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
@@ -446,11 +446,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-24"
@@ -460,7 +460,7 @@
       "ticker": "5805.T",
       "code": "5805",
       "name": "SWCC",
-      "price": 13410.0,
+      "price": 13410,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -502,7 +502,7 @@
         },
         "14": {
           "direction": "NEUTRAL",
-          "score": 14.0,
+          "score": 14,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
