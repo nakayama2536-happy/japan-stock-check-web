@@ -62,6 +62,9 @@ jobs:
           assert 'function rsiSeries(rows,period=14)' in app
           assert '株価・MACD・RSIを見る' in app
           assert 'next_recheck_at' in app
+          assert '深掘り結果の評価' in app
+          assert 'DEEP_DIVE_REVIEW_KEY' in app
+          assert '深掘り評価履歴をコピー' in app
           assert 'banner-status-strip' in app
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
