@@ -583,7 +583,7 @@ function forecastDetailPanel(s){
     '<div class="forecast-note">上段は現在のテクニカル方向、類似中央値・上昇割合は過去の参考統計です。両者が逆向きの場合は「参考統計と方向差」と表示します。上昇割合は将来確率ではありません。</div></details>';
 }
 
-function commonTonefunction commonTone(value){
+function commonTone(value){
   const v=String(value||"").toUpperCase();
   if(["PASS","FRESH","ELIGIBLE","DECISION","CURRENT","CONFIRMED"].includes(v))return "common-ok";
   if(["FAIL","STALE","MISSING","NOT_ELIGIBLE","BLOCKED"].includes(v))return "common-ng";
