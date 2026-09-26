@@ -98,16 +98,84 @@
       "market_id": "TOPIX",
       "ticker": "998405.T",
       "name": "TOPIX",
-      "status": "ERROR",
-      "value": null,
-      "change_pct": null,
-      "direction": "UNKNOWN",
-      "as_of": null,
+      "status": "OK",
+      "value": 4128.59,
+      "change_pct": 1.3076,
+      "direction": "UP",
+      "as_of": "2026-09-25",
       "unit": "",
       "display_decimals": 2,
-      "source": "YFINANCE_REFERENCE",
-      "error": "empty history",
-      "history": []
+      "source": "YAHOO_JAPAN_HISTORY",
+      "history": [
+        {
+          "date": "2026-08-31",
+          "value": 4156.29
+        },
+        {
+          "date": "2026-09-01",
+          "value": 4181.86
+        },
+        {
+          "date": "2026-09-02",
+          "value": 4081.6
+        },
+        {
+          "date": "2026-09-03",
+          "value": 4102.04
+        },
+        {
+          "date": "2026-09-04",
+          "value": 4103.23
+        },
+        {
+          "date": "2026-09-07",
+          "value": 4125.8
+        },
+        {
+          "date": "2026-09-08",
+          "value": 4050.33
+        },
+        {
+          "date": "2026-09-09",
+          "value": 4046.64
+        },
+        {
+          "date": "2026-09-10",
+          "value": 4054.58
+        },
+        {
+          "date": "2026-09-11",
+          "value": 4028.3
+        },
+        {
+          "date": "2026-09-14",
+          "value": 4058.21
+        },
+        {
+          "date": "2026-09-15",
+          "value": 4037.16
+        },
+        {
+          "date": "2026-09-16",
+          "value": 4061.72
+        },
+        {
+          "date": "2026-09-17",
+          "value": 4094.19
+        },
+        {
+          "date": "2026-09-18",
+          "value": 4091.14
+        },
+        {
+          "date": "2026-09-24",
+          "value": 4075.3
+        },
+        {
+          "date": "2026-09-25",
+          "value": 4128.59
+        }
+      ]
     },
     {
       "market_id": "USDJPY",
@@ -205,8 +273,8 @@
       ]
     }
   ],
-  "updated_at": "2026-09-26T11:51:09.507706+09:00",
-  "market_checked_at": "2026-09-26T11:51:09.507706+09:00",
+  "updated_at": "2026-09-26T11:54:34.483672+09:00",
+  "market_checked_at": "2026-09-26T11:54:34.483672+09:00",
   "next_recheck_at": "2026-09-28T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-09-28T16:15:00+09:00",
