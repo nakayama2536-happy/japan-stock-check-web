@@ -456,17 +456,77 @@ function bindStockCharts(){
     });
   });
 }
+function qualityIssueText(s){
+  const reason=String(s?.source_gate_reason||"").toUpperCase();
+  const diffs=s?.source_evidence?.diffs||{};
+  if(reason.includes("MISMATCH")){
+    const labels={open:"始値",high:"高値",low:"安値",close:"終値",volume:"出来高"};
+    const parts=Object.entries(diffs).filter(([,v])=>Number.isFinite(Number(v))&&Math.abs(Number(v))>0).map(([k,v])=>{
+      const n=Number(v),txt=Math.abs(n)>=1?Math.abs(n).toLocaleString("ja-JP",{maximumFractionDigits:2}):Math.abs(n).toFixed(2);
+      return (labels[k]||k)+"差 "+txt+(k==="volume"?"":"円");
+    });
+    if(parts.length)return parts.join(" / ");
+  }
+  return sourceReasonLabels[s?.source_gate_reason]||s?.source_gate_reason||"確認が必要です";
+}
+function conditionTargetValue(s,x){
+  const label=String(x?.label||"");
+  const m=label.match(/([0-9][0-9,]*(?:\.[0-9]+)?)円/);
+  if(m)return Number(m[1].replace(/,/g,""));
+  if(/転換線/.test(label))return Number(s?.technical?.ichimoku_tenkan);
+  if(/基準線/.test(label))return Number(s?.technical?.ichimoku_kijun);
+  if(/抵抗/.test(label))return Number(s?.levels?.resistance_1);
+  if(/支持/.test(label))return Number(s?.levels?.support_1);
+  return null;
+}
+function conditionGapText(s,x){
+  const price=Number(s?.price),target=conditionTargetValue(s,x);
+  if(!Number.isFinite(price)||!Number.isFinite(target)||price===0)return "";
+  const delta=target-price,pct=delta/price*100;
+  const decimals=Math.abs(delta)<1?2:Math.abs(delta)<10?1:0;
+  const d=(delta>=0?"+":"")+delta.toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+  const p=(pct>=0?"+":"")+pct.toFixed(2);
+  return "現在値との差 "+d+"円（"+p+"%）";
+}
+function forecastAlignment(o){
+  const dir={STRONG_UP:1,UP:1,NEUTRAL:0,DOWN:-1,STRONG_DOWN:-1}[o?.direction]||0;
+  const a=o?.analog||{},median=Number(a.median_return_pct),share=Number(a.historical_up_share_pct);
+  let stat=0;
+  if(Number.isFinite(median)&&Math.abs(median)>=0.20)stat=median>0?1:-1;
+  else if(Number.isFinite(share)&&share>=55)stat=1;
+  else if(Number.isFinite(share)&&share<=45)stat=-1;
+  if(dir&&stat&&dir!==stat)return {label:"参考統計と方向差",cls:"forecast-mismatch"};
+  if(dir&&stat&&dir===stat)return {label:"方向整合",cls:"forecast-match"};
+  return {label:"参考統計は中立",cls:"forecast-neutral"};
+}
+function topChangeRows(items){
+  const rows=[];
+  for(const s of (items||[])){
+    const cs=s.next_conditions||[];
+    if(!cs.length)continue;
+    const ranked=[...cs].sort((a,b)=>Number(!!conditionGapText(s,b))-Number(!!conditionGapText(s,a)));
+    const c=ranked[0],gap=conditionGapText(s,c);
+    rows.push({name:s.name,label:c.label||"条件確認",gap});
+  }
+  return rows.slice(0,4);
+}
 function forecastDetailPanel(s){
   const rows=["1","3","5","14"].map(h=>{
-    const o=s.outlook?.[h]||{},a=o.analog||{};
+    const o=s.outlook?.[h]||{},a=o.analog||{},align=forecastAlignment(o);
     const median=a.median_return_pct==null?"—":(Number(a.median_return_pct)>0?"+":"")+Number(a.median_return_pct).toFixed(2)+"%";
     const share=a.historical_up_share_pct==null?"—":Number(a.historical_up_share_pct).toFixed(1)+"%";
-    return '<div class="forecast-row"><div class="fday">'+h+'日</div><div class="fdir '+directionClass(o.direction)+'">'+(arrows[o.direction]||"—")+' '+esc(directionLabels[o.direction]||"—")+'</div><div class="fmain">中央値 '+esc(median)+'<div class="fsub">過去上昇割合 '+esc(share)+' / 類似 '+esc(a.sample_count??"—")+'件 / 信頼度 '+esc(confidenceLabels[o.confidence]||"—")+'</div></div></div>';
+    return '<div class="forecast-cell">'+
+      '<div class="forecast-cell-head"><b>'+h+'日</b><span class="'+align.cls+'">'+esc(align.label)+'</span></div>'+
+      '<div class="forecast-cell-dir '+directionClass(o.direction)+'">'+(arrows[o.direction]||"—")+' '+esc(directionLabels[o.direction]||"—")+'</div>'+
+      '<div class="forecast-confidence">方向信頼度 '+esc(confidenceLabels[o.confidence]||"—")+'</div>'+
+      '<div class="forecast-analog">類似中央値 '+esc(median)+' / 上昇割合 '+esc(share)+' / '+esc(a.sample_count??"—")+'件</div>'+
+    '</div>';
   }).join("");
-  return '<details class="forecast-details"><summary>予測の詳細を見る</summary><div class="forecast-list">'+rows+'</div><div class="forecast-note">過去の類似局面から見た統計的な目安です。「過去上昇割合」は将来の上昇確率ではありません。</div></details>';
+  return '<details class="forecast-details"><summary>予測の詳細を見る</summary><div class="forecast-grid">'+rows+'</div>'+
+    '<div class="forecast-note">上段は現在のテクニカル方向、類似中央値・上昇割合は過去の参考統計です。両者が逆向きの場合は「参考統計と方向差」と表示します。上昇割合は将来確率ではありません。</div></details>';
 }
 
-function commonTone(value){
+function commonTonefunction commonTone(value){
   const v=String(value||"").toUpperCase();
   if(["PASS","FRESH","ELIGIBLE","DECISION","CURRENT","CONFIRMED"].includes(v))return "common-ok";
   if(["FAIL","STALE","MISSING","NOT_ELIGIBLE","BLOCKED"].includes(v))return "common-ng";
@@ -474,49 +534,10 @@ function commonTone(value){
 }
 function renderCommonOverview(c){
   const root=document.getElementById("common-overview");
-  if(!root)return;
-  if(!c||c.schema_version!=="1.0"){root.innerHTML="";return;}
-  const q=c.data_quality||{},snap=c.snapshot||{},ms=c.market_state||{},items=c.decision_items||[];
-  const eligible=items.filter(x=>x.eligibility==="ELIGIBLE").length;
-  const blocked=items.length-eligible;
-  const watch=items.filter(x=>x.monitor?.state==="WATCH").length;
-  const groups=[];
-  items.forEach(x=>{
-    const conditions=x.change_conditions||[];
-    if(!conditions.length)return;
-    const name=x.subject_label||x.ticker||x.subject_id||"";
-    const existing=groups.find(g=>g.name===name);
-    const labels=conditions.map(y=>(y.target_action?actionJa(y.target_action)+"：":"")+(y.label||"")).filter(Boolean);
-    if(existing)existing.labels.push(...labels);else groups.push({name,labels});
-  });
-  const next=groups.slice(0,3);
-  const analyses={};
-  items.forEach(x=>{const a=x.analysis_action||"WAIT";analyses[a]=(analyses[a]||0)+1;});
-  const analysisSummary=Object.entries(analyses).map(([k,v])=>actionJa(k)+" "+v).join(" / ")||"—";
-  const nextHtml=next.length
-    ? next.map(x=>'<div class="common-next-row"><b>'+esc(x.name)+'</b><span>'+esc([...new Set(x.labels)].join(" / "))+'</span></div>').join("")
-    : '<div class="common-next-empty">変化条件はありません。</div>';
-  const internal='<div class="common-grid">'+
-      '<div class="common-box '+commonTone(q.qc_state)+'"><span>品質</span><b>'+esc(stateJa(q.qc_state))+'</b></div>'+
-      '<div class="common-box '+commonTone(q.data_state)+'"><span>データ</span><b>'+esc(stateJa(q.data_state))+'</b></div>'+
-      '<div class="common-box '+commonTone(ms.state)+'"><span>市場</span><b>'+esc(stateJa(ms.state))+'</b></div>'+
-      '<div class="common-box '+commonTone(snap.state)+'"><span>更新状態</span><b>'+esc(stateJa(snap.state))+'</b></div>'+
-    '</div>';
-  root.innerHTML='<article class="common-overview">'+
-    '<div class="section-heading"><div><span class="eyebrow">共通10秒確認</span><h2>判断できる状態か</h2></div><span class="reference-pill">共通仕様（試行）</span></div>'+
-    '<div class="common-summary">'+
-      '<div><span>判断可能</span><b>'+eligible+'/'+items.length+'</b></div>'+
-      '<div><span>要確認</span><b>'+blocked+'</b></div>'+
-      '<div><span>監視</span><b>'+watch+'</b></div>'+
-      '<div><span>参考分析</span><b>'+esc(analysisSummary)+'</b></div>'+
-    '</div>'+
-    '<div class="common-next"><div class="common-next-title">次に判断が変わる条件</div>'+nextHtml+'</div>'+
-    '<details class="supplement-details"><summary>品質・データ状態を見る</summary><div class="disclosure-body">'+internal+'</div></details>'+
-    '<details class="supplement-details"><summary>基準時刻・共通仕様を見る</summary><div class="disclosure-body">基準 '+esc(fmtDate(c.timestamps?.market_as_of))+' / 計算 '+esc(fmtDateTime(c.timestamps?.calculated_at))+' / 共通仕様 '+esc(c.common_spec_version||"—")+'</div></details>'+
-  '</article>';
+  if(root)root.innerHTML="";
 }
 
-function setupNav(){
+function setupNavfunction setupNav(){
   document.querySelectorAll("nav [data-view]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const id=btn.dataset.view;
@@ -558,33 +579,32 @@ function renderBanner(d){
   const marketStatus=d.market_run_status||d.run_status||"—";
   const latest=d.latest_decision_as_of||null;
   const v=d.shadow_validation||{},t=v.thresholds||{};
-  const mode=d.decision_mode==="SHADOW"?"検証モード":"正式モード";
   const ready=!!v.production_candidate;
-  const runOk=(v.run_count||0)>=(t.min_runs||20);
-  const sourceOk=v.source_fetch_rate!=null&&v.source_fetch_rate>=(t.source_fetch_rate_min||0.95);
-  const ohlcvOk=v.ohlcv_match_rate!=null&&v.ohlcv_match_rate>=(t.ohlcv_match_rate_min||0.98);
-  const sampleOk=(v.decision_sample_count||0)>=(t.min_decision_samples||60);
+  const issues=(d.securities||[]).filter(s=>sourceCheckState(s)!=="PASS");
+  const nextKind=d.next_recheck_kind==="BACKUP"?"予備再判定":"次回再判定";
   document.getElementById("meta").innerHTML="<span>最新判断 "+fmtDate(latest)+"</span><small>"+esc(runStatusLabels[marketStatus]||marketStatus)+"</small>";
   const metrics='<div class="validation-grid">'+
-      metric("実行回数",(v.run_count??0)+"/"+(t.min_runs??20),String(t.min_runs??20),runOk)+
-      metric("取得率",pct(v.source_fetch_rate),pct(t.source_fetch_rate_min??0.95),sourceOk)+
-      metric("株価一致",pct(v.ohlcv_match_rate),pct(t.ohlcv_match_rate_min??0.98),ohlcvOk)+
-      metric("判断比較",(v.decision_sample_count??0)+"/"+(t.min_decision_samples??60),String(t.min_decision_samples??60),sampleOk)+
+      metric("実行回数",(v.run_count??0)+"/"+(t.min_runs??20),String(t.min_runs??20),(v.run_count||0)>=(t.min_runs||20))+
+      metric("取得率",pct(v.source_fetch_rate),pct(t.source_fetch_rate_min??0.95),v.source_fetch_rate!=null&&v.source_fetch_rate>=(t.source_fetch_rate_min||0.95))+
+      metric("株価一致",pct(v.ohlcv_match_rate),pct(t.ohlcv_match_rate_min??0.98),v.ohlcv_match_rate!=null&&v.ohlcv_match_rate>=(t.ohlcv_match_rate_min||0.98))+
+      metric("判断比較",(v.decision_sample_count??0)+"/"+(t.min_decision_samples??60),String(t.min_decision_samples??60),(v.decision_sample_count||0)>=(t.min_decision_samples||60))+
     "</div>";
-  const closedNote=marketStatus==="NO_NEW_TARGET"?'<br>本日は休場日のため、判断日は '+esc(fmtDate(latest))+' のままです。':"";
-  const nextKind=d.next_recheck_kind==="BACKUP"?"予備再判定":"次回再判定";
-  const recheck=d.next_recheck_at
-    ? '<div class="recheck-line"><span>'+nextKind+'</span><b>'+esc(fmtDateTime(d.next_recheck_at))+'</b>'+
-      (d.backup_recheck_at?'<small>予備 '+esc(fmtDateTime(d.backup_recheck_at))+'</small>':"")+'</div>'
-    : '<div class="recheck-line"><span>次回再判定</span><b>未定</b></div>';
+  const recheck=d.next_recheck_at?esc(fmtDateTime(d.next_recheck_at)):"未定";
   document.getElementById("banner").innerHTML=
-    '<div class="banner compact-banner">'+
-      '<div class="banner-head"><div><b>'+esc(mode)+'</b><div class="banner-sub">'+esc(friendlyMessage(d,marketStatus,latest))+'</div></div>'+
-      '<span class="status-pill '+(ready?"ready":"pending")+'">本番移行 '+(ready?"候補":"未達")+'</span></div>'+
-      '<div class="updated">データ生成 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+' / 表示確認 '+esc(fmtDateTime(lastUiCheckAt||new Date().toISOString()))+closedNote+'</div>'+
-      recheck+
-      '<div class="update-actions"><button id="refresh-data-btn" class="secondary-action">最新状態を確認</button><button id="github-update-btn" class="primary-action">GitHubで市場データ更新</button></div>'+
-      '<details class="technical validation-details"><summary>検証の進み具合</summary>'+
+    '<div class="banner compact-banner v155-banner">'+
+      '<div class="banner-head"><div><b>'+(d.decision_mode==="SHADOW"?"検証中":"正式運用")+'</b><div class="banner-sub-short">'+
+        (d.decision_mode==="SHADOW"?"参考分析のみ表示・正式判断には未使用":"正式判断を表示中")+
+      '</div></div><span class="status-pill '+(ready?"ready":"pending")+'">本番移行 '+(ready?"候補":"未達")+'</span></div>'+
+      '<div class="banner-status-strip">'+
+        '<span>判断基準 <b>'+esc(fmtDate(latest))+'</b></span>'+
+        '<span class="'+(issues.length?"warn":"ok")+'">品質 <b>'+(issues.length?"要確認 "+issues.length:"正常")+'</b></span>'+
+        '<span>'+nextKind+' <b>'+recheck+'</b></span>'+
+      '</div>'+
+      '<div class="update-actions compact-actions"><button id="refresh-data-btn" class="secondary-action">最新状態を確認</button><button id="github-update-btn" class="primary-action">市場データ更新</button></div>'+
+      '<details class="technical validation-details compact-validation"><summary>更新・検証の詳細</summary>'+
+        '<div class="banner-detail-text">'+esc(friendlyMessage(d,marketStatus,latest))+'</div>'+
+        '<div class="updated">データ生成 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+' / 表示確認 '+esc(fmtDateTime(lastUiCheckAt||new Date().toISOString()))+'</div>'+
+        (d.backup_recheck_at?'<div class="backup-recheck">予備再判定 '+esc(fmtDateTime(d.backup_recheck_at))+'</div>':"")+
         metrics+
         '<div>市場実行：'+esc(d.market_run_id||d.run_id||"—")+'</div>'+
         '<div>判断実行：'+esc(d.latest_decision_run_id||d.run_id||"—")+'</div>'+
@@ -596,9 +616,10 @@ function renderBanner(d){
 
 function renderTodayOverview(d){
   const root=document.getElementById("today-overview"),items=d.securities||[];
-  if(!items.length){root.innerHTML='<article class="overview-panel"><div class="section-heading"><div><span class="eyebrow">本日の確認</span><h2>今日の要点</h2></div></div><div class="overview-empty">銘柄判断データ待ちです。</div></article>';return;}
-  const issueCount=items.filter(s=>sourceCheckState(s)!=="PASS").length;
-  const formalSummary=formalSummaryText(d,items),shadowSummary=actionSummary(items,"shadow_action");
+  if(!items.length){root.innerHTML='<article class="overview-panel"><div class="section-heading"><div><span class="eyebrow">本日の確認</span><h2>本日の判断サマリー</h2></div></div><div class="overview-empty">銘柄判断データ待ちです。</div></article>';return;}
+  const issues=items.filter(s=>sourceCheckState(s)!=="PASS"),issueCount=issues.length;
+  const shadowSummary=actionSummary(items,"shadow_action");
+  const formalCount=d.decision_mode==="SHADOW"?0:items.filter(s=>s.formal_decision).length;
   const rows=items.map(s=>{
     const qState=sourceCheckState(s);
     const horizon=["1","3","5","14"].map(h=>{
@@ -613,20 +634,27 @@ function renderTodayOverview(d){
       '<div class="mini-outlooks">'+horizon+'</div>'+
     '</div>';
   }).join("");
-  root.innerHTML='<article class="overview-panel">'+
-    '<div class="section-heading"><div><span class="eyebrow">本日の確認</span><h2>今日の要点</h2></div><span class="reference-pill">約30秒で確認</span></div>'+
-    '<div class="overview-grid">'+
-      '<div class="overview-metric"><span>正式判断</span><b>'+esc(formalSummary)+'</b></div>'+
+  const issueBar=issues.length
+    ? '<div class="top-quality-alert"><b>品質要確認 '+issues.length+'件</b><span>'+issues.map(s=>esc(s.name+"（"+qualityIssueText(s)+"）")).join(" / ")+'</span></div>'
+    : '<div class="top-quality-alert ok"><b>データ品質</b><span>6銘柄すべて一致</span></div>';
+  const changes=topChangeRows(items);
+  const changeHtml=changes.length?'<details class="change-summary"><summary>次に判断が変わる条件（'+changes.length+'銘柄）</summary><div class="change-list">'+
+    changes.map(x=>'<div class="change-row"><b>'+esc(x.name)+'</b><span>'+esc(x.label)+'</span>'+(x.gap?'<small>'+esc(x.gap)+'</small>':"")+'</div>').join("")+
+    '</div></details>':"";
+  root.innerHTML='<article class="overview-panel v155-overview">'+
+    '<div class="section-heading"><div><span class="eyebrow">本日の確認</span><h2>本日の判断サマリー</h2></div><span class="reference-pill">約30秒</span></div>'+
+    '<div class="overview-grid decision-state-grid">'+
+      '<div class="overview-metric"><span>正式採用</span><b>'+formalCount+'/'+items.length+'</b></div>'+
+      '<div class="overview-metric"><span>検証中</span><b>'+(d.decision_mode==="SHADOW"?items.length:0)+'/'+items.length+'</b></div>'+
+      '<div class="overview-metric '+(issueCount?"warn":"ok")+'"><span>品質要確認</span><b>'+issueCount+'/'+items.length+'</b></div>'+
       '<div class="overview-metric"><span>参考分析</span><b>'+esc(shadowSummary)+'</b></div>'+
-      '<div class="overview-metric '+(issueCount?"warn":"ok")+'"><span>要確認</span><b>'+issueCount+'銘柄</b></div>'+
-      '<div class="overview-metric"><span>判断基準日</span><b>'+esc(fmtDate(d.latest_decision_as_of))+'</b></div>'+
-    '</div>'+
-    '<details class="overview-list"><summary>6銘柄を一覧で確認</summary>'+rows+'</details>'+
-    '<p class="overview-note">企業名の右に現在値、その右に参考判断を配置しています。下段で1・3・5・14日の方向を確認できます。</p>'+
+    '</div>'+issueBar+
+    '<details class="overview-list" open><summary>6銘柄を一覧で確認</summary>'+rows+'</details>'+
+    changeHtml+
   '</article>';
 }
 
-function renderMarketEnvironment(d){
+function renderMarketEnvironmentfunction renderMarketEnvironment(d){
   const root=document.getElementById("market-environment"),items=d.market_environment||[];
   if(!items.length){root.innerHTML='<article class="market-panel"><div class="section-heading"><div><span class="eyebrow">市場全体</span><h2>市場環境</h2></div><span class="reference-pill">参考情報</span></div><div class="market-empty">次回更新から日経平均・TOPIX・USD/JPYを表示します。</div></article>';return;}
   const marketStatusJa=v=>({ERROR:"取得失敗",STALE:"更新待ち",OK:"正常"}[v]||v||"—");
@@ -692,25 +720,24 @@ function renderDataQuality(d){
       '<span class="check-pill '+state.toLowerCase()+'">'+esc(checkStateJa(state))+'</span><div class="quality-source">'+esc(src)+'</div></div>';
   }).join("");
   const issueHtml=issues.length
-    ? '<div class="quality-alert"><div class="alert-title">確認事項 '+issues.length+'件</div>'+issues.map(({s,state})=>{
-        const reason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"確認待ち";
-        return '<div class="alert-row"><span class="check-pill '+state.toLowerCase()+'">'+esc(checkStateJa(state))+'</span><b>'+esc(s.code+" "+s.name)+'</b><span>'+esc(reason)+'</span></div>';
-      }).join("")+
+    ? '<div class="quality-alert"><div class="alert-title">確認事項 '+issues.length+'件</div>'+issues.map(({s,state})=>
+        '<div class="alert-row"><span class="check-pill '+state.toLowerCase()+'">'+esc(checkStateJa(state))+'</span><b>'+esc(s.code+" "+s.name)+'</b><span>'+esc(qualityIssueText(s))+'</span></div>'
+      ).join("")+
       '<button id="quality-investigate-btn" class="quality-action-btn">要確認を再調査・再判定</button><div class="quality-action-note">GitHubでRun workflow実行後、アプリに戻ると結果を自動確認します。</div><div id="quality-run-time" class="quality-run-time" hidden></div>'+
       '<details class="quality-remedy"><summary>調査・対策内容を見る</summary>'+
         issues.map(({s})=>'<div class="remedy-row"><b>'+esc(s.name)+'</b><span>'+esc(qualityAdvice(s))+'</span></div>').join("")+
       '</details></div>'
     : '<div class="quality-all-clear">独立データとの照合で要確認項目はありません。</div><div id="quality-run-time" class="quality-run-time" hidden></div>';
-  root.innerHTML='<article class="quality-panel">'+
-    '<div class="section-heading"><div><span class="eyebrow">データ品質</span><h2>データの確認状態</h2></div><span class="reference-pill">独立データ照合</span></div>'+
-    '<div class="quality-counts">'+summary+'</div>'+issueHtml+
-    '<details class="quality-details"><summary>6銘柄の照合結果を見る</summary>'+rows+'</details>'+
-    '<details class="supplement-details"><summary>データ品質の見方</summary><div class="disclosure-body">「一致」は独立データとの照合が合っている状態です。再調査ボタンは、休場日でも最新判断日を指定して再取得・再照合します。</div></details>'+
-  '</article>';
+  root.innerHTML='<article class="quality-panel compact-quality-panel"><details class="quality-root-details">'+
+    '<summary><span>データ品質詳細</span><b>一致 '+counts.PASS+' / 要確認 '+(counts.FAIL+counts.PENDING)+'</b></summary>'+
+    '<div class="quality-root-body"><div class="quality-counts">'+summary+'</div>'+issueHtml+
+      '<details class="quality-details"><summary>6銘柄の照合結果を見る</summary>'+rows+'</details>'+
+      '<details class="supplement-details"><summary>データ品質の見方</summary><div class="disclosure-body">「一致」は独立データとの照合が合っている状態です。再調査ボタンは最新判断日を指定して再取得・再照合します。</div></details>'+
+    '</div></details></article>';
   bindQualityAction();
 }
 
-function technicalPanel(s){
+function technicalPanelfunction technicalPanel(s){
   const t=s.technical||{},l=s.levels||{};
   const has=Object.keys(t).length>0||Object.keys(l).length>0||s.weekly_trend;
   if(!has)return '<details class="technical-panel"><summary>テクニカル詳細</summary><div class="technical-empty">次回更新から詳細指標を表示します。</div></details>';
@@ -735,42 +762,62 @@ function technicalPanel(s){
   '</details>';
 }
 
+function bindStockAccordions(){
+  document.querySelectorAll(".stock-accordion").forEach(el=>{
+    el.addEventListener("toggle",()=>{
+      if(!el.open)return;
+      document.querySelectorAll(".stock-accordion").forEach(other=>{
+        if(other!==el&&other.open)other.open=false;
+      });
+    });
+  });
+}
 function renderCards(d){
   const cards=document.getElementById("cards");cards.innerHTML="";
   if(!d.securities?.length){cards.innerHTML='<div class="card empty">直近の銘柄判断はまだありません。次の営業日更新後に表示されます。</div>';return;}
+  cards.insertAdjacentHTML("beforeend",'<div class="cards-heading"><div><span class="eyebrow">必要な銘柄だけ確認</span><h2>銘柄詳細</h2></div><small>同時に開くのは1銘柄</small></div>');
   for(const s of d.securities){
     const os=["1","3","5","14"].map(h=>{
       const o=s.outlook?.[h]||{};
-      return '<div class="h '+directionClass(o.direction)+'"><span>'+h+'日</span><div class="arrow '+directionClass(o.direction)+'">'+(arrows[o.direction]||"—")+'</div><div class="h-direction">'+esc(directionLabels[o.direction]||"—")+'</div><small>信頼度 '+(confidenceLabels[o.confidence]||"—")+'</small></div>';
+      return '<div class="h '+directionClass(o.direction)+'"><span>'+h+'日</span><div class="arrow '+directionClass(o.direction)+'">'+(arrows[o.direction]||"—")+'</div><div class="h-direction">'+esc(directionLabels[o.direction]||"—")+'</div><small>方向信頼度 '+(confidenceLabels[o.confidence]||"—")+'</small></div>';
+    }).join("");
+    const mini=["1","3","5","14"].map(h=>{
+      const o=s.outlook?.[h]||{};
+      return '<span class="stock-summary-outlook '+directionClass(o.direction)+'"><small>'+h+'日</small><b>'+(arrows[o.direction]||"—")+'</b></span>';
     }).join("");
     const nc=(s.next_conditions||[]).map(x=>{
-      const symbols={PENDING:"△",NOT_AVAILABLE:"—",PASS:"○",MET:"○",FAILED:"×",NOT_MET:"×"};
-      return '<div><span class="cond-symbol">'+(symbols[x.status]||"•")+'</span>'+esc(x.label)+'</div>';
+      const symbols={PENDING:"△",NOT_AVAILABLE:"—",PASS:"○",MET:"○",FAILED:"×",NOT_MET:"×"},gap=conditionGapText(s,x);
+      return '<div class="condition-item"><div><span class="cond-symbol">'+(symbols[x.status]||"•")+'</span>'+esc(x.label)+'</div>'+(gap?'<small>'+esc(gap)+'</small>':"")+'</div>';
     }).join("")||'<div class="muted">追加条件なし</div>';
     const q=s.data_quality||"—",qText=cardQualityText(s);
-    const qClass=["HOLD","ERROR","STALE"].includes(q)?"quality-hold":["FINAL","CONFIRMED"].includes(q)?"quality-ok":"quality-provisional";
-    const formal=formalDecisionText(d,s),shadow=s.shadow_action||"WAIT",signal=s.reference_signal||"—";
+    const formal=formalDecisionText(d,s),shadow=s.shadow_action||"WAIT",signal=s.reference_signal||"—",qState=sourceCheckState(s);
     cards.insertAdjacentHTML("beforeend",
-      '<article class="card stock-card">'+
-        '<div class="top"><div><div class="code">'+esc(s.code)+'</div><h2>'+esc(s.name)+'</h2></div><span class="quality-badge '+qClass+'">'+esc(qText)+'</span></div>'+
-        '<div class="price">'+(s.price==null?"—":Number(s.price).toLocaleString("ja-JP")+"円")+'</div>'+
-        '<div class="section-label">参考分析（検証中）</div>'+
-        '<div class="decision shadow">'+esc(actionJa(shadow))+'</div>'+
-        '<div class="formal">正式判断：<b>'+esc(formal)+'</b><span>'+esc(d.decision_mode==="SHADOW"?"現在は検証中":actionJa(formal))+'</span></div>'+
-        '<div class="reference">参考シグナル：<b>'+esc(signalLabels[signal]||"中立")+'</b></div>'+
-        '<div class="grid">'+os+'</div>'+
-        forecastDetailPanel(s)+
-        '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
-        '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価・MACD・RSIを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
-        technicalPanel(s)+
-        '<details class="data-details"><summary>判断データを見る</summary><div>基準日：'+esc(fmtDate(s.as_of))+'</div><div class="detail-note">'+esc(s.reason_summary||"")+'</div></details>'+
-      '</article>'
+      '<details class="card stock-card stock-accordion" data-stock="'+esc(s.code)+'">'+
+        '<summary class="stock-accordion-summary">'+
+          '<div class="stock-summary-main"><div><b>'+esc(s.name)+'</b><small>'+esc(s.code)+'</small></div><strong>'+(s.price==null?"—":Number(s.price).toLocaleString("ja-JP")+"円")+'</strong></div>'+
+          '<div class="stock-summary-action"><span>参考</span><b>'+esc(actionJa(shadow))+'</b><span class="check-pill '+qState.toLowerCase()+'">'+esc(checkStateJa(qState))+'</span></div>'+
+          '<div class="stock-summary-outlooks">'+mini+'</div>'+
+        '</summary>'+
+        '<div class="stock-accordion-body">'+
+          '<div class="section-label">参考分析（検証中）</div>'+
+          '<div class="decision shadow">'+esc(actionJa(shadow))+'</div>'+
+          '<div class="formal">正式判断：<b>'+esc(formal)+'</b><span>'+esc(d.decision_mode==="SHADOW"?"現在は検証中":actionJa(formal))+'</span></div>'+
+          '<div class="reference">参考シグナル：<b>'+esc(signalLabels[signal]||"中立")+'</b></div>'+
+          '<div class="grid">'+os+'</div>'+
+          forecastDetailPanel(s)+
+          '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
+          '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価・MACD・RSIを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
+          technicalPanel(s)+
+          '<details class="data-details"><summary>判断データを見る</summary><div>基準日：'+esc(fmtDate(s.as_of))+'</div><div class="detail-note">'+esc(s.reason_summary||"")+'</div></details>'+
+        '</div>'+
+      '</details>'
     );
   }
   bindStockCharts();
+  bindStockAccordions();
 }
 
-function renderHelp(d){
+function renderHelpfunction renderHelp(d){
   const v=d.shadow_validation||{};
   const t=v.thresholds||{};
   const ready=!!v.production_candidate;
@@ -812,12 +859,12 @@ function renderHelp(d){
       '<div class="arrow-guide">'+
         '<div><b>↑↑</b><span>強い上向き</span></div><div><b>↑</b><span>上向き</span></div><div><b>→</b><span>中立</span></div><div><b>↓</b><span>下向き</span></div><div><b>↓↓</b><span>強い下向き</span></div>'+
       '</div>'+
-      '<p class="note">「信頼度 低・中・高」は分析結果の確からしさの目安です。上昇・下落の確率そのものではありません。</p>'+
+      '<p class="note">「方向信頼度 低・中・高」は分析結果の確からしさの目安です。上昇・下落の確率そのものではありません。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
       '<h2>テクニカル詳細</h2>'+
-      '<p>各銘柄のカードを開くと、日足・週足、MA5/25/75、MACD、RSI14、出来高20日比、一目の転換線・基準線、支持線・抵抗線を確認できます。正式判断の根拠確認用で、各指標単独では売買判断にしません。</p>'+
+      '<p>「銘柄詳細」は1銘柄ずつ開きます。開いた銘柄で、日足・週足、MA5/25/75、MACD、RSI14、出来高20日比、一目の転換線・基準線、支持線・抵抗線を確認できます。正式判断の根拠確認用で、各指標単独では売買判断にしません。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
@@ -879,4 +926,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.3");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.5");
