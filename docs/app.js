@@ -157,7 +157,7 @@ function markQualityRunWaiting(){
 }
 
 function chartZoomDefault(){
-  return window.innerWidth<window.innerHeight?1.65:1.25;
+  return window.innerWidth>window.innerHeight?1:1.35;
 }
 function clampChartZoom(v){return Math.min(2.5,Math.max(1,Number(v)||1));}
 function chartTouchDistance(touches){
@@ -216,6 +216,15 @@ function ensureChartModal(){
   body.addEventListener("touchend",e=>{if(e.touches.length<2)chartPinch=null;},{passive:true});
   body.addEventListener("touchcancel",()=>{chartPinch=null;},{passive:true});
   document.body.appendChild(chartModal);
+  const refit=()=>{
+    if(!chartModal||chartModal.hidden)return;
+    setChartZoom(chartZoomDefault(),"latest");
+  };
+  window.addEventListener("orientationchange",()=>setTimeout(refit,180));
+  window.addEventListener("resize",()=>{
+    clearTimeout(chartModal._resizeTimer);
+    chartModal._resizeTimer=setTimeout(refit,120);
+  });
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&chartModal&&!chartModal.hidden)closeChartModal();});
   return chartModal;
 }
@@ -231,7 +240,8 @@ function chartTitleFor(block){
   if(!stock)return label;
   const code=stock.querySelector(".code")?.textContent?.trim()||"";
   const name=stock.querySelector("h2")?.textContent?.trim()||"";
-  return [code,name].filter(Boolean).join(" ")+" / "+label;
+  const prefix=[code,name].filter(Boolean).join(" ");
+  return prefix?prefix+" / "+label:label;
 }
 function openChartModal(block){
   const modal=ensureChartModal(),content=modal.querySelector(".chart-modal-content"),clone=block.cloneNode(true);
@@ -475,19 +485,29 @@ function stockChartSvg(doc,sec){
     levelLine(sec?.levels?.resistance_1,"stock-resistance","抵抗")+
     '</svg><div class="stock-legend"><span class="lg-close">終値</span><span class="lg-ma5">MA5</span><span class="lg-ma25">MA25</span><span class="lg-ma75">MA75</span></div></div>';
 
-  const mh=150,mpt=18,mpb=20,finiteMacd=[...macd,...signal,...hist,0].filter(Number.isFinite);
+  const mh=230,mpt=20,mpb=32,finiteMacd=[...macd,...signal,...hist,0].filter(Number.isFinite);
   const maxAbs=Math.max(...finiteMacd.map(v=>Math.abs(v)),0.001)*1.12;
   const my=v=>mpt+(maxAbs-Number(v))*(mh-mpt-mpb)/(maxAbs*2);
   const zeroY=my(0),barW=Math.max(2,(w-pl-pr)/Math.max(rows.length,1)*0.58);
+  const macdFmt=v=>{
+    const a=Math.abs(Number(v));
+    if(a>=100)return Number(v).toFixed(0);
+    if(a>=10)return Number(v).toFixed(1);
+    return Number(v).toFixed(2);
+  };
+  const macdGrid=[maxAbs,maxAbs/2,0,-maxAbs/2,-maxAbs].map(v=>{
+    const yy=my(v).toFixed(1),cls=Math.abs(v)<1e-12?"indicator-zero":"indicator-grid";
+    return '<line class="'+cls+'" x1="'+pl+'" y1="'+yy+'" x2="'+(w-pr)+'" y2="'+yy+'"/><text class="macd-axis-label" x="'+(pl-6)+'" y="'+(Number(yy)+4)+'" text-anchor="end">'+macdFmt(v)+'</text>';
+  }).join("");
   const bars=hist.map((v,i)=>{
     if(!Number.isFinite(v))return "";
     const xx=x(rows[i].date)-barW/2,yy=my(v),height=Math.max(1,Math.abs(zeroY-yy));
     return '<rect class="'+(v>=0?"macd-bar-pos":"macd-bar-neg")+'" x="'+xx.toFixed(1)+'" y="'+Math.min(yy,zeroY).toFixed(1)+'" width="'+barW.toFixed(1)+'" height="'+height.toFixed(1)+'"/>';
   }).join("");
-  const latestMacd=[...macd].reverse().find(Number.isFinite),latestSignal=[...signal].reverse().find(Number.isFinite);
-  const macdSvg='<div class="indicator-block"><div class="indicator-head"><b>MACD</b><span>MACD '+(Number.isFinite(latestMacd)?latestMacd.toFixed(2):"—")+' / Signal '+(Number.isFinite(latestSignal)?latestSignal.toFixed(2):"—")+'</span></div>'+
-    '<svg class="stock-chart macd-chart" viewBox="0 0 '+w+' '+mh+'" role="img">'+weekLines(mh,mpt,mpb,false)+
-    '<line class="indicator-zero" x1="'+pl+'" y1="'+zeroY.toFixed(1)+'" x2="'+(w-pr)+'" y2="'+zeroY.toFixed(1)+'"/>'+bars+
+  const latestMacd=[...macd].reverse().find(Number.isFinite),latestSignal=[...signal].reverse().find(Number.isFinite),latestHist=[...hist].reverse().find(Number.isFinite);
+  const histTxt=Number.isFinite(latestHist)?(latestHist>=0?"+":"")+latestHist.toFixed(2):"—";
+  const macdSvg='<div class="indicator-block"><div class="indicator-head"><b>MACD</b><span>MACD '+(Number.isFinite(latestMacd)?latestMacd.toFixed(2):"—")+' / Signal '+(Number.isFinite(latestSignal)?latestSignal.toFixed(2):"—")+' / Hist '+histTxt+'</span></div>'+
+    '<svg class="stock-chart macd-chart" viewBox="0 0 '+w+' '+mh+'" role="img">'+macdGrid+weekLines(mh,mpt,mpb,true)+bars+
     '<path class="macd-line" d="'+pathFor(macd,my)+'"/><path class="signal-line" d="'+pathFor(signal,my)+'"/>'+
     '</svg><div class="indicator-legend"><span class="lg-macd">MACD</span><span class="lg-signal">Signal</span><span class="lg-hist-pos">＋Hist</span><span class="lg-hist-neg">－Hist</span></div></div>';
 
