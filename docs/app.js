@@ -815,14 +815,19 @@ function deepDiveTriggerHtml(s){
   const severity=String(dd.severity||"WATCH").toLowerCase();
   const severityLabel={high:"要深掘り",watch:"確認推奨",info:"新規開示"}[severity]||"確認推奨";
   const reasons=(dd.reasons||[]).map(r=>'<li>'+esc(r.label||r.code||"確認事項")+'</li>').join("");
+  const score=Number.isFinite(Number(dd.priority_score))?Math.round(Number(dd.priority_score)):null;
+  const minScore=Number.isFinite(Number(dd.minimum_priority_score))?Math.round(Number(dd.minimum_priority_score)):null;
+  const groups=Object.entries(dd.group_scores||{}).filter(([,v])=>Number(v)>0&&Number.isFinite(Number(v)));
+  const scoreHtml=score==null?"":'<div class="deep-dive-score"><span>深掘り優先度</span><b>'+esc(score)+'/100</b>'+(minScore==null?"":'<small>基準 '+esc(minScore)+'点</small>')+'<small>独立論点 '+esc(groups.length)+'</small></div>';
   return '<div class="deep-dive-trigger '+severity+'">'+
     '<div class="deep-dive-head"><div><span>ChatGPT深掘りトリガー</span><b>'+esc(severityLabel)+'</b></div><small>売買判定には未反映</small></div>'+
+    scoreHtml+
     (reasons?'<ul>'+reasons+'</ul>':"")+
     '<div class="deep-dive-actions">'+
       '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">深掘り用データをコピー</button>'+
       '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
     '</div>'+
-    '<div class="deep-dive-note">コピー内容には、確認事項を含む分析プロンプトと、この銘柄のアプリ保持データをまとめて入れます。</div>'+
+    '<div class="deep-dive-note">優先度は独立した論点をまとめて算出します。純利益とEPSなど相関の強い指標は重複加点しません。</div>'+
   '</div>';
 }
 

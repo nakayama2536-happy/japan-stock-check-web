@@ -605,3 +605,13 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
   .deep-dive-copy{background:#e5e7eb;color:#111827}
   .deep-dive-share{background:#1f2937;color:#e5e7eb;border-color:#475569!important}
 }
+
+.deep-dive-score{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;margin-top:8px;padding:8px 9px;border-radius:9px;background:rgba(255,255,255,.72)}
+.deep-dive-score span{font-size:10px;color:#64748b;font-weight:700}
+.deep-dive-score b{font-size:17px;line-height:1;color:#111827}
+.deep-dive-score small{font-size:9px;color:#64748b}
+@media(prefers-color-scheme:dark){
+  .deep-dive-score{background:rgba(15,23,42,.5)}
+  .deep-dive-score span,.deep-dive-score small{color:#cbd5e1}
+  .deep-dive-score b{color:#f8fafc}
+}
