@@ -809,6 +809,106 @@ function fmtFundamentalChange(v){
   const n=Number(v);
   return (n>0?"+":"")+n.toFixed(1)+"%";
 }
+function deepDiveTriggerHtml(s){
+  const dd=s.fundamental?.deep_dive||{};
+  if(!dd.recommended)return "";
+  const severity=String(dd.severity||"WATCH").toLowerCase();
+  const severityLabel={high:"要深掘り",watch:"確認推奨",info:"新規開示"}[severity]||"確認推奨";
+  const reasons=(dd.reasons||[]).map(r=>'<li>'+esc(r.label||r.code||"確認事項")+'</li>').join("");
+  return '<div class="deep-dive-trigger '+severity+'">'+
+    '<div class="deep-dive-head"><div><span>ChatGPT深掘りトリガー</span><b>'+esc(severityLabel)+'</b></div><small>売買判定には未反映</small></div>'+
+    (reasons?'<ul>'+reasons+'</ul>':"")+
+    '<div class="deep-dive-actions">'+
+      '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">深掘り用データをコピー</button>'+
+      '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
+    '</div>'+
+    '<div class="deep-dive-note">コピー内容には、確認事項を含む分析プロンプトと、この銘柄のアプリ保持データをまとめて入れます。</div>'+
+  '</div>';
+}
+
+function buildDeepDiveText(code){
+  const d=currentSnapshot||{};
+  const s=(d.securities||[]).find(x=>String(x.code)===String(code));
+  if(!s)return "";
+  const payload={
+    generated_from:"日本株 CHECK",
+    generated_at:new Date().toISOString(),
+    app_meta:{
+      app_version:d.app_version,
+      engine_version:d.engine_version,
+      analytics_version:d.analytics_version,
+      decision_mode:d.decision_mode,
+      run_id:d.run_id,
+      run_status:d.run_status,
+      latest_decision_as_of:d.latest_decision_as_of,
+      market_checked_at:d.market_checked_at,
+      fundamental_checked_at:d.fundamental_checked_at,
+    },
+    market_environment:d.market_environment||[],
+    selected_security:s,
+  };
+  const prompt=[
+    "# 日本株 CHECK — ChatGPT深掘りフルスナップショット",
+    "",
+    "## ChatGPTへの分析依頼",
+    "このデータは日本株 CHECK が保持する選択銘柄の深掘り用スナップショットです。画面上の判断やトリガーをそのまま採用せず、RAW JSONまで検証してください。",
+    "",
+    "1. まず日時、市場休場、データ鮮度、欠損、フォールバック、Source照合状態、EDINETの提出日・対象期間・当期/比較期の整合を点検する。",
+    "2. 日足・週足、MA5/25/75、一目、MACD、RSI、出来高、支持線・抵抗線を独立評価し、反転確認水準・下落再開水準・重要な支持抵抗を整理する。",
+    "3. 1/3/5/14日の方向予測は結論として採用せず、テクニカルとの整合性と矛盾を確認する。",
+    "4. EDINETの売上高/収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本を当期/比較期で確認し、利益と営業CFの乖離、符号反転、大幅変化、財務構造変化を検証する。",
+    "5. 大幅変化について、会計基準変更、M&A、組織再編、一過性損益、為替、減損など追加確認が必要な可能性を列挙する。推測で確定しない。",
+    "6. 外部環境や最新ニュースが判断に影響する場合は、最新の公開情報を確認し、取得日時と出典を明示する。",
+    "7. 売買タイミングを検討する前に、不足情報と確認すべきチャート・データを明示する。必要なら、現在保有か新規か、取得単価、予定資金、想定保有期間、許容損失などユーザー確認事項を先に提示する。",
+    "8. 最後に、深掘りを続けるべき論点、次回再確認トリガー、追加で必要な情報を整理する。アプリの既存BUY/ADD/HOLD/REDUCE/SELLを自動的に追認しない。",
+    "",
+    "## APP DATA",
+    JSON.stringify(payload,null,2),
+  ];
+  return prompt.join("\n");
+}
+
+async function copyDeepDiveText(code){
+  const text=buildDeepDiveText(code);
+  if(!text)return;
+  try{
+    if(navigator.clipboard?.writeText){
+      await navigator.clipboard.writeText(text);
+    }else{
+      const ta=document.createElement("textarea");
+      ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+      document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
+    }
+    toast("ChatGPT深掘り用データをコピーしました。",4500);
+  }catch(_){
+    toast("コピーできませんでした。共有ボタンをお試しください。",5000);
+  }
+}
+
+async function shareDeepDiveText(code){
+  const text=buildDeepDiveText(code);
+  if(!text)return;
+  const s=(currentSnapshot?.securities||[]).find(x=>String(x.code)===String(code));
+  if(navigator.share){
+    try{
+      await navigator.share({title:"日本株 CHECK 深掘り "+(s?.name||code),text});
+      return;
+    }catch(e){
+      if(e?.name==="AbortError")return;
+    }
+  }
+  await copyDeepDiveText(code);
+}
+
+function bindDeepDiveActions(){
+  document.querySelectorAll("[data-deep-dive-copy]").forEach(btn=>{
+    btn.onclick=()=>copyDeepDiveText(btn.dataset.deepDiveCopy);
+  });
+  document.querySelectorAll("[data-deep-dive-share]").forEach(btn=>{
+    btn.onclick=()=>shareDeepDiveText(btn.dataset.deepDiveShare);
+  });
+}
+
 function fundamentalPanel(s){
   const f=s.fundamental||{},metrics=f.metrics||{};
   const keys=["revenue","operating_income","net_income_parent","eps_basic","operating_cf","assets","equity"];
@@ -832,12 +932,13 @@ function fundamentalPanel(s){
     '</div>';
   }).join("");
   const period=(f.period_start||f.period_end)?[fmtDate(f.period_start),fmtDate(f.period_end)].join("〜"):"—";
-  const refreshLabels={UPDATED:"更新済み",NO_NEW_FILING:"新規提出なし",ERROR_PRESERVED:"前回値を保持",NOT_CONFIGURED_PRESERVED:"前回値を保持"};
+  const refreshLabels={INITIAL_LOAD:"初回取得",NEW_FILING:"新規開示",UNCHANGED:"前回開示と同一",UPDATED:"更新済み",NO_NEW_FILING:"新規提出なし",ERROR_PRESERVED:"前回値を保持",NOT_CONFIGURED_PRESERVED:"前回値を保持"};
   return '<details class="fundamental-panel supplement-details">'+
     '<summary><span>業績・財務（EDINET）</span><small>参考・判定未接続</small></summary>'+
     '<div class="disclosure-body">'+
       '<div class="fundamental-meta"><span>対象 '+esc(period)+'</span><span>提出 '+esc(fmtDateTime(f.submitted_at))+'</span><span>確認 '+esc(fmtDate(f.checked_on))+'</span><span>'+esc(refreshLabels[f.refresh_status]||f.refresh_status||"—")+'</span></div>'+
       '<div class="fundamental-grid">'+cards+'</div>'+
+      deepDiveTriggerHtml(s)+
       '<div class="fundamental-note">EDINETの開示値を表示しています。現段階では正式判断・参考分析・1/3/5/14日の方向計算には使用していません。</div>'+
     '</div></details>';
 }
@@ -952,6 +1053,7 @@ function renderCards(d){
   }
   bindStockCharts();
   bindStockAccordions();
+  bindDeepDiveActions();
 }
 
 function reportMigrationHelp(d){
@@ -1027,7 +1129,7 @@ function renderHelp(d){
 
     '<article class="help-card">'+
       '<h2>業績・財務（EDINET）</h2>'+
-      '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。</p>'+
+      '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。新規開示や大幅変化を検出した場合は「ChatGPT深掘りトリガー」を表示し、分析プロンプトと選択銘柄の保持データをコピー・共有できます。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
