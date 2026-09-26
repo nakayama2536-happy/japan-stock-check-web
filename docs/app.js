@@ -46,7 +46,7 @@ const metric=(label,value,target,ok)=>"<div class=\"metric "+(ok?"ok":"")+"\"><s
 const chart28Svg=history=>{
   const xs=(history||[]).filter(p=>p&&/^\d{4}-\d{2}-\d{2}$/.test(String(p.date||""))&&Number.isFinite(Number(p.value))).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
   if(xs.length<2)return '<div class="history-wait">28日履歴を準備中です。</div>';
-  const day=86400000,w=640,h=150,pl=28,pr=18,pt=15,pb=24;
+  const day=86400000,w=720,h=210,pl=54,pr=28,pt=18,pb=30;
   const ms=d=>Date.parse(String(d)+"T00:00:00Z");
   const end=ms(xs[xs.length-1].date),start=end-27*day;
   const vis=xs.filter(p=>ms(p.date)>=start&&ms(p.date)<=end);
@@ -54,11 +54,17 @@ const chart28Svg=history=>{
   let lo=Math.min(...vals),hi=Math.max(...vals);if(lo===hi){lo-=1;hi+=1}
   const pad=(hi-lo)*.08;lo-=pad;hi+=pad;
   const x=d=>pl+(ms(d)-start)*(w-pl-pr)/(27*day),y=v=>pt+(hi-Number(v))*(h-pt-pb)/(hi-lo);
-  const grid=[.25,.5,.75].map(t=>{const yy=(pt+t*(h-pt-pb)).toFixed(1);return '<line class="chart-grid" x1="'+pl+'" y1="'+yy+'" x2="'+(w-pr)+'" y2="'+yy+'"/>';}).join("");
+  const vlabel=v=>Math.abs(v)>=1000?Math.round(v).toLocaleString("ja-JP"):Number(v).toLocaleString("ja-JP",{maximumFractionDigits:2});
+  const grid=[0,.25,.5,.75,1].map(t=>{
+    const yy=pt+t*(h-pt-pb),v=hi-(hi-lo)*t;
+    return '<line class="chart-grid" x1="'+pl+'" y1="'+yy.toFixed(1)+'" x2="'+(w-pr)+'" y2="'+yy.toFixed(1)+'"/><text class="chart-axis-value expanded-only" x="'+(pl-7)+'" y="'+(yy+4).toFixed(1)+'" text-anchor="end">'+vlabel(v)+'</text>';
+  }).join("");
   const sd=new Date(start);let sunday=start+((7-sd.getUTCDay())%7)*day,weeks="";
-  for(;sunday<=end;sunday+=7*day){const xx=(pl+(sunday-start)*(w-pl-pr)/(27*day)).toFixed(1),d=new Date(sunday),lab=(d.getUTCMonth()+1)+"/"+d.getUTCDate();weeks+='<line class="chart-week" x1="'+xx+'" y1="'+pt+'" x2="'+xx+'" y2="'+(h-pb)+'"/><text x="'+xx+'" y="'+(h-5)+'" text-anchor="middle">'+lab+'</text>';}
+  for(;sunday<=end;sunday+=7*day){const xx=(pl+(sunday-start)*(w-pl-pr)/(27*day)).toFixed(1),d=new Date(sunday),lab=(d.getUTCMonth()+1)+"/"+d.getUTCDate();weeks+='<line class="chart-week" x1="'+xx+'" y1="'+pt+'" x2="'+xx+'" y2="'+(h-pb)+'"/><text class="chart-date-label" x="'+xx+'" y="'+(h-7)+'" text-anchor="middle">'+lab+'</text>';}
   let path="";vis.forEach((p,i)=>{path+=(i?" L ":"M ")+x(p.date).toFixed(1)+","+y(p.value).toFixed(1);});
-  return '<svg class="market-chart" viewBox="0 0 '+w+' '+h+'" role="img">'+grid+weeks+'<path class="chart-line" d="'+path+'"/></svg>';
+  const latest=vis[vis.length-1],lx=x(latest.date),ly=y(latest.value);
+  const latestMark='<circle class="chart-latest-dot" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="4"/><text class="chart-latest-value expanded-only" x="'+(lx-7).toFixed(1)+'" y="'+(ly-9).toFixed(1)+'" text-anchor="end">'+vlabel(latest.value)+'</text>';
+  return '<svg class="market-chart" viewBox="0 0 '+w+' '+h+'" role="img">'+grid+weeks+'<path class="chart-line" d="'+path+'"/>'+latestMark+'</svg>';
 };
 
 const num=(v,d=2)=>v==null?"—":Number(v).toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -90,7 +96,7 @@ const checkStateJa=v=>({PASS:"一致",PENDING:"確認中",FAIL:"要確認"}[v]||
 const actionJa=v=>actionLabels[String(v||"WAIT").toUpperCase()]||v||"—";
 const WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/update-japan.yml";
 const QUALITY_WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/diagnose-quality.yml";
-let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,qualityTimerId=null,lastUiCheckAt=null,chartModal=null;
+let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,qualityTimerId=null,lastUiCheckAt=null,chartModal=null,chartZoom=1.25,chartPinch=null;
 
 function toast(message,ms=3500){
   let el=document.getElementById("app-toast");
@@ -150,6 +156,35 @@ function markQualityRunWaiting(){
   updateQualityRunDisplay();
 }
 
+function chartZoomDefault(){
+  return window.innerWidth<window.innerHeight?1.65:1.25;
+}
+function clampChartZoom(v){return Math.min(2.5,Math.max(1,Number(v)||1));}
+function chartTouchDistance(touches){
+  if(!touches||touches.length<2)return 0;
+  const dx=touches[0].clientX-touches[1].clientX,dy=touches[0].clientY-touches[1].clientY;
+  return Math.hypot(dx,dy);
+}
+function setChartZoom(next,mode="center"){
+  if(!chartModal)return;
+  const body=chartModal.querySelector(".chart-modal-body"),content=chartModal.querySelector(".chart-modal-content");
+  if(!body||!content)return;
+  const oldW=Math.max(content.scrollWidth,1),oldH=Math.max(content.scrollHeight,1);
+  const centerX=(body.scrollLeft+body.clientWidth/2)/oldW,centerY=(body.scrollTop+body.clientHeight/2)/oldH;
+  chartZoom=clampChartZoom(next);
+  content.style.width=Math.round(chartZoom*100)+"%";
+  const label=chartModal.querySelector("[data-chart-zoom-label]");
+  if(label)label.textContent=Math.round(chartZoom*100)+"%";
+  requestAnimationFrame(()=>{
+    if(mode==="latest"){
+      body.scrollLeft=Math.max(0,body.scrollWidth-body.clientWidth);
+      body.scrollTop=0;
+    }else{
+      body.scrollLeft=Math.max(0,centerX*body.scrollWidth-body.clientWidth/2);
+      body.scrollTop=Math.max(0,centerY*body.scrollHeight-body.clientHeight/2);
+    }
+  });
+}
 function ensureChartModal(){
   if(chartModal)return chartModal;
   chartModal=document.createElement("div");
@@ -159,8 +194,27 @@ function ensureChartModal(){
   chartModal.setAttribute("role","dialog");
   chartModal.setAttribute("aria-modal","true");
   chartModal.setAttribute("aria-labelledby","chart-modal-title");
-  chartModal.innerHTML='<div class="chart-modal-panel"><div class="chart-modal-head"><b id="chart-modal-title">グラフ拡大</b><button type="button" class="chart-modal-close" data-chart-close>閉じる</button></div><div class="chart-modal-body"><div class="chart-modal-content"></div></div></div>';
-  chartModal.addEventListener("click",e=>{if(e.target===chartModal||e.target.closest("[data-chart-close]"))closeChartModal();});
+  chartModal.innerHTML='<div class="chart-modal-panel"><div class="chart-modal-head"><div><b id="chart-modal-title">グラフ拡大</b><small>詳細ビュー</small></div><button type="button" class="chart-modal-close" data-chart-close>閉じる</button></div><div class="chart-modal-toolbar"><div class="chart-zoom-controls"><button type="button" data-chart-zoom-out aria-label="縮小">−</button><b data-chart-zoom-label>125%</b><button type="button" data-chart-zoom-in aria-label="拡大">＋</button><button type="button" class="chart-fit-btn" data-chart-fit>全体</button></div><span>ピンチ拡大・左右スクロール対応</span></div><div class="chart-modal-body"><div class="chart-modal-content"></div></div></div>';
+  chartModal.addEventListener("click",e=>{
+    if(e.target===chartModal||e.target.closest("[data-chart-close]")){closeChartModal();return;}
+    if(e.target.closest("[data-chart-zoom-out]")){setChartZoom(chartZoom-.25);return;}
+    if(e.target.closest("[data-chart-zoom-in]")){setChartZoom(chartZoom+.25);return;}
+    if(e.target.closest("[data-chart-fit]")){setChartZoom(1,"latest");}
+  });
+  const body=chartModal.querySelector(".chart-modal-body");
+  body.addEventListener("touchstart",e=>{
+    if(e.touches.length!==2)return;
+    chartPinch={distance:chartTouchDistance(e.touches),zoom:chartZoom};
+  },{passive:true});
+  body.addEventListener("touchmove",e=>{
+    if(!chartPinch||e.touches.length!==2)return;
+    const distance=chartTouchDistance(e.touches);
+    if(!distance||!chartPinch.distance)return;
+    e.preventDefault();
+    setChartZoom(chartPinch.zoom*(distance/chartPinch.distance));
+  },{passive:false});
+  body.addEventListener("touchend",e=>{if(e.touches.length<2)chartPinch=null;},{passive:true});
+  body.addEventListener("touchcancel",()=>{chartPinch=null;},{passive:true});
   document.body.appendChild(chartModal);
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&chartModal&&!chartModal.hidden)closeChartModal();});
   return chartModal;
@@ -168,6 +222,7 @@ function ensureChartModal(){
 function closeChartModal(){
   if(!chartModal)return;
   chartModal.hidden=true;
+  chartPinch=null;
   document.documentElement.classList.remove("chart-modal-open");
 }
 function chartTitleFor(block){
@@ -185,7 +240,16 @@ function openChartModal(block){
   content.replaceChildren(clone);
   modal.hidden=false;
   document.documentElement.classList.add("chart-modal-open");
-  requestAnimationFrame(()=>modal.querySelector(".chart-modal-close")?.focus());
+  chartZoom=chartZoomDefault();
+  content.style.width=Math.round(chartZoom*100)+"%";
+  const label=modal.querySelector("[data-chart-zoom-label]");
+  if(label)label.textContent=Math.round(chartZoom*100)+"%";
+  requestAnimationFrame(()=>{
+    const body=modal.querySelector(".chart-modal-body");
+    body.scrollLeft=Math.max(0,body.scrollWidth-body.clientWidth);
+    body.scrollTop=0;
+    modal.querySelector(".chart-modal-close")?.focus();
+  });
 }
 function bindChartExpanders(root=document){
   root.querySelectorAll(".market-chart-card,.indicator-block").forEach(block=>{
@@ -196,7 +260,7 @@ function bindChartExpanders(root=document){
     btn.type="button";
     btn.className="chart-expand-btn";
     btn.textContent="拡大";
-    btn.setAttribute("aria-label",chartTitleFor(block)+"を画面いっぱいに拡大");
+    btn.setAttribute("aria-label",chartTitleFor(block)+"を詳細表示");
     btn.addEventListener("click",()=>openChartModal(block));
     head.appendChild(btn);
     block.dataset.expandBound="1";
@@ -726,8 +790,10 @@ function renderMarketEnvironment(d){
   }).join("");
   const chartItems=items.filter(m=>Array.isArray(m.history)&&m.history.length>=2).map(m=>{
     const decimals=Number.isInteger(m.display_decimals)?m.display_decimals:2;
-    const latest=m.value==null?"—":Number(m.value).toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
-    return '<div class="market-chart-card"><div class="market-chart-head"><b>'+esc(m.name)+'</b><span>28日 / 最新 '+esc(latest)+'</span></div>'+chart28Svg(m.history)+'</div>';
+    const fmt=v=>Number(v).toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+    const recent=m.history.slice(-28).map(x=>Number(x.value)).filter(Number.isFinite);
+    const latest=m.value==null?"—":fmt(m.value),high=recent.length?fmt(Math.max(...recent)):"—",low=recent.length?fmt(Math.min(...recent)):"—";
+    return '<div class="market-chart-card"><div class="market-chart-head"><b>'+esc(m.name)+'</b><span>28日 / 最新 '+esc(latest)+'<em class="expanded-only"> / 高 '+esc(high)+' / 安 '+esc(low)+'</em></span></div>'+chart28Svg(m.history)+'</div>';
   }).join("");
   root.innerHTML='<article class="market-panel">'+
     '<div class="section-heading"><div><span class="eyebrow">市場全体</span><h2>市場環境</h2></div><span class="reference-pill">売買判断外・参考</span></div>'+
