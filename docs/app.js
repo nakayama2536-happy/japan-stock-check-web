@@ -794,6 +794,54 @@ function renderDataQuality(d){
   bindQualityAction();
 }
 
+function fmtFundamentalValue(metric,fact){
+  if(!fact||fact.value==null)return "—";
+  const v=Number(fact.value);
+  if(!Number.isFinite(v))return "—";
+  if(metric==="eps_basic")return v.toLocaleString("ja-JP",{maximumFractionDigits:2})+"円/株";
+  const av=Math.abs(v);
+  if(av>=1e12)return (v/1e12).toLocaleString("ja-JP",{minimumFractionDigits:2,maximumFractionDigits:2})+"兆円";
+  if(av>=1e8)return (v/1e8).toLocaleString("ja-JP",{minimumFractionDigits:1,maximumFractionDigits:1})+"億円";
+  return v.toLocaleString("ja-JP")+(fact.unit||"");
+}
+function fmtFundamentalChange(v){
+  if(v==null||!Number.isFinite(Number(v)))return "—";
+  const n=Number(v);
+  return (n>0?"+":"")+n.toFixed(1)+"%";
+}
+function fundamentalPanel(s){
+  const f=s.fundamental||{},metrics=f.metrics||{};
+  const keys=["revenue","operating_income","net_income_parent","eps_basic","operating_cf","assets","equity"];
+  const has=keys.some(k=>metrics[k]?.current||metrics[k]?.prior);
+  const status=f.status||"NOT_AVAILABLE";
+  if(!has){
+    const message=status==="NOT_CONFIGURED"?"EDINET連携を準備中です。":status==="ERROR"?"EDINETデータ取得を再確認します。":"財務データを準備中です。";
+    return '<details class="fundamental-panel supplement-details"><summary>業績・財務（EDINET）</summary><div class="disclosure-body"><div class="fundamental-empty">'+esc(message)+'</div><div class="fundamental-note">表示専用。売買判定・短期方向判定には未使用です。</div></div></details>';
+  }
+  const cards=keys.map(k=>{
+    const m=metrics[k];
+    if(!m)return "";
+    const cur=m.current,pri=m.prior,chg=m.change_pct;
+    const cls=chg==null?"flat":Number(chg)>0?"up":Number(chg)<0?"down":"flat";
+    const priorLabel=pri?.relative_year||"比較期";
+    return '<div class="fundamental-tile">'+
+      '<span>'+esc(m.label||k)+'</span>'+
+      '<b>'+esc(fmtFundamentalValue(k,cur))+'</b>'+
+      '<small>'+esc(cur?.relative_year||"当期")+' / '+esc(priorLabel)+' '+esc(fmtFundamentalValue(k,pri))+'</small>'+
+      '<em class="fundamental-change '+cls+'">'+esc(fmtFundamentalChange(chg))+'</em>'+
+    '</div>';
+  }).join("");
+  const period=(f.period_start||f.period_end)?[fmtDate(f.period_start),fmtDate(f.period_end)].join("〜"):"—";
+  const refreshLabels={UPDATED:"更新済み",NO_NEW_FILING:"新規提出なし",ERROR_PRESERVED:"前回値を保持",NOT_CONFIGURED_PRESERVED:"前回値を保持"};
+  return '<details class="fundamental-panel supplement-details">'+
+    '<summary><span>業績・財務（EDINET）</span><small>参考・判定未接続</small></summary>'+
+    '<div class="disclosure-body">'+
+      '<div class="fundamental-meta"><span>対象 '+esc(period)+'</span><span>提出 '+esc(fmtDateTime(f.submitted_at))+'</span><span>確認 '+esc(fmtDate(f.checked_on))+'</span><span>'+esc(refreshLabels[f.refresh_status]||f.refresh_status||"—")+'</span></div>'+
+      '<div class="fundamental-grid">'+cards+'</div>'+
+      '<div class="fundamental-note">EDINETの開示値を表示しています。現段階では正式判断・参考分析・1/3/5/14日の方向計算には使用していません。</div>'+
+    '</div></details>';
+}
+
 function technicalPanel(s){
   const t=s.technical||{},l=s.levels||{};
   const has=Object.keys(t).length>0||Object.keys(l).length>0||s.weekly_trend;
@@ -895,6 +943,7 @@ function renderCards(d){
           nextWatchHtml(s)+
           '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
           '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価・MACD・RSIを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
+          fundamentalPanel(s)+
           technicalPanel(s)+
           '<details class="data-details"><summary>判断データを見る</summary><div>基準日：'+esc(fmtDate(s.as_of))+'</div><div class="detail-note">'+esc(s.reason_summary||"")+'</div></details>'+
         '</div>'+
@@ -977,6 +1026,11 @@ function renderHelp(d){
     '</article>'+
 
     '<article class="help-card">'+
+      '<h2>業績・財務（EDINET）</h2>'+
+      '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。</p>'+
+    '</article>'+
+
+    '<article class="help-card">'+
       '<h2>テクニカル詳細</h2>'+
       '<p>「銘柄詳細」は1銘柄ずつ開きます。開いた銘柄で、日足・週足、MA5/25/75、MACD、RSI14、出来高20日比、一目の転換線・基準線、支持線・抵抗線を確認できます。正式判断の根拠確認用で、各指標単独では売買判断にしません。</p>'+
     '</article>'+
@@ -1047,4 +1101,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.9");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.6.0");
