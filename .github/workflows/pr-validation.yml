@@ -46,7 +46,7 @@ jobs:
           assert 'function formalDecisionText(d,s)' in app
           assert 'function stockChartSvg(doc,sec)' in app
           assert '最新状態を確認' in app
-          assert 'GitHubで市場データ更新' in app
+          assert '市場データ更新' in app
           assert '予測の詳細を見る' in app
           assert 'diagnose-quality.yml' in app
           assert '直近1か月' in app
@@ -54,11 +54,15 @@ jobs:
           assert 'LAST_VALID:"直近有効値"' in app
           assert 'qualityResultMessage' in app
           assert 'overview-price' in app
+          assert 'stock-accordion' in app
+          assert 'forecast-grid' in app
+          assert 'conditionGapText' in app
+          assert '品質要確認' in app
           assert 'function macdSeries(rows)' in app
           assert 'function rsiSeries(rows,period=14)' in app
           assert '株価・MACD・RSIを見る' in app
           assert 'next_recheck_at' in app
-          assert 'recheck-line' in app
+          assert 'banner-status-strip' in app
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
           assert 'LOW_MISMATCH:"安値データ差異あり"' in app
