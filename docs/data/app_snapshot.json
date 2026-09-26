@@ -426,7 +426,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-18 15:31",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -547,7 +547,16 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": false,
+          "severity": "NONE",
+          "reason_count": 0,
+          "reasons": [],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YE3H"
       }
     },
     {
@@ -675,7 +684,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-22 15:50",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -796,7 +805,16 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": false,
+          "severity": "NONE",
+          "reason_count": 0,
+          "reasons": [],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YG3Q"
       }
     },
     {
@@ -911,7 +929,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-15 15:09",
         "period_start": "2025-11-01",
         "period_end": "2026-10-31",
@@ -1032,7 +1050,25 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": true,
+          "severity": "WATCH",
+          "reason_count": 1,
+          "reasons": [
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "operating_cf",
+              "label": "営業CF -33.5%",
+              "change_pct": -33.49,
+              "threshold_pct": 30.0,
+              "severity": "WATCH"
+            }
+          ],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YB47"
       }
     },
     {
@@ -1160,7 +1196,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-16 15:51",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1281,7 +1317,33 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": true,
+          "severity": "WATCH",
+          "reason_count": 2,
+          "reasons": [
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "assets",
+              "label": "総資産 +55.4%",
+              "change_pct": 55.41,
+              "threshold_pct": 30.0,
+              "severity": "WATCH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "operating_cf",
+              "label": "営業CF -37.2%",
+              "change_pct": -37.18,
+              "threshold_pct": 30.0,
+              "severity": "WATCH"
+            }
+          ],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YCP3"
       }
     },
     {
@@ -1409,7 +1471,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-24 10:22",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1530,7 +1592,49 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": true,
+          "severity": "HIGH",
+          "reason_count": 4,
+          "reasons": [
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "operating_income",
+              "label": "営業利益 +58.5%",
+              "change_pct": 58.53,
+              "threshold_pct": 20.0,
+              "severity": "HIGH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "net_income_parent",
+              "label": "親会社帰属利益 +41.0%",
+              "change_pct": 40.95,
+              "threshold_pct": 20.0,
+              "severity": "HIGH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "eps_basic",
+              "label": "EPS +42.5%",
+              "change_pct": 42.52,
+              "threshold_pct": 20.0,
+              "severity": "HIGH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "operating_cf",
+              "label": "営業CF +274.1%",
+              "change_pct": 274.14,
+              "threshold_pct": 30.0,
+              "severity": "HIGH"
+            }
+          ],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YGGI"
       }
     },
     {
@@ -1652,7 +1756,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "NO_NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "submitted_at": "2026-06-18 13:47",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1773,7 +1877,49 @@
           }
         },
         "metric_found_count": 7,
-        "metric_pair_count": 7
+        "metric_pair_count": 7,
+        "deep_dive": {
+          "recommended": true,
+          "severity": "HIGH",
+          "reason_count": 4,
+          "reasons": [
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "revenue",
+              "label": "売上高・収益 +16.8%",
+              "change_pct": 16.76,
+              "threshold_pct": 15.0,
+              "severity": "WATCH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "operating_income",
+              "label": "営業利益 +30.5%",
+              "change_pct": 30.5,
+              "threshold_pct": 20.0,
+              "severity": "WATCH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "net_income_parent",
+              "label": "親会社帰属利益 +65.3%",
+              "change_pct": 65.26,
+              "threshold_pct": 20.0,
+              "severity": "HIGH"
+            },
+            {
+              "code": "LARGE_CHANGE",
+              "metric": "eps_basic",
+              "label": "EPS +65.0%",
+              "change_pct": 65.02,
+              "threshold_pct": 20.0,
+              "severity": "HIGH"
+            }
+          ],
+          "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
+          "action": "REVIEW_ONLY"
+        },
+        "document_id": "S100YE42"
       }
     }
   ]
