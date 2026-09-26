@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "app_version": "1.5.9",
-  "engine_version": "1.3.3",
+  "app_version": "1.6.0",
+  "engine_version": "1.3.4",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
   "run_id": "RUN_20260925_1700",
@@ -420,22 +420,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_6841",
-        "policy_code": "ENTRY_REVERSAL",
-        "label": "新規買い候補",
-        "objective": "反転確認後に購入候補として扱う",
-        "focus": [
-          "転換線回復",
-          "MACD改善",
-          "週足悪化なし"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "週足悪化なし",
-        "転換線回復"
-      ]
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-18 15:31",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "document_type": "120",
+        "description": "有価証券報告書－第150期(2025/04/01－2026/03/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 604829000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 562404000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 7.54
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 82555000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 83523000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": -1.16
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 58113000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 52123000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 11.49
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 795618000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 718285000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 10.77
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 529894000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 475721000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 11.39
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 227.72,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 200.41,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 13.63
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 85951000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 99025000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": -13.2
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
+      }
     },
     {
       "security_id": "SEC_JP_6954",
@@ -556,22 +669,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_6954",
-        "policy_code": "HOLD_RECOVERY",
-        "label": "保有継続・回復確認",
-        "objective": "保有継続を基本に、追加は回復条件成立後に検討する",
-        "focus": [
-          "6,000円回復",
-          "MACD改善",
-          "週足悪化なし"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "6,000円回復",
-        "週足悪化なし"
-      ]
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-22 15:50",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "document_type": "120",
+        "description": "有価証券報告書－第57期(2025/04/01－2026/03/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 857831000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 797129000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 7.62
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 183763000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 158846000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 15.69
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 166543000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 147557000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 12.87
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 2090700000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 1937031000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 7.93
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 1882947000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 1739890000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 8.22
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 178.47,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 157.31,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 13.45
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 250896000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 255273000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": -1.71
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
+      }
     },
     {
       "security_id": "SEC_JP_3038",
@@ -679,22 +905,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_3038",
-        "policy_code": "HOLD_EXIT_WATCH",
-        "label": "保有・売却条件監視",
-        "objective": "急いで売らず、トレンド悪化と決算反応を確認して売却条件を判断する",
-        "focus": [
-          "価格構造",
-          "MACD",
-          "決算後反応"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "価格構造",
-        "MACD"
-      ]
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-15 15:09",
+        "period_start": "2025-11-01",
+        "period_end": "2026-10-31",
+        "document_type": "160",
+        "description": "半期報告書－第41期(2025/11/01－2026/10/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 286172000000,
+              "relative_year": "当中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 272306000000,
+              "relative_year": "前中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 5.09
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 21037000000,
+              "relative_year": "当中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 19086000000,
+              "relative_year": "前中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 10.22
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 16501000000,
+              "relative_year": "当中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 14267000000,
+              "relative_year": "前中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 15.66
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 269421000000,
+              "relative_year": "当中間期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 260193000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 3.55
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 172329000000,
+              "relative_year": "当中間期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 161400000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 6.77
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 74.41,
+              "relative_year": "当中間期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 64.48,
+              "relative_year": "前中間期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 15.4
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 16316000000,
+              "relative_year": "当中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 24531000000,
+              "relative_year": "前中間期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": -33.49
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
+      }
     },
     {
       "security_id": "SEC_JP_9432",
@@ -815,22 +1154,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_9432",
-        "policy_code": "EXIT_RISK_WATCH",
-        "label": "整理条件監視",
-        "objective": "戻り局面を確認しつつ、複数の悪化条件が重なった場合に縮小を検討する",
-        "focus": [
-          "MACDデッドクロス",
-          "転換線割れ",
-          "価格構造悪化"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "終値で転換線割れ",
-        "価格構造悪化"
-      ]
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-16 15:51",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "document_type": "120",
+        "description": "有価証券報告書－第41期(2025/04/01－2026/03/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 14409121000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 13704727000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 5.14
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 1706221000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 1649571000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 3.43
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 1037032000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 1000016000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 3.7
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 46721259000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 30062483000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 55.41
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 9727623000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 10221587000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": -4.83
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 12.61,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 11.96,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 5.43
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 1485190000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 2364031000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": -37.18
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
+      }
     },
     {
       "security_id": "SEC_JP_1812",
@@ -951,22 +1403,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_1812",
-        "policy_code": "THEME_HOLD_ADD",
-        "label": "テーマ保有・追加条件監視",
-        "objective": "保有判断と追加判断を分離し、追加は抵抗帯回復などを確認する",
-        "focus": [
-          "主要抵抗帯回復",
-          "週足悪化なし",
-          "出来高"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "主要抵抗帯を回復",
-        "主要抵抗帯回復"
-      ]
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-24 10:22",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "document_type": "120",
+        "description": "有価証券報告書－第129期(2025/04/01－2026/03/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 2678680000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 2511002000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 6.68
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 240780000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 151882000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 58.53
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 177334000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 125817000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 40.95
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 3624341000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 3454592000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 4.91
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 1436220000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 1277988000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 12.38
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 379.81,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 266.49,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 42.52
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 114606000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 30632000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 274.14
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
+      }
     },
     {
       "security_id": "SEC_JP_5805",
@@ -1081,113 +1646,135 @@
         }
       },
       "as_of": "2026-09-25",
-      "policy_context": {
-        "security_id": "SEC_JP_5805",
-        "policy_code": "WATCH_ONLY",
-        "label": "監視のみ",
-        "objective": "現時点では監視対象とし、正式な新規買い対象化は別途判断する",
-        "focus": [
-          "MACD改善",
-          "週足悪化なし",
-          "反転確認"
-        ]
-      },
-      "next_business_day_watch": [
-        "データ品質と独立ソース照合を再確認",
-        "週足悪化なし",
-        "MACD改善"
-      ]
-    }
-  ],
-  "report_migration": {
-    "parity_version": "1.0",
-    "formal_source": "SCHEDULED_REPORT_1700",
-    "implemented": 6,
-    "partial": 1,
-    "missing_or_blocked": 4,
-    "required_total": 11,
-    "feature_parity_ready": false,
-    "shadow_validation_ready": false,
-    "decision_mode_production": false,
-    "schedule_disable_candidate": false,
-    "automatic_schedule_disable": false,
-    "manual_approval_required": true,
-    "capabilities": [
-      {
-        "id": "source_qc",
-        "label": "データ取得・独立照合・QC",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "technical_gate",
-        "label": "日足・週足・MA/一目・MACD・RSI・出来高・支持抵抗",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "market_context",
-        "label": "日経平均・TOPIX・USD/JPY",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "next_conditions",
-        "label": "判断変更条件・現在値との差",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "individual_policy",
-        "label": "個別銘柄方針",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "structural_growth",
-        "label": "構造的成長スコア・充足率・新高値健全性",
-        "required": true,
-        "status": "PARTIAL"
-      },
-      {
-        "id": "earnings_risk",
-        "label": "決算前リスク・決算跨ぎ・決算後評価",
-        "required": true,
-        "status": "MISSING"
-      },
-      {
-        "id": "factor_event",
-        "label": "Factor/Event・企業イベント・ファンダメンタル",
-        "required": true,
-        "status": "MISSING"
-      },
-      {
-        "id": "next_business_day_watch",
-        "label": "翌営業日の確認ポイント",
-        "required": true,
-        "status": "IMPLEMENTED"
-      },
-      {
-        "id": "same_run_identity",
-        "label": "スケジュールとアプリの同一Run/同一正本",
-        "required": true,
-        "status": "MISSING"
-      },
-      {
-        "id": "formal_decision",
-        "label": "アプリ正式判断の本番採用",
-        "required": true,
-        "status": "BLOCKED"
+      "fundamental": {
+        "status": "OK",
+        "source": "EDINET",
+        "mode": "SHADOW_DISPLAY_ONLY",
+        "analysis_use": "DISPLAY_ONLY",
+        "checked_on": "2026-09-26",
+        "refresh_status": "UPDATED",
+        "submitted_at": "2026-06-18 13:47",
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "document_type": "120",
+        "description": "有価証券報告書－第130期(2025/04/01－2026/03/31)",
+        "metrics": {
+          "revenue": {
+            "label": "売上高・収益",
+            "current": {
+              "value": 277736000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 237862000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 16.76
+          },
+          "operating_income": {
+            "label": "営業利益",
+            "current": {
+              "value": 27320000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 20935000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 30.5
+          },
+          "net_income_parent": {
+            "label": "親会社帰属利益",
+            "current": {
+              "value": 18840000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 11400000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 65.26
+          },
+          "assets": {
+            "label": "総資産",
+            "current": {
+              "value": 206878000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 210970000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": -1.94
+          },
+          "equity": {
+            "label": "純資産・資本",
+            "current": {
+              "value": 106012000000,
+              "relative_year": "当期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 92130000000,
+              "relative_year": "前期末",
+              "period_kind": "時点",
+              "unit": "円"
+            },
+            "change_pct": 15.07
+          },
+          "eps_basic": {
+            "label": "EPS",
+            "current": {
+              "value": 636.48,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "prior": {
+              "value": 385.69,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円/株"
+            },
+            "change_pct": 65.02
+          },
+          "operating_cf": {
+            "label": "営業CF",
+            "current": {
+              "value": 16230000000,
+              "relative_year": "当期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "prior": {
+              "value": 13112000000,
+              "relative_year": "前期",
+              "period_kind": "期間",
+              "unit": "円"
+            },
+            "change_pct": 23.78
+          }
+        },
+        "metric_found_count": 7,
+        "metric_pair_count": 7
       }
-    ],
-    "cutover_requirements": [
-      "required_capabilities_all_implemented",
-      "shadow_validation_production_candidate",
-      "decision_mode_production",
-      "same_run_identity_verified",
-      "formal_decision_parity_verified",
-      "zero_critical_incidents",
-      "manual_user_approval"
-    ]
-  }
+    }
+  ]
 }
