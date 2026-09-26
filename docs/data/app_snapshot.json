@@ -5,28 +5,98 @@
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
   "run_id": "RUN_20260925_1700",
-  "run_status": "SHADOW_COMMITTED",
+  "run_status": "SHADOW_PARTIAL",
   "latest_decision_run_id": "RUN_20260925_1700",
   "latest_decision_as_of": "2026-09-25",
-  "market_run_id": "RUN_20260926_1700",
-  "market_run_status": "NO_NEW_TARGET",
+  "market_run_id": "RUN_20260925_1700",
+  "market_run_status": "SHADOW_PARTIAL",
   "market_environment": [
     {
       "market_id": "NIKKEI225",
       "ticker": "^N225",
       "name": "日経平均",
       "status": "OK",
-      "value": 66364.203125,
-      "change_pct": 1.2978,
-      "direction": "UP",
+      "value": NaN,
+      "change_pct": NaN,
+      "direction": "FLAT",
       "as_of": "2026-09-25",
       "unit": "円",
       "display_decimals": 0,
-      "source": "YFINANCE_REFERENCE"
+      "source": "YFINANCE_REFERENCE",
+      "history": [
+        {
+          "date": "2026-08-31",
+          "value": 66311.929688
+        },
+        {
+          "date": "2026-09-01",
+          "value": 66215.34375
+        },
+        {
+          "date": "2026-09-02",
+          "value": 64325.640625
+        },
+        {
+          "date": "2026-09-03",
+          "value": 64214.480469
+        },
+        {
+          "date": "2026-09-04",
+          "value": 65020.941406
+        },
+        {
+          "date": "2026-09-07",
+          "value": 66399.84375
+        },
+        {
+          "date": "2026-09-08",
+          "value": 65269.328125
+        },
+        {
+          "date": "2026-09-09",
+          "value": 65142.78125
+        },
+        {
+          "date": "2026-09-10",
+          "value": 65270.949219
+        },
+        {
+          "date": "2026-09-11",
+          "value": 64011.339844
+        },
+        {
+          "date": "2026-09-14",
+          "value": 63492.988281
+        },
+        {
+          "date": "2026-09-15",
+          "value": 63484.101562
+        },
+        {
+          "date": "2026-09-16",
+          "value": 63923.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 64136.25
+        },
+        {
+          "date": "2026-09-18",
+          "value": 65018.949219
+        },
+        {
+          "date": "2026-09-24",
+          "value": 65513.988281
+        },
+        {
+          "date": "2026-09-25",
+          "value": NaN
+        }
+      ]
     },
     {
       "market_id": "TOPIX",
-      "ticker": "^TOPX",
+      "ticker": "998405.T",
       "name": "TOPIX",
       "status": "ERROR",
       "value": null,
@@ -36,30 +106,113 @@
       "unit": "",
       "display_decimals": 2,
       "source": "YFINANCE_REFERENCE",
-      "error": "empty history"
+      "error": "empty history",
+      "history": []
     },
     {
       "market_id": "USDJPY",
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 157.328003,
-      "change_pct": -0.592,
+      "value": 157.184998,
+      "change_pct": -0.6824,
       "direction": "DOWN",
       "as_of": "2026-09-25",
       "unit": "円/USD",
       "display_decimals": 2,
-      "source": "YFINANCE_REFERENCE"
+      "source": "YFINANCE_REFERENCE",
+      "history": [
+        {
+          "date": "2026-08-31",
+          "value": 160.121994
+        },
+        {
+          "date": "2026-09-01",
+          "value": 159.746994
+        },
+        {
+          "date": "2026-09-02",
+          "value": 160.195999
+        },
+        {
+          "date": "2026-09-03",
+          "value": 158.923004
+        },
+        {
+          "date": "2026-09-04",
+          "value": 155.660004
+        },
+        {
+          "date": "2026-09-07",
+          "value": 156.197006
+        },
+        {
+          "date": "2026-09-08",
+          "value": 153.854996
+        },
+        {
+          "date": "2026-09-09",
+          "value": 153.477997
+        },
+        {
+          "date": "2026-09-10",
+          "value": 153.572998
+        },
+        {
+          "date": "2026-09-11",
+          "value": 154.481995
+        },
+        {
+          "date": "2026-09-14",
+          "value": 153.423996
+        },
+        {
+          "date": "2026-09-15",
+          "value": 154.384995
+        },
+        {
+          "date": "2026-09-16",
+          "value": 155.266006
+        },
+        {
+          "date": "2026-09-17",
+          "value": 156.014008
+        },
+        {
+          "date": "2026-09-18",
+          "value": 156.128998
+        },
+        {
+          "date": "2026-09-21",
+          "value": 157.046005
+        },
+        {
+          "date": "2026-09-22",
+          "value": 157.369003
+        },
+        {
+          "date": "2026-09-23",
+          "value": 157.464005
+        },
+        {
+          "date": "2026-09-24",
+          "value": 158.264999
+        },
+        {
+          "date": "2026-09-25",
+          "value": 157.184998
+        }
+      ]
     }
   ],
-  "updated_at": "2026-09-25T22:18:22.764274+09:00",
-  "market_checked_at": "2026-09-26T09:19:33.405837+09:00",
-  "market_message": "WEEKEND",
+  "updated_at": "2026-09-26T09:22:13.464387+09:00",
+  "market_checked_at": "2026-09-26T09:22:13.464387+09:00",
+  "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
   "shadow_validation": {
     "run_count": 2,
     "security_check_count": 12,
-    "source_fetch_rate": 0.8333,
-    "ohlcv_match_rate": 0.8,
+    "source_fetch_rate": 0.9167,
+    "ohlcv_match_rate": 0.8182,
     "decision_sample_count": 0,
     "decision_match_rate": null,
     "production_candidate": false,
@@ -164,7 +317,7 @@
           4830.0
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 36.92,
+        "cluster_width": 36.9,
         "support_1": 4672.0,
         "resistance_1": 4786.0
       },
@@ -183,18 +336,16 @@
           "purpose": "ENTRY"
         }
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "LOW_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": true,
+        "crosscheck_match": false,
         "diffs": {
           "open": 0.0,
           "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "low": 1.0
         }
       },
       "as_of": "2026-09-25"
@@ -530,16 +681,18 @@
           "purpose": "REDUCE"
         }
       ],
-      "data_quality": "HOLD",
-      "source_gate_reason": "LOW_MISMATCH",
+      "data_quality": "PROVISIONAL",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": false,
+        "crosscheck_match": true,
         "diffs": {
           "open": 0.0,
           "high": 0.0,
-          "low": 3.0517578011313162e-06
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
         }
       },
       "as_of": "2026-09-25"
@@ -763,12 +916,18 @@
         }
       ],
       "data_quality": "PROVISIONAL",
-      "source_gate_reason": "INDEPENDENT_SOURCE_UNAVAILABLE",
+      "source_gate_reason": "SHADOW_SOURCE_MATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
-        "independent": "INVESTING",
-        "crosscheck_match": false,
-        "diffs": {}
+        "independent": "KABUTAN",
+        "crosscheck_match": true,
+        "diffs": {
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 0.0,
+          "volume": 0.0
+        }
       },
       "as_of": "2026-09-25"
     }

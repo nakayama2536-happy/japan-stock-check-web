@@ -4,13 +4,13 @@
   "market": "JAPAN",
   "adapter_status": "PARALLEL_SHADOW",
   "market_state": {
-    "state": "CLOSED"
+    "state": "CONFIRMED"
   },
   "snapshot": {
-    "state": "LAST_VALID"
+    "state": "CURRENT"
   },
   "incident": {
-    "level": "NORMAL",
+    "level": "BLOCKED",
     "error_codes": []
   },
   "data_quality": {
@@ -27,7 +27,7 @@
       "ticker": "6841.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "WAIT",
       "formal_action": null,
@@ -64,7 +64,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source照合不一致: LOW_MISMATCH",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -86,7 +86,7 @@
       "ticker": "6954.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -150,7 +150,7 @@
       "ticker": "3038.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -184,7 +184,7 @@
       "ticker": "9432.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -216,12 +216,22 @@
           "purpose": "REDUCE"
         }
       ],
-      "risk_conditions": [],
+      "risk_conditions": [
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACDデッドクロス",
+          "status": "WARN",
+          "impact": "NEGATIVE",
+          "required": true,
+          "purpose": "REDUCE"
+        }
+      ],
       "blocking_conditions": [
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source照合不一致: LOW_MISMATCH",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -248,7 +258,7 @@
       "ticker": "1812.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -307,7 +317,7 @@
       "ticker": "5805.T",
       "as_of": "2026-09-25",
       "mode": "SHADOW",
-      "phase": null,
+      "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "WAIT",
       "formal_action": null,
@@ -335,7 +345,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "独立Source取得不可",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -353,6 +363,6 @@
   ],
   "timestamps": {
     "market_as_of": "2026-09-25",
-    "calculated_at": "2026-09-26T09:19:33.405837+09:00"
+    "calculated_at": "2026-09-26T09:22:13.464387+09:00"
   }
 }
