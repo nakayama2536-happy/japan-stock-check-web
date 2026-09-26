@@ -15,11 +15,11 @@
       "market_id": "NIKKEI225",
       "ticker": "^N225",
       "name": "日経平均",
-      "status": "OK",
-      "value": 0,
-      "change_pct": -100,
-      "direction": "DOWN",
-      "as_of": "2026-09-25",
+      "status": "STALE",
+      "value": 65513.988281,
+      "change_pct": 0.7614,
+      "direction": "UP",
+      "as_of": "2026-09-24",
       "unit": "円",
       "display_decimals": 0,
       "source": "YFINANCE_REFERENCE",
@@ -87,10 +87,6 @@
         {
           "date": "2026-09-24",
           "value": 65513.988281
-        },
-        {
-          "date": "2026-09-25",
-          "value": null
         }
       ]
     },
