@@ -142,7 +142,7 @@ function bindQualityAction(){
   const btn=document.getElementById("quality-investigate-btn");
   if(btn)btn.onclick=openQualityInvestigation;
 }
-window.addEventListener("focus"window.addEventListener("focus",async()=>{
+window.addEventListener("focus",async()=>{
   if(localStorage.getItem("jpstock.awaitUpdate")==="1"){
     const changed=await load({silent:true,onlyIfChanged:true});
     if(changed){
