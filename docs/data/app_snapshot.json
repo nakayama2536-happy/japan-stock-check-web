@@ -426,7 +426,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-18 15:31",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -551,6 +551,9 @@
         "deep_dive": {
           "recommended": false,
           "severity": "NONE",
+          "priority_score": 0,
+          "minimum_priority_score": 30,
+          "group_scores": {},
           "reason_count": 0,
           "reasons": [],
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
@@ -684,7 +687,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-22 15:50",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -809,6 +812,9 @@
         "deep_dive": {
           "recommended": false,
           "severity": "NONE",
+          "priority_score": 0,
+          "minimum_priority_score": 30,
+          "group_scores": {},
           "reason_count": 0,
           "reasons": [],
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
@@ -929,7 +935,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-15 15:09",
         "period_start": "2025-11-01",
         "period_end": "2026-10-31",
@@ -1052,8 +1058,13 @@
         "metric_found_count": 7,
         "metric_pair_count": 7,
         "deep_dive": {
-          "recommended": true,
-          "severity": "WATCH",
+          "recommended": false,
+          "severity": "NONE",
+          "priority_score": 15,
+          "minimum_priority_score": 30,
+          "group_scores": {
+            "cash_flow": 15
+          },
           "reason_count": 1,
           "reasons": [
             {
@@ -1196,7 +1207,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-16 15:51",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1321,6 +1332,12 @@
         "deep_dive": {
           "recommended": true,
           "severity": "WATCH",
+          "priority_score": 30,
+          "minimum_priority_score": 30,
+          "group_scores": {
+            "balance_sheet": 15,
+            "cash_flow": 15
+          },
           "reason_count": 2,
           "reasons": [
             {
@@ -1471,7 +1488,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-24 10:22",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1596,6 +1613,13 @@
         "deep_dive": {
           "recommended": true,
           "severity": "HIGH",
+          "priority_score": 90,
+          "minimum_priority_score": 30,
+          "group_scores": {
+            "operating_profit": 30,
+            "net_earnings": 30,
+            "cash_flow": 30
+          },
           "reason_count": 4,
           "reasons": [
             {
@@ -1756,7 +1780,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-09-26",
-        "refresh_status": "UNCHANGED",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-18 13:47",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1881,6 +1905,13 @@
         "deep_dive": {
           "recommended": true,
           "severity": "HIGH",
+          "priority_score": 60,
+          "minimum_priority_score": 30,
+          "group_scores": {
+            "revenue": 15,
+            "operating_profit": 15,
+            "net_earnings": 30
+          },
           "reason_count": 4,
           "reasons": [
             {
