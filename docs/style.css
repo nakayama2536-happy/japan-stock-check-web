@@ -695,3 +695,18 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
   .chart-modal-content .market-chart-head,.chart-modal-content .indicator-head{background:rgba(17,24,39,.96)}
   .chart-modal-content .market-chart-head span,.chart-modal-content .indicator-head span{color:#cbd5e1}
 }
+
+
+/* v1.6.5 landscape MACD auto-fit + numeric scale */
+.indicator-grid{stroke:#dbe3ed;stroke-width:1}
+.macd-axis-label{font-size:9px;fill:#64748b}
+.chart-modal-content .macd-axis-label{font-size:11px;font-weight:700}
+@media(orientation:landscape){
+  .chart-modal-content{width:100%!important}
+  .chart-modal-content .macd-chart{width:100%!important;height:auto!important;max-height:calc(100dvh - 190px)!important}
+  .chart-modal-content .indicator-legend{font-size:11px;margin-top:4px}
+}
+@media(prefers-color-scheme:dark){
+  .indicator-grid{stroke:#374151}
+  .macd-axis-label{fill:#94a3b8}
+}
