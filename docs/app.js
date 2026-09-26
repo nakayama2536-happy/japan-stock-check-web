@@ -90,13 +90,117 @@ const checkStateJa=v=>({PASS:"一致",PENDING:"確認中",FAIL:"要確認"}[v]||
 const actionJa=v=>actionLabels[String(v||"WAIT").toUpperCase()]||v||"—";
 const WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/update-japan.yml";
 const QUALITY_WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/diagnose-quality.yml";
-let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,lastUiCheckAt=null;
+let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,qualityTimerId=null,lastUiCheckAt=null,chartModal=null;
 
 function toast(message,ms=3500){
   let el=document.getElementById("app-toast");
   if(!el){el=document.createElement("div");el.id="app-toast";el.className="app-toast";document.body.appendChild(el);}
   el.textContent=message;el.classList.add("show");
   clearTimeout(el._timer);el._timer=setTimeout(()=>el.classList.remove("show"),ms);
+}
+
+const QUALITY_STARTED_KEY="jpstock.qualityStartedAt";
+const QUALITY_FINISHED_KEY="jpstock.qualityFinishedAt";
+const QUALITY_STATUS_KEY="jpstock.qualityRunStatus";
+function fmtClock(ts){
+  if(!Number.isFinite(Number(ts)))return "—";
+  try{return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(new Date(Number(ts)));}
+  catch(_){return "—";}
+}
+function fmtElapsed(ms){
+  const total=Math.max(0,Math.floor(Number(ms||0)/1000)),m=Math.floor(total/60),s=total%60;
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function stopQualityTimer(){
+  if(qualityTimerId){clearInterval(qualityTimerId);qualityTimerId=null;}
+}
+function updateQualityRunDisplay(){
+  const el=document.getElementById("quality-run-time");
+  if(!el)return;
+  const started=Number(localStorage.getItem(QUALITY_STARTED_KEY));
+  if(!Number.isFinite(started)||started<=0){el.hidden=true;return;}
+  const awaiting=localStorage.getItem("jpstock.awaitQuality")==="1";
+  const finished=Number(localStorage.getItem(QUALITY_FINISHED_KEY));
+  const status=localStorage.getItem(QUALITY_STATUS_KEY)||"";
+  const end=!awaiting&&Number.isFinite(finished)&&finished>=started?finished:Date.now();
+  const label=awaiting?(status==="WAITING"?"結果確認待ち":"実行確認中"):(status==="DONE"?"結果確認済み":"前回実行");
+  el.hidden=false;
+  el.innerHTML='<span>開始 '+esc(fmtClock(started))+'</span><b>'+esc(label)+"・"+esc(awaiting?"経過 ":"所要 ")+esc(fmtElapsed(end-started))+'</b><small>ボタン操作からのアプリ計測</small>';
+}
+function startQualityTimer(){
+  stopQualityTimer();
+  updateQualityRunDisplay();
+  qualityTimerId=setInterval(updateQualityRunDisplay,1000);
+}
+function markQualityRunStart(){
+  const now=Date.now();
+  localStorage.setItem(QUALITY_STARTED_KEY,String(now));
+  localStorage.removeItem(QUALITY_FINISHED_KEY);
+  localStorage.setItem(QUALITY_STATUS_KEY,"RUNNING");
+  startQualityTimer();
+}
+function markQualityRunFinished(){
+  localStorage.setItem(QUALITY_FINISHED_KEY,String(Date.now()));
+  localStorage.setItem(QUALITY_STATUS_KEY,"DONE");
+  stopQualityTimer();
+  updateQualityRunDisplay();
+}
+function markQualityRunWaiting(){
+  localStorage.setItem(QUALITY_STATUS_KEY,"WAITING");
+  updateQualityRunDisplay();
+}
+
+function ensureChartModal(){
+  if(chartModal)return chartModal;
+  chartModal=document.createElement("div");
+  chartModal.id="chart-modal";
+  chartModal.className="chart-modal";
+  chartModal.hidden=true;
+  chartModal.setAttribute("role","dialog");
+  chartModal.setAttribute("aria-modal","true");
+  chartModal.setAttribute("aria-labelledby","chart-modal-title");
+  chartModal.innerHTML='<div class="chart-modal-panel"><div class="chart-modal-head"><b id="chart-modal-title">グラフ拡大</b><button type="button" class="chart-modal-close" data-chart-close>閉じる</button></div><div class="chart-modal-body"><div class="chart-modal-content"></div></div></div>';
+  chartModal.addEventListener("click",e=>{if(e.target===chartModal||e.target.closest("[data-chart-close]"))closeChartModal();});
+  document.body.appendChild(chartModal);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&chartModal&&!chartModal.hidden)closeChartModal();});
+  return chartModal;
+}
+function closeChartModal(){
+  if(!chartModal)return;
+  chartModal.hidden=true;
+  document.documentElement.classList.remove("chart-modal-open");
+}
+function chartTitleFor(block){
+  const label=block.querySelector(".market-chart-head b,.indicator-head b")?.textContent?.trim()||"グラフ";
+  const stock=block.closest(".stock-card");
+  if(!stock)return label;
+  const code=stock.querySelector(".code")?.textContent?.trim()||"";
+  const name=stock.querySelector("h2")?.textContent?.trim()||"";
+  return [code,name].filter(Boolean).join(" ")+" / "+label;
+}
+function openChartModal(block){
+  const modal=ensureChartModal(),content=modal.querySelector(".chart-modal-content"),clone=block.cloneNode(true);
+  clone.querySelectorAll(".chart-expand-btn").forEach(x=>x.remove());
+  modal.querySelector("#chart-modal-title").textContent=chartTitleFor(block);
+  content.replaceChildren(clone);
+  modal.hidden=false;
+  document.documentElement.classList.add("chart-modal-open");
+  requestAnimationFrame(()=>modal.querySelector(".chart-modal-close")?.focus());
+}
+function bindChartExpanders(root=document){
+  root.querySelectorAll(".market-chart-card,.indicator-block").forEach(block=>{
+    if(block.dataset.expandBound==="1")return;
+    const head=block.querySelector(".market-chart-head,.indicator-head");
+    if(!head)return;
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.className="chart-expand-btn";
+    btn.textContent="拡大";
+    btn.setAttribute("aria-label",chartTitleFor(block)+"を画面いっぱいに拡大");
+    btn.addEventListener("click",()=>openChartModal(block));
+    head.appendChild(btn);
+    block.dataset.expandBound="1";
+  });
 }
 function snapshotKey(d){return [d?.latest_decision_run_id,d?.latest_decision_as_of,d?.updated_at,d?.market_checked_at].join("|");}
 function openWorkflowUpdate(){
@@ -161,10 +265,12 @@ function startQualityPolling(){
       stopQualityPolling();
       localStorage.removeItem("jpstock.awaitQuality");
       localStorage.removeItem("jpstock.qualityBefore");
+      markQualityRunFinished();
       toast(qualityResultMessage(before),7000);
     }else if(n>=48){
       stopQualityPolling();
-      toast("4分以内に再調査結果を確認できませんでした。GitHubの実行結果を確認してください。",6500);
+      markQualityRunWaiting();
+      toast("4分以内に再調査結果を確認できませんでした。実行時間の表示は継続します。GitHubの実行結果を確認してください。",6500);
     }
   },5000);
 }
@@ -172,6 +278,7 @@ function openQualityInvestigation(){
   const before=qualityIssueCount(currentSnapshot);
   localStorage.setItem("jpstock.awaitQuality","1");
   localStorage.setItem("jpstock.qualityBefore",String(before));
+  markQualityRunStart();
   window.open(QUALITY_WORKFLOW_URL,"_blank","noopener");
   toast("GitHubで「Run workflow」を実行してください。戻ると結果を自動確認します。",6500);
   startQualityPolling();
@@ -179,6 +286,7 @@ function openQualityInvestigation(){
 function bindQualityAction(){
   const btn=document.getElementById("quality-investigate-btn");
   if(btn)btn.onclick=openQualityInvestigation;
+  if(localStorage.getItem("jpstock.awaitQuality")==="1")startQualityTimer();else updateQualityRunDisplay();
 }
 window.addEventListener("focus",async()=>{
   if(localStorage.getItem("jpstock.awaitUpdate")==="1"){
@@ -196,6 +304,7 @@ window.addEventListener("focus",async()=>{
       localStorage.removeItem("jpstock.awaitQuality");
       localStorage.removeItem("jpstock.qualityBefore");
       stopQualityPolling();
+      markQualityRunFinished();
       toast(qualityResultMessage(before),7000);
     }else startQualityPolling();
   }
@@ -334,6 +443,7 @@ async function loadStockChart(details,sec){
     const r=await fetch("data/charts/"+encodeURIComponent(sec.code)+".json?t="+Date.now(),{cache:"no-store"});
     if(!r.ok)throw new Error("chart "+r.status);
     target.innerHTML=stockChartSvg(await r.json(),sec);
+    bindChartExpanders(target);
     details.dataset.loaded="1";
   }catch(_){target.innerHTML='<div class="history-wait">チャートを取得できません。次回更新後に再確認してください。</div>';}
 }
@@ -540,6 +650,7 @@ function renderMarketEnvironment(d){
     (chartItems?'<details class="supplement-details"><summary>市場環境の28日グラフを見る</summary><div class="disclosure-body"><div class="market-chart-list">'+chartItems+'</div><p>横線は値の目安、縦の点線は1週間ごとの区切りです。</p></div></details>':'')+
     '<details class="supplement-details"><summary>市場環境の見方</summary><div class="disclosure-body">個別銘柄の背景確認用です。このパネル単独では正式判断を変更しません。</div></details>'+
   '</article>';
+  bindChartExpanders(root);
 }
 
 
@@ -585,11 +696,11 @@ function renderDataQuality(d){
         const reason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"確認待ち";
         return '<div class="alert-row"><span class="check-pill '+state.toLowerCase()+'">'+esc(checkStateJa(state))+'</span><b>'+esc(s.code+" "+s.name)+'</b><span>'+esc(reason)+'</span></div>';
       }).join("")+
-      '<button id="quality-investigate-btn" class="quality-action-btn">要確認を再調査・再判定</button><div class="quality-action-note">GitHubでRun workflow実行後、アプリに戻ると結果を自動確認します。</div>'+
+      '<button id="quality-investigate-btn" class="quality-action-btn">要確認を再調査・再判定</button><div class="quality-action-note">GitHubでRun workflow実行後、アプリに戻ると結果を自動確認します。</div><div id="quality-run-time" class="quality-run-time" hidden></div>'+
       '<details class="quality-remedy"><summary>調査・対策内容を見る</summary>'+
         issues.map(({s})=>'<div class="remedy-row"><b>'+esc(s.name)+'</b><span>'+esc(qualityAdvice(s))+'</span></div>').join("")+
       '</details></div>'
-    : '<div class="quality-all-clear">独立データとの照合で要確認項目はありません。</div>';
+    : '<div class="quality-all-clear">独立データとの照合で要確認項目はありません。</div><div id="quality-run-time" class="quality-run-time" hidden></div>';
   root.innerHTML='<article class="quality-panel">'+
     '<div class="section-heading"><div><span class="eyebrow">データ品質</span><h2>データの確認状態</h2></div><span class="reference-pill">独立データ照合</span></div>'+
     '<div class="quality-counts">'+summary+'</div>'+issueHtml+
