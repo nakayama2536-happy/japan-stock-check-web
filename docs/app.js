@@ -74,7 +74,8 @@ const technicalLabels={
 const stateLabels={
   PASS:"正常",FAIL:"要確認",PENDING:"確認中",FRESH:"最新",STALE:"更新待ち",
   ELIGIBLE:"判断可能",NOT_ELIGIBLE:"判断不可",BLOCKED:"保留",
-  CURRENT:"最新",CONFIRMED:"確認済み",MISSING:"未取得",DECISION:"判断可能"
+  CURRENT:"最新",CONFIRMED:"確認済み",MISSING:"未取得",DECISION:"判断可能",
+  CLOSED:"休場",LAST_VALID:"直近有効値",OPEN:"取引日",PARTIAL:"一部確認",UNKNOWN:"不明"
 };
 const directionLabels={STRONG_UP:"強い上向き",UP:"上向き",NEUTRAL:"中立",DOWN:"下向き",STRONG_DOWN:"強い下向き"};
 const directionClass=v=>({STRONG_UP:"dir-up-strong",UP:"dir-up",NEUTRAL:"dir-neutral",DOWN:"dir-down",STRONG_DOWN:"dir-down-strong"}[v]||"dir-neutral");
@@ -89,7 +90,7 @@ const checkStateJa=v=>({PASS:"一致",PENDING:"確認中",FAIL:"要確認"}[v]||
 const actionJa=v=>actionLabels[String(v||"WAIT").toUpperCase()]||v||"—";
 const WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/update-japan.yml";
 const QUALITY_WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/diagnose-quality.yml";
-let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,lastUiCheckAt=null;
+let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,lastUiCheckAt=null;
 
 function toast(message,ms=3500){
   let el=document.getElementById("app-toast");
@@ -134,15 +135,52 @@ function bindUpdateControls(){
   const update=document.getElementById("github-update-btn");
   if(update)update.onclick=openWorkflowUpdate;
 }
+function qualityIssueCount(d){
+  return (d?.securities||[]).filter(s=>sourceCheckState(s)!=="PASS").length;
+}
+function qualityIssueNames(d){
+  return (d?.securities||[]).filter(s=>sourceCheckState(s)!=="PASS").map(s=>s.name).filter(Boolean);
+}
+function qualityResultMessage(before){
+  const after=qualityIssueCount(currentSnapshot),names=qualityIssueNames(currentSnapshot);
+  if(after<before)return "再調査完了："+before+"件→"+after+"件に改善しました。"+(after?" 残り："+names.join("、"):" 全銘柄一致です。");
+  if(after===0)return "再調査完了：全6銘柄が一致しました。";
+  return "再調査完了：要確認は"+after+"件のままです。残り："+names.join("、")+"。原因確認を継続します。";
+}
+function stopQualityPolling(){
+  if(qualityPollTimer){clearInterval(qualityPollTimer);qualityPollTimer=null;}
+}
+function startQualityPolling(){
+  stopQualityPolling();
+  let n=0;
+  qualityPollTimer=setInterval(async()=>{
+    n++;
+    const before=Number(localStorage.getItem("jpstock.qualityBefore")||qualityIssueCount(currentSnapshot));
+    const changed=await load({silent:true,onlyIfChanged:true});
+    if(changed){
+      stopQualityPolling();
+      localStorage.removeItem("jpstock.awaitQuality");
+      localStorage.removeItem("jpstock.qualityBefore");
+      toast(qualityResultMessage(before),7000);
+    }else if(n>=48){
+      stopQualityPolling();
+      toast("4分以内に再調査結果を確認できませんでした。GitHubの実行結果を確認してください。",6500);
+    }
+  },5000);
+}
 function openQualityInvestigation(){
+  const before=qualityIssueCount(currentSnapshot);
+  localStorage.setItem("jpstock.awaitQuality","1");
+  localStorage.setItem("jpstock.qualityBefore",String(before));
   window.open(QUALITY_WORKFLOW_URL,"_blank","noopener");
-  toast("GitHubで「Run workflow」を実行すると、最新判断日のデータを再取得・再照合します。",6000);
+  toast("GitHubで「Run workflow」を実行してください。戻ると結果を自動確認します。",6500);
+  startQualityPolling();
 }
 function bindQualityAction(){
   const btn=document.getElementById("quality-investigate-btn");
   if(btn)btn.onclick=openQualityInvestigation;
 }
-window.addEventListener("focus",async()=>{
+window.addEventListener("focus"window.addEventListener("focus",async()=>{
   if(localStorage.getItem("jpstock.awaitUpdate")==="1"){
     const changed=await load({silent:true,onlyIfChanged:true});
     if(changed){
@@ -150,6 +188,16 @@ window.addEventListener("focus",async()=>{
       if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
       toast("更新完了を確認しました。",4500);
     }else startPolling();
+  }
+  if(localStorage.getItem("jpstock.awaitQuality")==="1"){
+    const before=Number(localStorage.getItem("jpstock.qualityBefore")||qualityIssueCount(currentSnapshot));
+    const changed=await load({silent:true,onlyIfChanged:true});
+    if(changed){
+      localStorage.removeItem("jpstock.awaitQuality");
+      localStorage.removeItem("jpstock.qualityBefore");
+      stopQualityPolling();
+      toast(qualityResultMessage(before),7000);
+    }else startQualityPolling();
   }
 });
 
@@ -368,10 +416,11 @@ function renderTodayOverview(d){
       return '<span class="mini-outlook '+directionClass(o.direction)+'"><small>'+h+'日</small><b>'+(arrows[o.direction]||"—")+'</b></span>';
     }).join("");
     return '<div class="overview-stock rich">'+
-      '<div class="overview-name"><b>'+esc(s.name)+'</b><small>'+esc(s.code)+' / '+(s.price==null?"—":Number(s.price).toLocaleString("ja-JP")+"円")+'</small></div>'+
+      '<div class="overview-name"><b>'+esc(s.name)+'</b><small>'+esc(s.code)+'</small></div>'+
+      '<div class="overview-price">'+(s.price==null?"—":Number(s.price).toLocaleString("ja-JP")+"円")+'</div>'+
       '<div class="overview-action-main"><span>参考</span><b>'+esc(actionJa(s.shadow_action))+'</b><small>'+esc(cardQualityText(s))+'</small></div>'+
-      '<div class="mini-outlooks">'+horizon+'</div>'+
       '<span class="check-pill '+qState.toLowerCase()+'">'+esc(checkStateJa(qState))+'</span>'+
+      '<div class="mini-outlooks">'+horizon+'</div>'+
     '</div>';
   }).join("");
   root.innerHTML='<article class="overview-panel">'+
@@ -383,7 +432,7 @@ function renderTodayOverview(d){
       '<div class="overview-metric"><span>判断基準日</span><b>'+esc(fmtDate(d.latest_decision_as_of))+'</b></div>'+
     '</div>'+
     '<details class="overview-list"><summary>6銘柄を一覧で確認</summary>'+rows+'</details>'+
-    '<p class="overview-note">一覧では参考判断、現在値、1・3・5・14日の方向、データ照合状態をまとめて確認できます。</p>'+
+    '<p class="overview-note">企業名の右に現在値、その右に参考判断を配置しています。下段で1・3・5・14日の方向を確認できます。</p>'+
   '</article>';
 }
 
@@ -456,7 +505,7 @@ function renderDataQuality(d){
         const reason=sourceReasonLabels[s.source_gate_reason]||s.source_gate_reason||"確認待ち";
         return '<div class="alert-row"><span class="check-pill '+state.toLowerCase()+'">'+esc(checkStateJa(state))+'</span><b>'+esc(s.code+" "+s.name)+'</b><span>'+esc(reason)+'</span></div>';
       }).join("")+
-      '<button id="quality-investigate-btn" class="quality-action-btn">要確認を再調査・再判定</button>'+
+      '<button id="quality-investigate-btn" class="quality-action-btn">要確認を再調査・再判定</button><div class="quality-action-note">GitHubでRun workflow実行後、アプリに戻ると結果を自動確認します。</div>'+
       '<details class="quality-remedy"><summary>調査・対策内容を見る</summary>'+
         issues.map(({s})=>'<div class="remedy-row"><b>'+esc(s.name)+'</b><span>'+esc(qualityAdvice(s))+'</span></div>').join("")+
       '</details></div>'
@@ -639,4 +688,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.1");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.2");

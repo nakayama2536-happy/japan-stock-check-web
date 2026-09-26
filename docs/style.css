@@ -397,3 +397,19 @@ nav button{font-size:17px}
   .quality-remedy{background:#111827;border-color:#9a3412}.remedy-row{border-color:#7c2d12}.remedy-row span{color:#9ca3af}
   .tech-tile{background:#1f2937;border-color:#374151}.tech-tile span,.tech-tile small{color:#9ca3af}
 }
+
+/* v1.5.2 state localization / price emphasis / diagnosis result tracking */
+.overview-stock.rich{grid-template-columns:minmax(0,1fr) 92px 98px auto}
+.overview-price{font-size:18px;font-weight:850;text-align:right;white-space:nowrap;color:#111827}
+.quality-action-note{font-size:11px;line-height:1.5;color:#6b7280;text-align:center;margin-top:7px}
+@media(max-width:520px){
+  .overview-stock.rich{grid-template-columns:minmax(0,1fr) 86px 88px auto;gap:7px}
+  .overview-price{font-size:16px}
+  .overview-action-main b{font-size:13px}
+  .overview-stock.rich .mini-outlooks{grid-column:1/-1;grid-row:2}
+  .overview-stock.rich>.check-pill{grid-column:4;grid-row:1}
+}
+@media(prefers-color-scheme:dark){
+  .overview-price{color:#f9fafb}
+  .quality-action-note{color:#9ca3af}
+}
