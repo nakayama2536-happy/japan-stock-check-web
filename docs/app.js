@@ -485,7 +485,7 @@ function stockChartSvg(doc,sec){
     levelLine(sec?.levels?.resistance_1,"stock-resistance","抵抗")+
     '</svg><div class="stock-legend"><span class="lg-close">終値</span><span class="lg-ma5">MA5</span><span class="lg-ma25">MA25</span><span class="lg-ma75">MA75</span></div></div>';
 
-  const mh=230,mpt=20,mpb=32,finiteMacd=[...macd,...signal,...hist,0].filter(Number.isFinite);
+  const mh=210,mpt=20,mpb=30,finiteMacd=[...macd,...signal,...hist,0].filter(Number.isFinite);
   const maxAbs=Math.max(...finiteMacd.map(v=>Math.abs(v)),0.001)*1.12;
   const my=v=>mpt+(maxAbs-Number(v))*(mh-mpt-mpb)/(maxAbs*2);
   const zeroY=my(0),barW=Math.max(2,(w-pl-pr)/Math.max(rows.length,1)*0.58);
