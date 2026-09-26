@@ -543,3 +543,37 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
 .next-watch-title{font-size:12px;font-weight:800;color:#166534;margin-bottom:6px}
 .next-watch ol{margin:0;padding-left:20px}.next-watch li{font-size:12px;line-height:1.55;color:#475569;padding:2px 0}
 @media(prefers-color-scheme:dark){.next-watch{background:#052e16;border-color:#166534}.next-watch-title{color:#86efac}.next-watch li{color:#d1d5db}}
+
+
+/* v1.6.0 EDINET fundamental display-only panel */
+.fundamental-panel{margin-top:12px}
+.fundamental-panel>summary{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.fundamental-panel>summary span{font-weight:800}
+.fundamental-panel>summary small{font-size:10px;color:#64748b;font-weight:700}
+.fundamental-meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-bottom:10px;font-size:10px;color:#64748b}
+.fundamental-meta span{padding:3px 7px;border-radius:999px;background:#f1f5f9}
+.fundamental-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fundamental-tile{position:relative;min-width:0;padding:10px;border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc}
+.fundamental-tile>span{display:block;font-size:10px;color:#64748b}
+.fundamental-tile>b{display:block;margin-top:3px;font-size:16px;line-height:1.25;overflow-wrap:anywhere}
+.fundamental-tile>small{display:block;margin-top:4px;padding-right:54px;font-size:9px;line-height:1.35;color:#64748b}
+.fundamental-change{position:absolute;right:8px;bottom:9px;font-style:normal;font-size:11px;font-weight:800;padding:2px 6px;border-radius:999px;background:#f1f5f9;color:#64748b}
+.fundamental-change.up{background:#fef2f2;color:#b91c1c}
+.fundamental-change.down{background:#eff6ff;color:#0369a1}
+.fundamental-note{margin-top:10px;font-size:10px;line-height:1.55;color:#64748b}
+.fundamental-empty{font-size:13px;color:#475569}
+@media(max-width:520px){
+  .fundamental-grid{grid-template-columns:1fr 1fr;gap:7px}
+  .fundamental-tile{padding:9px}
+  .fundamental-tile>b{font-size:14px}
+  .fundamental-tile>small{padding-right:0;margin-bottom:20px}
+}
+@media(prefers-color-scheme:dark){
+  .fundamental-panel>summary small,.fundamental-meta,.fundamental-tile>span,.fundamental-tile>small,.fundamental-note{color:#94a3b8}
+  .fundamental-meta span{background:#1f2937}
+  .fundamental-tile{background:#1f2937;border-color:#374151}
+  .fundamental-change{background:#334155;color:#cbd5e1}
+  .fundamental-change.up{background:#450a0a;color:#fecaca}
+  .fundamental-change.down{background:#0c2841;color:#bae6fd}
+  .fundamental-empty{color:#cbd5e1}
+}
