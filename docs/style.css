@@ -426,3 +426,39 @@ nav button{font-size:17px}
 .rsi-line{fill:none;stroke:#7c3aed;stroke-width:2.2}.rsi-guide{stroke-width:1;stroke-dasharray:5 4}.rsi-guide.high{stroke:#dc2626}.rsi-guide.mid{stroke:#94a3b8}.rsi-guide.low{stroke:#0284c7}.rsi-label{font-size:9px;fill:#64748b}.indicator-note{font-size:10px;color:#64748b;margin-top:2px}
 @media(max-width:520px){.recheck-line{grid-template-columns:auto 1fr}.recheck-line small{grid-column:1/-1}.indicator-head b{font-size:14px}.indicator-head span{font-size:10px}}
 @media(prefers-color-scheme:dark){.recheck-line{background:#172554;border-color:#1e3a8a}.recheck-line b{color:#f8fafc}.recheck-line span,.recheck-line small,.indicator-head span,.indicator-legend,.indicator-note{color:#94a3b8}.indicator-block{border-color:#374151}.macd-line{stroke:#f8fafc}.indicator-legend .lg-macd:before{background:#f8fafc}}
+
+
+/* v1.5.4 fullscreen chart viewer + quality action timing */
+.chart-expand-btn{flex:0 0 auto;min-width:48px;min-height:34px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;font-size:12px;font-weight:800;cursor:pointer;padding:5px 9px}
+.chart-expand-btn:active{transform:scale(.98)}
+.chart-modal[hidden]{display:none}
+html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
+.chart-modal{position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.72);padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));display:flex;align-items:stretch;justify-content:center}
+.chart-modal-panel{width:min(1100px,100%);height:100%;background:#fff;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.35)}
+.chart-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #e5e7eb}
+.chart-modal-head b{font-size:16px;line-height:1.35}
+.chart-modal-close{flex:0 0 auto;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;color:#0f172a;font-size:14px;font-weight:800;padding:8px 12px;cursor:pointer}
+.chart-modal-body{flex:1;min-height:0;overflow:auto;padding:14px}
+.chart-modal-content>.market-chart-card,.chart-modal-content>.indicator-block{margin:0;border:0;padding:0;background:transparent}
+.chart-modal-content .market-chart,.chart-modal-content .price-chart{width:100%;height:min(64vh,560px);min-height:300px}
+.chart-modal-content .macd-chart,.chart-modal-content .rsi-chart{width:100%;height:min(58vh,460px);max-height:none;min-height:260px}
+.chart-modal-content .stock-chart text,.chart-modal-content .market-chart text{font-size:11px}
+.quality-run-time{margin-top:9px;padding:9px 11px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;align-items:baseline;color:#334155}
+.quality-run-time[hidden]{display:none}
+.quality-run-time span{font-size:11px;color:#64748b}
+.quality-run-time b{font-size:13px;text-align:right}
+.quality-run-time small{grid-column:1/-1;font-size:10px;color:#64748b;text-align:right}
+@media(max-width:520px){
+  .chart-modal{padding:max(6px,env(safe-area-inset-top)) 6px max(6px,env(safe-area-inset-bottom))}
+  .chart-modal-panel{border-radius:14px}
+  .chart-modal-head{padding:10px 11px}.chart-modal-head b{font-size:14px}.chart-modal-close{font-size:13px;padding:7px 10px}
+  .chart-modal-body{padding:10px}
+  .chart-modal-content .market-chart,.chart-modal-content .price-chart{height:58vh;min-height:320px}
+  .chart-modal-content .macd-chart,.chart-modal-content .rsi-chart{height:52vh;min-height:280px}
+  .quality-run-time{grid-template-columns:1fr}.quality-run-time b,.quality-run-time small{text-align:left}
+}
+@media(prefers-color-scheme:dark){
+  .chart-expand-btn{background:#1f2937;color:#f8fafc;border-color:#475569}
+  .chart-modal-panel{background:#111827}.chart-modal-head{border-color:#374151}.chart-modal-close{background:#1f2937;color:#f8fafc;border-color:#475569}
+  .quality-run-time{background:#172554;border-color:#1e3a8a;color:#e5e7eb}.quality-run-time span,.quality-run-time small{color:#94a3b8}
+}
