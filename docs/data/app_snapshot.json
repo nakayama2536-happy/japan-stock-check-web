@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "app_version": "1.5.6",
+  "app_version": "1.5.7",
   "engine_version": "1.3.3",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
@@ -419,7 +419,18 @@
           "low": 1
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_6841",
+        "policy_code": "ENTRY_REVERSAL",
+        "label": "新規買い候補",
+        "objective": "反転確認後に購入候補として扱う",
+        "focus": [
+          "転換線回復",
+          "MACD改善",
+          "週足悪化なし"
+        ]
+      }
     },
     {
       "security_id": "SEC_JP_6954",
@@ -539,7 +550,18 @@
           "volume": 0
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_6954",
+        "policy_code": "HOLD_RECOVERY",
+        "label": "保有継続・回復確認",
+        "objective": "保有継続を基本に、追加は回復条件成立後に検討する",
+        "focus": [
+          "6,000円回復",
+          "MACD改善",
+          "週足悪化なし"
+        ]
+      }
     },
     {
       "security_id": "SEC_JP_3038",
@@ -646,7 +668,18 @@
           "volume": 0
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_3038",
+        "policy_code": "HOLD_EXIT_WATCH",
+        "label": "保有・売却条件監視",
+        "objective": "急いで売らず、トレンド悪化と決算反応を確認して売却条件を判断する",
+        "focus": [
+          "価格構造",
+          "MACD",
+          "決算後反応"
+        ]
+      }
     },
     {
       "security_id": "SEC_JP_9432",
@@ -766,7 +799,18 @@
           "volume": 0
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_9432",
+        "policy_code": "EXIT_RISK_WATCH",
+        "label": "整理条件監視",
+        "objective": "戻り局面を確認しつつ、複数の悪化条件が重なった場合に縮小を検討する",
+        "focus": [
+          "MACDデッドクロス",
+          "転換線割れ",
+          "価格構造悪化"
+        ]
+      }
     },
     {
       "security_id": "SEC_JP_1812",
@@ -886,7 +930,18 @@
           "volume": 0
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_1812",
+        "policy_code": "THEME_HOLD_ADD",
+        "label": "テーマ保有・追加条件監視",
+        "objective": "保有判断と追加判断を分離し、追加は抵抗帯回復などを確認する",
+        "focus": [
+          "主要抵抗帯回復",
+          "週足悪化なし",
+          "出来高"
+        ]
+      }
     },
     {
       "security_id": "SEC_JP_5805",
@@ -1000,14 +1055,25 @@
           "volume": 0
         }
       },
-      "as_of": "2026-09-25"
+      "as_of": "2026-09-25",
+      "policy_context": {
+        "security_id": "SEC_JP_5805",
+        "policy_code": "WATCH_ONLY",
+        "label": "監視のみ",
+        "objective": "現時点では監視対象とし、正式な新規買い対象化は別途判断する",
+        "focus": [
+          "MACD改善",
+          "週足悪化なし",
+          "反転確認"
+        ]
+      }
     }
   ],
   "report_migration": {
     "parity_version": "1.0",
     "formal_source": "SCHEDULED_REPORT_1700",
-    "implemented": 4,
-    "partial": 2,
+    "implemented": 5,
+    "partial": 1,
     "missing_or_blocked": 5,
     "required_total": 11,
     "feature_parity_ready": false,
@@ -1045,7 +1111,7 @@
         "id": "individual_policy",
         "label": "個別銘柄方針",
         "required": true,
-        "status": "PARTIAL"
+        "status": "IMPLEMENTED"
       },
       {
         "id": "structural_growth",

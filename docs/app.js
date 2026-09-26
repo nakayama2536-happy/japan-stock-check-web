@@ -839,6 +839,17 @@ function bindStockAccordions(){
     });
   });
 }
+function policyContextHtml(s){
+  const p=s.policy_context||{};
+  if(!p.label)return "";
+  const focus=(p.focus||[]).map(x=>'<span>'+esc(x)+'</span>').join("");
+  return '<div class="policy-context">'+
+    '<div class="policy-head"><span>銘柄方針</span><b>'+esc(p.label)+'</b></div>'+
+    '<div class="policy-objective">'+esc(p.objective||"")+'</div>'+
+    (focus?'<div class="policy-focus">'+focus+'</div>':"")+
+  '</div>';
+}
+
 function renderCards(d){
   const cards=document.getElementById("cards");cards.innerHTML="";
   if(!d.securities?.length){cards.innerHTML='<div class="card empty">直近の銘柄判断はまだありません。次の営業日更新後に表示されます。</div>';return;}
@@ -871,6 +882,7 @@ function renderCards(d){
           '<div class="decision shadow">'+esc(actionJa(shadow))+'</div>'+
           '<div class="formal">正式判断：<b>'+esc(formal)+'</b><span>'+esc(d.decision_mode==="SHADOW"?"現在は検証中":actionJa(formal))+'</span></div>'+
           '<div class="reference">参考シグナル：<b>'+esc(signalLabels[signal]||"中立")+'</b></div>'+
+          policyContextHtml(s)+
           '<div class="grid">'+os+'</div>'+
           forecastDetailPanel(s)+
           '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
@@ -952,6 +964,11 @@ function renderHelp(d){
     '</article>'+
 
     '<article class="help-card">'+
+      '<h2>銘柄方針</h2>'+
+      '<p>各銘柄の役割を「新規買い候補・保有継続・整理条件監視・監視のみ」などで明示します。株数、取得単価、口座種別などの個人情報はPublicアプリへ出しません。方針は判断条件の意味を揃えるために使い、単独で売買判断にはしません。</p>'+
+    '</article>'+
+
+    '<article class="help-card">'+
       '<h2>テクニカル詳細</h2>'+
       '<p>「銘柄詳細」は1銘柄ずつ開きます。開いた銘柄で、日足・週足、MA5/25/75、MACD、RSI14、出来高20日比、一目の転換線・基準線、支持線・抵抗線を確認できます。正式判断の根拠確認用で、各指標単独では売買判断にしません。</p>'+
     '</article>'+
@@ -1017,4 +1034,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.6");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.7");
