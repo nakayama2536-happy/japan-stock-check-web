@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "app_version": "1.5.8",
+  "app_version": "1.5.9",
   "engine_version": "1.3.3",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
@@ -1103,8 +1103,8 @@
     "parity_version": "1.0",
     "formal_source": "SCHEDULED_REPORT_1700",
     "implemented": 6,
-    "partial": 0,
-    "missing_or_blocked": 5,
+    "partial": 1,
+    "missing_or_blocked": 4,
     "required_total": 11,
     "feature_parity_ready": false,
     "shadow_validation_ready": false,
@@ -1147,7 +1147,7 @@
         "id": "structural_growth",
         "label": "構造的成長スコア・充足率・新高値健全性",
         "required": true,
-        "status": "MISSING"
+        "status": "PARTIAL"
       },
       {
         "id": "earnings_risk",

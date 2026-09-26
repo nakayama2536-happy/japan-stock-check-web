@@ -1047,4 +1047,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.8");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.9");
