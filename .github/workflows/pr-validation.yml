@@ -54,6 +54,11 @@ jobs:
           assert 'LAST_VALID:"直近有効値"' in app
           assert 'qualityResultMessage' in app
           assert 'overview-price' in app
+          assert 'function macdSeries(rows)' in app
+          assert 'function rsiSeries(rows,period=14)' in app
+          assert '株価・MACD・RSIを見る' in app
+          assert 'next_recheck_at' in app
+          assert 'recheck-line' in app
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
           assert 'LOW_MISMATCH:"安値データ差異あり"' in app

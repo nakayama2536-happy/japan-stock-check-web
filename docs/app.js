@@ -208,50 +208,124 @@ function movingAverage(rows,n){
     return xs.length===n?xs.reduce((a,b)=>a+b,0)/n:null;
   });
 }
+function emaValues(values,period){
+  const out=new Array(values.length).fill(null),k=2/(period+1);
+  let ema=null;
+  for(let i=0;i<values.length;i++){
+    const v=Number(values[i]);
+    if(!Number.isFinite(v))continue;
+    ema=ema==null?v:(v*k+ema*(1-k));
+    out[i]=ema;
+  }
+  return out;
+}
+function macdSeries(rows){
+  const closes=rows.map(r=>Number(r.close));
+  const fast=emaValues(closes,12),slow=emaValues(closes,26);
+  const macd=closes.map((_,i)=>Number.isFinite(fast[i])&&Number.isFinite(slow[i])?fast[i]-slow[i]:null);
+  const signal=emaValues(macd,9);
+  const hist=macd.map((v,i)=>Number.isFinite(v)&&Number.isFinite(signal[i])?v-signal[i]:null);
+  return {macd,signal,hist};
+}
+function rsiSeries(rows,period=14){
+  const closes=rows.map(r=>Number(r.close)),out=new Array(closes.length).fill(null);
+  if(closes.length<=period)return out;
+  let gain=0,loss=0;
+  for(let i=1;i<=period;i++){
+    const d=closes[i]-closes[i-1];
+    if(d>=0)gain+=d;else loss-=d;
+  }
+  let avgGain=gain/period,avgLoss=loss/period;
+  const calc=()=>avgLoss===0?100:100-(100/(1+avgGain/avgLoss));
+  out[period]=calc();
+  for(let i=period+1;i<closes.length;i++){
+    const d=closes[i]-closes[i-1],g=Math.max(d,0),l=Math.max(-d,0);
+    avgGain=(avgGain*(period-1)+g)/period;
+    avgLoss=(avgLoss*(period-1)+l)/period;
+    out[i]=calc();
+  }
+  return out;
+}
 function stockChartSvg(doc,sec){
   const allRows=(doc?.rows||[]).filter(r=>r?.date&&Number.isFinite(Number(r.close))).slice(-90);
-  if(allRows.length<2)return '<div class="history-wait">チャートデータを準備中です。</div>';
+  if(allRows.length<30)return '<div class="history-wait">MACD・RSI計算に必要な履歴を準備中です。</div>';
   const allMa5=movingAverage(allRows,5),allMa25=movingAverage(allRows,25),allMa75=movingAverage(allRows,75);
+  const macdAll=macdSeries(allRows),rsiAll=rsiSeries(allRows,14);
   const day=86400000,ms=d=>Date.parse(String(d)+"T00:00:00Z");
   const endAll=ms(allRows[allRows.length-1].date),cut=endAll-30*day;
   let startIndex=allRows.findIndex(r=>ms(r.date)>=cut);
   if(startIndex<0)startIndex=Math.max(0,allRows.length-22);
-  const rows=allRows.slice(startIndex),ma5=allMa5.slice(startIndex),ma25=allMa25.slice(startIndex),ma75=allMa75.slice(startIndex);
-  const w=680,h=235,pl=52,pr=18,pt=16,pb=30;
-  const start=ms(rows[0].date),end=ms(rows[rows.length-1].date),span=Math.max(day,end-start);
-  const series=[...rows.map(r=>Number(r.close)),...ma5.filter(Number.isFinite),...ma25.filter(Number.isFinite),...ma75.filter(Number.isFinite)];
-  const levels=[sec?.levels?.support_1,sec?.levels?.resistance_1].map(Number).filter(Number.isFinite);
-  series.push(...levels);
-  let lo=Math.min(...series),hi=Math.max(...series);if(lo===hi){lo-=1;hi+=1;}
-  const pad=(hi-lo)*.08;lo-=pad;hi+=pad;
+  const rows=allRows.slice(startIndex);
+  const ma5=allMa5.slice(startIndex),ma25=allMa25.slice(startIndex),ma75=allMa75.slice(startIndex);
+  const macd=macdAll.macd.slice(startIndex),signal=macdAll.signal.slice(startIndex),hist=macdAll.hist.slice(startIndex);
+  const rsi=rsiAll.slice(startIndex);
+  const w=680,pl=52,pr=18,start=ms(rows[0].date),end=ms(rows[rows.length-1].date),span=Math.max(day,end-start);
   const x=d=>pl+(ms(d)-start)*(w-pl-pr)/span;
-  const y=v=>pt+(hi-Number(v))*(h-pt-pb)/(hi-lo);
-  const linePath=vals=>{
+  const weekLines=(h,pt,pb,labels=false)=>{
+    const sd=new Date(start);let sunday=start+((7-sd.getUTCDay())%7)*day,out="";
+    for(;sunday<=end;sunday+=7*day){
+      const iso=new Date(sunday).toISOString().slice(0,10),xx=x(iso).toFixed(1),d=new Date(sunday),lab=(d.getUTCMonth()+1)+"/"+d.getUTCDate();
+      out+='<line class="stock-week" x1="'+xx+'" y1="'+pt+'" x2="'+xx+'" y2="'+(h-pb)+'"/>';
+      if(labels)out+='<text class="stock-date" x="'+xx+'" y="'+(h-7)+'" text-anchor="middle">'+lab+'</text>';
+    }
+    return out;
+  };
+  const pathFor=(vals,y)=>{
     let p="",started=false;
     vals.forEach((v,i)=>{
       if(!Number.isFinite(v))return;
       p+=(started?" L ":"M ")+x(rows[i].date).toFixed(1)+","+y(v).toFixed(1);started=true;
-    });return p;
+    });
+    return p;
   };
-  let grid="";
+
+  const ph=235,ppt=16,ppb=30;
+  const priceSeries=[...rows.map(r=>Number(r.close)),...ma5.filter(Number.isFinite),...ma25.filter(Number.isFinite),...ma75.filter(Number.isFinite)];
+  const levels=[sec?.levels?.support_1,sec?.levels?.resistance_1].map(Number).filter(Number.isFinite);
+  priceSeries.push(...levels);
+  let plo=Math.min(...priceSeries),phi=Math.max(...priceSeries);if(plo===phi){plo-=1;phi+=1;}
+  const ppad=(phi-plo)*.08;plo-=ppad;phi+=ppad;
+  const py=v=>ppt+(phi-Number(v))*(ph-ppt-ppb)/(phi-plo);
+  let pgrid="";
   for(let i=0;i<4;i++){
-    const v=hi-(hi-lo)*i/3,yy=y(v).toFixed(1);
-    grid+='<line class="stock-grid" x1="'+pl+'" y1="'+yy+'" x2="'+(w-pr)+'" y2="'+yy+'"/><text class="stock-axis" x="'+(pl-6)+'" y="'+(Number(yy)+4)+'" text-anchor="end">'+Math.round(v).toLocaleString("ja-JP")+'</text>';
+    const v=phi-(phi-plo)*i/3,yy=py(v).toFixed(1);
+    pgrid+='<line class="stock-grid" x1="'+pl+'" y1="'+yy+'" x2="'+(w-pr)+'" y2="'+yy+'"/><text class="stock-axis" x="'+(pl-6)+'" y="'+(Number(yy)+4)+'" text-anchor="end">'+Math.round(v).toLocaleString("ja-JP")+'</text>';
   }
-  const sd=new Date(start);let sunday=start+((7-sd.getUTCDay())%7)*day,weeks="";
-  for(;sunday<=end;sunday+=7*day){
-    const xx=x(new Date(sunday).toISOString().slice(0,10)).toFixed(1),d=new Date(sunday),lab=(d.getUTCMonth()+1)+"/"+d.getUTCDate();
-    weeks+='<line class="stock-week" x1="'+xx+'" y1="'+pt+'" x2="'+xx+'" y2="'+(h-pb)+'"/><text class="stock-date" x="'+xx+'" y="'+(h-7)+'" text-anchor="middle">'+lab+'</text>';
-  }
-  const levelLine=(v,cls,label)=>Number.isFinite(Number(v))?'<line class="'+cls+'" x1="'+pl+'" y1="'+y(v).toFixed(1)+'" x2="'+(w-pr)+'" y2="'+y(v).toFixed(1)+'"/><text class="stock-level-label" x="'+(w-pr-2)+'" y="'+(y(v)-4).toFixed(1)+'" text-anchor="end">'+label+" "+Math.round(v).toLocaleString("ja-JP")+'</text>':"";
-  return '<svg class="stock-chart" viewBox="0 0 '+w+' '+h+'" role="img">'+grid+weeks+
-    '<path class="stock-close" d="'+linePath(rows.map(r=>Number(r.close)))+'"/>'+
-    '<path class="stock-ma5" d="'+linePath(ma5)+'"/>'+
-    '<path class="stock-ma25" d="'+linePath(ma25)+'"/>'+
-    '<path class="stock-ma75" d="'+linePath(ma75)+'"/>'+
+  const levelLine=(v,cls,label)=>Number.isFinite(Number(v))?'<line class="'+cls+'" x1="'+pl+'" y1="'+py(v).toFixed(1)+'" x2="'+(w-pr)+'" y2="'+py(v).toFixed(1)+'"/><text class="stock-level-label" x="'+(w-pr-2)+'" y="'+(py(v)-4).toFixed(1)+'" text-anchor="end">'+label+" "+Math.round(v).toLocaleString("ja-JP")+'</text>':"";
+  const priceSvg='<div class="indicator-block"><div class="indicator-head"><b>株価</b><span>直近1か月</span></div>'+
+    '<svg class="stock-chart price-chart" viewBox="0 0 '+w+' '+ph+'" role="img">'+pgrid+weekLines(ph,ppt,ppb,true)+
+    '<path class="stock-close" d="'+pathFor(rows.map(r=>Number(r.close)),py)+'"/>'+
+    '<path class="stock-ma5" d="'+pathFor(ma5,py)+'"/>'+
+    '<path class="stock-ma25" d="'+pathFor(ma25,py)+'"/>'+
+    '<path class="stock-ma75" d="'+pathFor(ma75,py)+'"/>'+
     levelLine(sec?.levels?.support_1,"stock-support","支持")+
     levelLine(sec?.levels?.resistance_1,"stock-resistance","抵抗")+
-  '</svg><div class="stock-legend"><span class="lg-close">終値</span><span class="lg-ma5">MA5</span><span class="lg-ma25">MA25</span><span class="lg-ma75">MA75</span><span>直近1か月</span></div>';
+    '</svg><div class="stock-legend"><span class="lg-close">終値</span><span class="lg-ma5">MA5</span><span class="lg-ma25">MA25</span><span class="lg-ma75">MA75</span></div></div>';
+
+  const mh=150,mpt=18,mpb=20,finiteMacd=[...macd,...signal,...hist,0].filter(Number.isFinite);
+  const maxAbs=Math.max(...finiteMacd.map(v=>Math.abs(v)),0.001)*1.12;
+  const my=v=>mpt+(maxAbs-Number(v))*(mh-mpt-mpb)/(maxAbs*2);
+  const zeroY=my(0),barW=Math.max(2,(w-pl-pr)/Math.max(rows.length,1)*0.58);
+  const bars=hist.map((v,i)=>{
+    if(!Number.isFinite(v))return "";
+    const xx=x(rows[i].date)-barW/2,yy=my(v),height=Math.max(1,Math.abs(zeroY-yy));
+    return '<rect class="'+(v>=0?"macd-bar-pos":"macd-bar-neg")+'" x="'+xx.toFixed(1)+'" y="'+Math.min(yy,zeroY).toFixed(1)+'" width="'+barW.toFixed(1)+'" height="'+height.toFixed(1)+'"/>';
+  }).join("");
+  const latestMacd=[...macd].reverse().find(Number.isFinite),latestSignal=[...signal].reverse().find(Number.isFinite);
+  const macdSvg='<div class="indicator-block"><div class="indicator-head"><b>MACD</b><span>MACD '+(Number.isFinite(latestMacd)?latestMacd.toFixed(2):"—")+' / Signal '+(Number.isFinite(latestSignal)?latestSignal.toFixed(2):"—")+'</span></div>'+
+    '<svg class="stock-chart macd-chart" viewBox="0 0 '+w+' '+mh+'" role="img">'+weekLines(mh,mpt,mpb,false)+
+    '<line class="indicator-zero" x1="'+pl+'" y1="'+zeroY.toFixed(1)+'" x2="'+(w-pr)+'" y2="'+zeroY.toFixed(1)+'"/>'+bars+
+    '<path class="macd-line" d="'+pathFor(macd,my)+'"/><path class="signal-line" d="'+pathFor(signal,my)+'"/>'+
+    '</svg><div class="indicator-legend"><span class="lg-macd">MACD</span><span class="lg-signal">Signal</span><span class="lg-hist-pos">＋Hist</span><span class="lg-hist-neg">－Hist</span></div></div>';
+
+  const rh=135,rpt=14,rpb=18,ry=v=>rpt+(100-Number(v))*(rh-rpt-rpb)/100;
+  const guide=(v,cls)=>'<line class="'+cls+'" x1="'+pl+'" y1="'+ry(v).toFixed(1)+'" x2="'+(w-pr)+'" y2="'+ry(v).toFixed(1)+'"/><text class="rsi-label" x="'+(pl-5)+'" y="'+(ry(v)+4).toFixed(1)+'" text-anchor="end">'+v+'</text>';
+  const latestRsi=[...rsi].reverse().find(Number.isFinite);
+  const rsiSvg='<div class="indicator-block"><div class="indicator-head"><b>RSI14</b><span>最新 '+(Number.isFinite(latestRsi)?latestRsi.toFixed(1):"—")+'</span></div>'+
+    '<svg class="stock-chart rsi-chart" viewBox="0 0 '+w+' '+rh+'" role="img">'+weekLines(rh,rpt,rpb,false)+guide(70,"rsi-guide high")+guide(50,"rsi-guide mid")+guide(30,"rsi-guide low")+
+    '<path class="rsi-line" d="'+pathFor(rsi,ry)+'"/></svg><div class="indicator-note">70以上：過熱気味 / 30以下：売られ過ぎ目安</div></div>';
+
+  return priceSvg+macdSvg+rsiSvg;
 }
 async function loadStockChart(details,sec){
   if(details.dataset.loaded==="1")return;
@@ -388,11 +462,17 @@ function renderBanner(d){
       metric("判断比較",(v.decision_sample_count??0)+"/"+(t.min_decision_samples??60),String(t.min_decision_samples??60),sampleOk)+
     "</div>";
   const closedNote=marketStatus==="NO_NEW_TARGET"?'<br>本日は休場日のため、判断日は '+esc(fmtDate(latest))+' のままです。':"";
+  const nextKind=d.next_recheck_kind==="BACKUP"?"予備再判定":"次回再判定";
+  const recheck=d.next_recheck_at
+    ? '<div class="recheck-line"><span>'+nextKind+'</span><b>'+esc(fmtDateTime(d.next_recheck_at))+'</b>'+
+      (d.backup_recheck_at?'<small>予備 '+esc(fmtDateTime(d.backup_recheck_at))+'</small>':"")+'</div>'
+    : '<div class="recheck-line"><span>次回再判定</span><b>未定</b></div>';
   document.getElementById("banner").innerHTML=
     '<div class="banner compact-banner">'+
       '<div class="banner-head"><div><b>'+esc(mode)+'</b><div class="banner-sub">'+esc(friendlyMessage(d,marketStatus,latest))+'</div></div>'+
       '<span class="status-pill '+(ready?"ready":"pending")+'">本番移行 '+(ready?"候補":"未達")+'</span></div>'+
       '<div class="updated">データ生成 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+' / 表示確認 '+esc(fmtDateTime(lastUiCheckAt||new Date().toISOString()))+closedNote+'</div>'+
+      recheck+
       '<div class="update-actions"><button id="refresh-data-btn" class="secondary-action">最新状態を確認</button><button id="github-update-btn" class="primary-action">GitHubで市場データ更新</button></div>'+
       '<details class="technical validation-details"><summary>検証の進み具合</summary>'+
         metrics+
@@ -570,7 +650,7 @@ function renderCards(d){
         '<div class="grid">'+os+'</div>'+
         forecastDetailPanel(s)+
         '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
-        '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価グラフを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
+        '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価・MACD・RSIを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
         technicalPanel(s)+
         '<details class="data-details"><summary>判断データを見る</summary><div>基準日：'+esc(fmtDate(s.as_of))+'</div><div class="detail-note">'+esc(s.reason_summary||"")+'</div></details>'+
       '</article>'
@@ -688,4 +768,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.2");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.3");
