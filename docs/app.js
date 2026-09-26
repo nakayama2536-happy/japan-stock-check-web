@@ -339,11 +339,12 @@ function renderBanner(d){
       metric("株価一致",pct(v.ohlcv_match_rate),pct(t.ohlcv_match_rate_min??0.98),ohlcvOk)+
       metric("判断比較",(v.decision_sample_count??0)+"/"+(t.min_decision_samples??60),String(t.min_decision_samples??60),sampleOk)+
     "</div>";
+  const closedNote=marketStatus==="NO_NEW_TARGET"?'<br>本日は休場日のため、判断日は '+esc(fmtDate(latest))+' のままです。':"";
   document.getElementById("banner").innerHTML=
     '<div class="banner compact-banner">'+
       '<div class="banner-head"><div><b>'+esc(mode)+'</b><div class="banner-sub">'+esc(friendlyMessage(d,marketStatus,latest))+'</div></div>'+
       '<span class="status-pill '+(ready?"ready":"pending")+'">本番移行 '+(ready?"候補":"未達")+'</span></div>'+
-      '<div class="updated">データ生成 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+' / 表示確認 '+esc(fmtDateTime(lastUiCheckAt||new Date().toISOString()))+' +(marketStatus==="NO_NEW_TARGET"?'<br>本日は休場日のため、判断日は '+esc(fmtDate(latest))+' のままです。':"")+'</div>'+
+      '<div class="updated">データ生成 '+esc(fmtDateTime(d.updated_at||d.market_checked_at))+' / 表示確認 '+esc(fmtDateTime(lastUiCheckAt||new Date().toISOString()))+closedNote+'</div>'+
       '<div class="update-actions"><button id="refresh-data-btn" class="secondary-action">最新状態を確認</button><button id="github-update-btn" class="primary-action">GitHubで市場データ更新</button></div>'+
       '<details class="technical validation-details"><summary>検証の進み具合</summary>'+
         metrics+
