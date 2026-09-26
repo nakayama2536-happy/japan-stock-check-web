@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "app_version": "1.5.5",
+  "app_version": "1.5.6",
   "engine_version": "1.3.3",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
@@ -1002,5 +1002,96 @@
       },
       "as_of": "2026-09-25"
     }
-  ]
+  ],
+  "report_migration": {
+    "parity_version": "1.0",
+    "formal_source": "SCHEDULED_REPORT_1700",
+    "implemented": 4,
+    "partial": 2,
+    "missing_or_blocked": 5,
+    "required_total": 11,
+    "feature_parity_ready": false,
+    "shadow_validation_ready": false,
+    "decision_mode_production": false,
+    "schedule_disable_candidate": false,
+    "automatic_schedule_disable": false,
+    "manual_approval_required": true,
+    "capabilities": [
+      {
+        "id": "source_qc",
+        "label": "データ取得・独立照合・QC",
+        "required": true,
+        "status": "IMPLEMENTED"
+      },
+      {
+        "id": "technical_gate",
+        "label": "日足・週足・MA/一目・MACD・RSI・出来高・支持抵抗",
+        "required": true,
+        "status": "IMPLEMENTED"
+      },
+      {
+        "id": "market_context",
+        "label": "日経平均・TOPIX・USD/JPY",
+        "required": true,
+        "status": "IMPLEMENTED"
+      },
+      {
+        "id": "next_conditions",
+        "label": "判断変更条件・現在値との差",
+        "required": true,
+        "status": "IMPLEMENTED"
+      },
+      {
+        "id": "individual_policy",
+        "label": "個別銘柄方針",
+        "required": true,
+        "status": "PARTIAL"
+      },
+      {
+        "id": "structural_growth",
+        "label": "構造的成長スコア・充足率・新高値健全性",
+        "required": true,
+        "status": "MISSING"
+      },
+      {
+        "id": "earnings_risk",
+        "label": "決算前リスク・決算跨ぎ・決算後評価",
+        "required": true,
+        "status": "MISSING"
+      },
+      {
+        "id": "factor_event",
+        "label": "Factor/Event・企業イベント・ファンダメンタル",
+        "required": true,
+        "status": "MISSING"
+      },
+      {
+        "id": "next_business_day_watch",
+        "label": "翌営業日の確認ポイント",
+        "required": true,
+        "status": "PARTIAL"
+      },
+      {
+        "id": "same_run_identity",
+        "label": "スケジュールとアプリの同一Run/同一正本",
+        "required": true,
+        "status": "MISSING"
+      },
+      {
+        "id": "formal_decision",
+        "label": "アプリ正式判断の本番採用",
+        "required": true,
+        "status": "BLOCKED"
+      }
+    ],
+    "cutover_requirements": [
+      "required_capabilities_all_implemented",
+      "shadow_validation_production_candidate",
+      "decision_mode_production",
+      "same_run_identity_verified",
+      "formal_decision_parity_verified",
+      "zero_critical_incidents",
+      "manual_user_approval"
+    ]
+  }
 }

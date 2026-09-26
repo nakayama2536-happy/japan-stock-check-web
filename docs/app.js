@@ -885,6 +885,27 @@ function renderCards(d){
   bindStockAccordions();
 }
 
+function reportMigrationHelp(d){
+  const m=d.report_migration||{};
+  if(!m.required_total)return "";
+  const labels={IMPLEMENTED:"実装済み",PARTIAL:"部分実装",MISSING:"未実装",BLOCKED:"本番待ち"};
+  const cls={IMPLEMENTED:"done",PARTIAL:"partial",MISSING:"missing",BLOCKED:"blocked"};
+  const rows=(m.capabilities||[]).map(x=>
+    '<div class="migration-row"><span class="migration-state '+(cls[x.status]||"missing")+'">'+esc(labels[x.status]||x.status)+'</span><b>'+esc(x.label||x.id)+'</b></div>'
+  ).join("");
+  const cutover=m.schedule_disable_candidate
+    ? '<div class="migration-cutover ready">レポート停止候補。ただし最終承認が必要です。</div>'
+    : '<div class="migration-cutover">17:00スケジュールを正式系として継続します。</div>';
+  return '<article class="help-card report-migration-card">'+
+    '<div class="help-title-line"><h2>レポート統合状況</h2><span class="status-pill '+(m.schedule_disable_candidate?"ready":"pending")+'">'+(m.schedule_disable_candidate?"切替候補":"移行中")+'</span></div>'+
+    '<p>スケジュールレポートの機能をアプリへ統合中です。正式系とアプリで別々の売買判断を作らないことを優先します。</p>'+
+    '<div class="migration-counts"><div><b>'+esc(m.implemented??0)+'</b><span>実装済み</span></div><div><b>'+esc(m.partial??0)+'</b><span>部分実装</span></div><div><b>'+esc(m.missing_or_blocked??0)+'</b><span>未実装/待ち</span></div><div><b>'+esc(m.required_total??0)+'</b><span>必須合計</span></div></div>'+
+    cutover+
+    '<details class="migration-details"><summary>統合項目を見る</summary><div class="migration-list">'+rows+'</div></details>'+
+    '<p class="note">全必須機能・検証・同一Run/同一正本・正式判断一致が揃っても、自動では17:00スケジュールを停止しません。最終確認後に切り替えます。</p>'+
+  '</article>';
+}
+
 function renderHelp(d){
   const v=d.shadow_validation||{};
   const t=v.thresholds||{};
@@ -952,6 +973,8 @@ function renderHelp(d){
       '<p class="note">基準達成だけで自動的に正式運用へ切り替える設計ではありません。本番用データ契約の接続・確認後に移行判断します。</p>'+
     '</article>'+
 
+    reportMigrationHelp(d)+
+
     '<article class="help-card">'+
       '<h2>データ品質</h2>'+
       '<div class="help-row"><b>暫定一致</b><p>独立データとの値照合は一致していますが、本番用データ契約確定前なので正式判断には未採用です。</p></div>'+
@@ -994,4 +1017,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.5");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.6");
