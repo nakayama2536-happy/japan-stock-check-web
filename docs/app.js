@@ -510,6 +510,63 @@ function topChangeRows(items){
   }
   return rows.slice(0,4);
 }
+function qualityIssueText(s){
+  const reason=String(s?.source_gate_reason||"").toUpperCase();
+  const diffs=s?.source_evidence?.diffs||{};
+  if(reason.includes("MISMATCH")){
+    const labels={open:"始値",high:"高値",low:"安値",close:"終値",volume:"出来高"};
+    const parts=Object.entries(diffs)
+      .filter(([,v])=>Number.isFinite(Number(v))&&Math.abs(Number(v))>0)
+      .map(([k,v])=>{
+        const n=Math.abs(Number(v));
+        const txt=n>=1?n.toLocaleString("ja-JP",{maximumFractionDigits:2}):n.toFixed(2);
+        return (labels[k]||k)+"差 "+txt+(k==="volume"?"":"円");
+      });
+    if(parts.length)return parts.join(" / ");
+  }
+  return sourceReasonLabels[s?.source_gate_reason]||s?.source_gate_reason||"確認が必要です";
+}
+function conditionTargetValue(s,x){
+  const label=String(x?.label||"");
+  const m=label.match(/([0-9][0-9,]*(?:\.[0-9]+)?)円/);
+  if(m)return Number(m[1].replace(/,/g,""));
+  if(/転換線/.test(label))return Number(s?.technical?.ichimoku_tenkan);
+  if(/基準線/.test(label))return Number(s?.technical?.ichimoku_kijun);
+  if(/抵抗/.test(label))return Number(s?.levels?.resistance_1);
+  if(/支持/.test(label))return Number(s?.levels?.support_1);
+  return null;
+}
+function conditionGapText(s,x){
+  const price=Number(s?.price),target=conditionTargetValue(s,x);
+  if(!Number.isFinite(price)||!Number.isFinite(target)||price===0)return "";
+  const delta=target-price,pct=delta/price*100;
+  const decimals=Math.abs(delta)<1?2:Math.abs(delta)<10?1:0;
+  const d=(delta>=0?"+":"")+delta.toLocaleString("ja-JP",{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+  const p=(pct>=0?"+":"")+pct.toFixed(2);
+  return "現在値との差 "+d+"円（"+p+"%）";
+}
+function forecastAlignment(o){
+  const dir={STRONG_UP:1,UP:1,NEUTRAL:0,DOWN:-1,STRONG_DOWN:-1}[o?.direction]||0;
+  const a=o?.analog||{},median=Number(a.median_return_pct),share=Number(a.historical_up_share_pct);
+  let stat=0;
+  if(Number.isFinite(median)&&Math.abs(median)>=0.20)stat=median>0?1:-1;
+  else if(Number.isFinite(share)&&share>=55)stat=1;
+  else if(Number.isFinite(share)&&share<=45)stat=-1;
+  if(dir&&stat&&dir!==stat)return {label:"参考統計と方向差",cls:"forecast-mismatch"};
+  if(dir&&stat&&dir===stat)return {label:"方向整合",cls:"forecast-match"};
+  return {label:"参考統計は中立",cls:"forecast-neutral"};
+}
+function topChangeRows(items){
+  const rows=[];
+  for(const s of (items||[])){
+    const cs=s.next_conditions||[];
+    if(!cs.length)continue;
+    const ranked=[...cs].sort((a,b)=>Number(!!conditionGapText(s,b))-Number(!!conditionGapText(s,a)));
+    const c=ranked[0],gap=conditionGapText(s,c);
+    rows.push({name:s.name,label:c.label||"条件確認",gap});
+  }
+  return rows.slice(0,4);
+}
 function forecastDetailPanel(s){
   const rows=["1","3","5","14"].map(h=>{
     const o=s.outlook?.[h]||{},a=o.analog||{},align=forecastAlignment(o);
@@ -526,7 +583,7 @@ function forecastDetailPanel(s){
     '<div class="forecast-note">上段は現在のテクニカル方向、類似中央値・上昇割合は過去の参考統計です。両者が逆向きの場合は「参考統計と方向差」と表示します。上昇割合は将来確率ではありません。</div></details>';
 }
 
-function commonTone(value){
+function commonTonefunction commonTone(value){
   const v=String(value||"").toUpperCase();
   if(["PASS","FRESH","ELIGIBLE","DECISION","CURRENT","CONFIRMED"].includes(v))return "common-ok";
   if(["FAIL","STALE","MISSING","NOT_ELIGIBLE","BLOCKED"].includes(v))return "common-ng";
@@ -537,7 +594,7 @@ function renderCommonOverview(c){
   if(root)root.innerHTML="";
 }
 
-function setupNav(){
+function setupNavfunction setupNav(){
   document.querySelectorAll("nav [data-view]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const id=btn.dataset.view;
@@ -654,7 +711,7 @@ function renderTodayOverview(d){
   '</article>';
 }
 
-function renderMarketEnvironment(d){
+function renderMarketEnvironmentfunction renderMarketEnvironment(d){
   const root=document.getElementById("market-environment"),items=d.market_environment||[];
   if(!items.length){root.innerHTML='<article class="market-panel"><div class="section-heading"><div><span class="eyebrow">市場全体</span><h2>市場環境</h2></div><span class="reference-pill">参考情報</span></div><div class="market-empty">次回更新から日経平均・TOPIX・USD/JPYを表示します。</div></article>';return;}
   const marketStatusJa=v=>({ERROR:"取得失敗",STALE:"更新待ち",OK:"正常"}[v]||v||"—");
@@ -737,7 +794,7 @@ function renderDataQuality(d){
   bindQualityAction();
 }
 
-function technicalPanel(s){
+function technicalPanelfunction technicalPanel(s){
   const t=s.technical||{},l=s.levels||{};
   const has=Object.keys(t).length>0||Object.keys(l).length>0||s.weekly_trend;
   if(!has)return '<details class="technical-panel"><summary>テクニカル詳細</summary><div class="technical-empty">次回更新から詳細指標を表示します。</div></details>';
@@ -772,6 +829,16 @@ function bindStockAccordions(){
     });
   });
 }
+function bindStockAccordions(){
+  document.querySelectorAll(".stock-accordion").forEach(el=>{
+    el.addEventListener("toggle",()=>{
+      if(!el.open)return;
+      document.querySelectorAll(".stock-accordion").forEach(other=>{
+        if(other!==el&&other.open)other.open=false;
+      });
+    });
+  });
+}
 function renderCards(d){
   const cards=document.getElementById("cards");cards.innerHTML="";
   if(!d.securities?.length){cards.innerHTML='<div class="card empty">直近の銘柄判断はまだありません。次の営業日更新後に表示されます。</div>';return;}
@@ -790,6 +857,7 @@ function renderCards(d){
       return '<div class="condition-item"><div><span class="cond-symbol">'+(symbols[x.status]||"•")+'</span>'+esc(x.label)+'</div>'+(gap?'<small>'+esc(gap)+'</small>':"")+'</div>';
     }).join("")||'<div class="muted">追加条件なし</div>';
     const q=s.data_quality||"—",qText=cardQualityText(s);
+    const qClass=["HOLD","ERROR","STALE"].includes(q)?"quality-hold":["FINAL","CONFIRMED"].includes(q)?"quality-ok":"quality-provisional";
     const formal=formalDecisionText(d,s),shadow=s.shadow_action||"WAIT",signal=s.reference_signal||"—",qState=sourceCheckState(s);
     cards.insertAdjacentHTML("beforeend",
       '<details class="card stock-card stock-accordion" data-stock="'+esc(s.code)+'">'+
@@ -817,7 +885,7 @@ function renderCards(d){
   bindStockAccordions();
 }
 
-function renderHelp(d){
+function renderHelpfunction renderHelp(d){
   const v=d.shadow_validation||{};
   const t=v.thresholds||{};
   const ready=!!v.production_candidate;
