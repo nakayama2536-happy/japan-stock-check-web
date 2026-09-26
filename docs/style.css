@@ -537,3 +537,9 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
 .policy-objective{font-size:12px;line-height:1.5;color:#475569;margin-top:5px}
 .policy-focus{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.policy-focus span{font-size:10px;padding:3px 7px;border-radius:999px;background:#fff;border:1px solid #bfdbfe;color:#475569}
 @media(prefers-color-scheme:dark){.policy-context{background:#172554;border-color:#1e40af}.policy-head span,.policy-objective{color:#cbd5e1}.policy-head b{color:#93c5fd}.policy-focus span{background:#1e3a8a;border-color:#2563eb;color:#dbeafe}}
+
+/* v1.5.8 next business day watch */
+.next-watch{margin:10px 0 12px;padding:10px 12px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0}
+.next-watch-title{font-size:12px;font-weight:800;color:#166534;margin-bottom:6px}
+.next-watch ol{margin:0;padding-left:20px}.next-watch li{font-size:12px;line-height:1.55;color:#475569;padding:2px 0}
+@media(prefers-color-scheme:dark){.next-watch{background:#052e16;border-color:#166534}.next-watch-title{color:#86efac}.next-watch li{color:#d1d5db}}

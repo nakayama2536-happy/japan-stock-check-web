@@ -850,6 +850,13 @@ function policyContextHtml(s){
   '</div>';
 }
 
+function nextWatchHtml(s){
+  const items=s.next_business_day_watch||[];
+  if(!items.length)return "";
+  return '<div class="next-watch"><div class="next-watch-title">翌営業日の確認ポイント</div>'+
+    '<ol>'+items.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ol></div>';
+}
+
 function renderCards(d){
   const cards=document.getElementById("cards");cards.innerHTML="";
   if(!d.securities?.length){cards.innerHTML='<div class="card empty">直近の銘柄判断はまだありません。次の営業日更新後に表示されます。</div>';return;}
@@ -885,6 +892,7 @@ function renderCards(d){
           policyContextHtml(s)+
           '<div class="grid">'+os+'</div>'+
           forecastDetailPanel(s)+
+          nextWatchHtml(s)+
           '<div class="conditions"><b>次に判断が変わる条件</b>'+nc+'</div>'+
           '<details class="stock-chart-details supplement-details" data-code="'+esc(s.code)+'"><summary>株価・MACD・RSIを見る</summary><div class="disclosure-body"><div class="stock-chart-target"><div class="history-wait compact">開くと最新グラフを読み込みます。</div></div></div></details>'+
           technicalPanel(s)+
@@ -974,6 +982,11 @@ function renderHelp(d){
     '</article>'+
 
     '<article class="help-card">'+
+      '<h2>翌営業日の確認ポイント</h2>'+
+      '<p>未成立の必須条件、データ品質、銘柄方針から最大3件を自動表示します。新しい予測値を作るのではなく、次回確認時に見る項目を整理したものです。</p>'+
+    '</article>'+
+
+    '<article class="help-card">'+
       '<h2>次の条件</h2>'+
       '<p><b>△</b> は監視中・未確定、<b>○</b> は条件成立、<b>×</b> は条件非成立、<b>—</b> は判定不能を表します。条件が複数ある場合は、必要条件がそろうかを確認します。</p>'+
     '</article>'+
@@ -1034,4 +1047,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.7");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.5.8");

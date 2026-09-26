@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "app_version": "1.5.7",
+  "app_version": "1.5.8",
   "engine_version": "1.3.3",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
@@ -430,7 +430,12 @@
           "MACD改善",
           "週足悪化なし"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "週足悪化なし",
+        "転換線回復"
+      ]
     },
     {
       "security_id": "SEC_JP_6954",
@@ -561,7 +566,12 @@
           "MACD改善",
           "週足悪化なし"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "6,000円回復",
+        "週足悪化なし"
+      ]
     },
     {
       "security_id": "SEC_JP_3038",
@@ -679,7 +689,12 @@
           "MACD",
           "決算後反応"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "価格構造",
+        "MACD"
+      ]
     },
     {
       "security_id": "SEC_JP_9432",
@@ -810,7 +825,12 @@
           "転換線割れ",
           "価格構造悪化"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "終値で転換線割れ",
+        "価格構造悪化"
+      ]
     },
     {
       "security_id": "SEC_JP_1812",
@@ -941,7 +961,12 @@
           "週足悪化なし",
           "出来高"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "主要抵抗帯を回復",
+        "主要抵抗帯回復"
+      ]
     },
     {
       "security_id": "SEC_JP_5805",
@@ -1066,14 +1091,19 @@
           "週足悪化なし",
           "反転確認"
         ]
-      }
+      },
+      "next_business_day_watch": [
+        "データ品質と独立ソース照合を再確認",
+        "週足悪化なし",
+        "MACD改善"
+      ]
     }
   ],
   "report_migration": {
     "parity_version": "1.0",
     "formal_source": "SCHEDULED_REPORT_1700",
-    "implemented": 5,
-    "partial": 1,
+    "implemented": 6,
+    "partial": 0,
     "missing_or_blocked": 5,
     "required_total": 11,
     "feature_parity_ready": false,
@@ -1135,7 +1165,7 @@
         "id": "next_business_day_watch",
         "label": "翌営業日の確認ポイント",
         "required": true,
-        "status": "PARTIAL"
+        "status": "IMPLEMENTED"
       },
       {
         "id": "same_run_identity",
