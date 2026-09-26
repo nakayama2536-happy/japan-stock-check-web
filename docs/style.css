@@ -701,9 +701,9 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
 .indicator-grid{stroke:#dbe3ed;stroke-width:1}
 .macd-axis-label{font-size:9px;fill:#64748b}
 .chart-modal-content .macd-axis-label{font-size:11px;font-weight:700}
+/* MACD uses a taller viewBox so 100% zoom fills a landscape iPhone without manual adjustment. */
+.macd-chart{max-height:none}
 @media(orientation:landscape){
-  .chart-modal-content{width:100%!important}
-  .chart-modal-content .macd-chart{width:100%!important;height:auto!important;max-height:calc(100dvh - 190px)!important}
   .chart-modal-content .indicator-legend{font-size:11px;margin-top:4px}
 }
 @media(prefers-color-scheme:dark){
