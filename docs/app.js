@@ -809,6 +809,99 @@ function fmtFundamentalChange(v){
   const n=Number(v);
   return (n>0?"+":"")+n.toFixed(1)+"%";
 }
+const DEEP_DIVE_REVIEW_KEY="jpstock.deepDiveReviews.v1";
+
+function deepDiveReviewKey(s){
+  const f=s?.fundamental||{};
+  const id=f.document_id||[f.submitted_at||"",f.period_end||"",f.document_type||""].join("|");
+  return String(s?.code||"")+"|"+String(id||"unknown");
+}
+function loadDeepDiveReviews(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(DEEP_DIVE_REVIEW_KEY)||"{}");
+    return raw&&typeof raw==="object"&&!Array.isArray(raw)?raw:{};
+  }catch(_){return {};}
+}
+function saveDeepDiveReviews(reviews){
+  try{
+    const entries=Object.entries(reviews||{}).sort((a,b)=>String(b[1]?.reviewed_at||"").localeCompare(String(a[1]?.reviewed_at||""))).slice(0,100);
+    localStorage.setItem(DEEP_DIVE_REVIEW_KEY,JSON.stringify(Object.fromEntries(entries)));
+    return true;
+  }catch(_){return false;}
+}
+function currentDeepDiveReview(s){
+  return loadDeepDiveReviews()[deepDiveReviewKey(s)]||null;
+}
+function deepDiveReviewHtml(s){
+  const review=currentDeepDiveReview(s)||{};
+  const value=review.value||"";
+  const labels={useful:"有用",reference:"参考程度",noise:"ノイズ"};
+  const buttons=["useful","reference","noise"].map(v=>
+    '<button type="button" class="deep-dive-review-btn '+(value===v?"selected":"")+'" data-deep-dive-review="'+esc(s.code)+'" data-review-value="'+v+'">'+labels[v]+'</button>'
+  ).join("");
+  const stamp=review.reviewed_at?'<small>前回評価 '+esc(fmtDateTime(review.reviewed_at))+'</small>':"<small>未評価</small>";
+  return '<div class="deep-dive-review" data-review-box="'+esc(s.code)+'">'+
+    '<div class="deep-dive-review-head"><b>深掘り結果の評価</b>'+stamp+'</div>'+
+    '<div class="deep-dive-review-buttons">'+buttons+'</div>'+
+    '<textarea rows="2" maxlength="240" data-deep-dive-note="'+esc(s.code)+'" placeholder="重要だった点・ノイズだった理由（任意）">'+esc(review.note||"")+'</textarea>'+
+    '<div class="deep-dive-review-footer"><button type="button" data-deep-dive-save="'+esc(s.code)+'">評価を保存</button><span>この端末内だけに保存します。</span></div>'+
+  '</div>';
+}
+function saveDeepDiveReview(code){
+  const s=(currentSnapshot?.securities||[]).find(x=>String(x.code)===String(code));
+  if(!s)return;
+  const box=document.querySelector('[data-review-box="'+CSS.escape(String(code))+'"]');
+  if(!box)return;
+  const selected=box.querySelector(".deep-dive-review-btn.selected")?.dataset.reviewValue||"";
+  const note=(box.querySelector("[data-deep-dive-note]")?.value||"").trim();
+  if(!selected){
+    toast("有用・参考程度・ノイズのいずれかを選んでください。",4000);
+    return;
+  }
+  const reviews=loadDeepDiveReviews();
+  reviews[deepDiveReviewKey(s)]={
+    code:String(s.code||""),
+    name:String(s.name||""),
+    document_id:String(s.fundamental?.document_id||""),
+    submitted_at:String(s.fundamental?.submitted_at||""),
+    priority_score:Number(s.fundamental?.deep_dive?.priority_score||0),
+    severity:String(s.fundamental?.deep_dive?.severity||""),
+    reasons:(s.fundamental?.deep_dive?.reasons||[]).map(r=>String(r.label||r.code||"")),
+    value:selected,
+    note,
+    reviewed_at:new Date().toISOString(),
+  };
+  if(!saveDeepDiveReviews(reviews)){
+    toast("評価を保存できませんでした。",4000);
+    return;
+  }
+  const stamp=box.querySelector(".deep-dive-review-head small");
+  if(stamp)stamp.textContent="前回評価 "+fmtDateTime(reviews[deepDiveReviewKey(s)].reviewed_at);
+  toast("深掘り結果の評価を保存しました。",3500);
+}
+function buildDeepDiveReviewHistoryText(){
+  const reviews=loadDeepDiveReviews();
+  const rows=Object.values(reviews).sort((a,b)=>String(b.reviewed_at||"").localeCompare(String(a.reviewed_at||"")));
+  return [
+    "# 日本株 CHECK — 深掘り評価履歴",
+    "",
+    "この履歴を使い、トリガー基準が厳しすぎるか・緩すぎるか、見逃しやノイズがないかを評価してください。単純な件数だけでなく、priority_score・理由・ユーザー評価・メモの関係を確認してください。",
+    "",
+    JSON.stringify(rows,null,2),
+  ].join("\n");
+}
+async function copyDeepDiveReviewHistory(){
+  const text=buildDeepDiveReviewHistoryText();
+  try{
+    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);
+    else{
+      const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+      document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
+    }
+    toast("深掘り評価履歴をコピーしました。",4000);
+  }catch(_){toast("評価履歴をコピーできませんでした。",4000);}
+}
+
 function deepDiveTriggerHtml(s){
   const dd=s.fundamental?.deep_dive||{};
   if(!dd.recommended)return "";
@@ -828,6 +921,7 @@ function deepDiveTriggerHtml(s){
       '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
     '</div>'+
     '<div class="deep-dive-note">優先度は独立した論点をまとめて算出します。純利益とEPSなど相関の強い指標は重複加点しません。</div>'+
+    deepDiveReviewHtml(s)+
   '</div>';
 }
 
@@ -911,6 +1005,19 @@ function bindDeepDiveActions(){
   });
   document.querySelectorAll("[data-deep-dive-share]").forEach(btn=>{
     btn.onclick=()=>shareDeepDiveText(btn.dataset.deepDiveShare);
+  });
+  document.querySelectorAll("[data-deep-dive-review]").forEach(btn=>{
+    btn.onclick=()=>{
+      const box=btn.closest(".deep-dive-review");
+      box?.querySelectorAll(".deep-dive-review-btn").forEach(x=>x.classList.remove("selected"));
+      btn.classList.add("selected");
+    };
+  });
+  document.querySelectorAll("[data-deep-dive-save]").forEach(btn=>{
+    btn.onclick=()=>saveDeepDiveReview(btn.dataset.deepDiveSave);
+  });
+  document.querySelectorAll("[data-deep-dive-history-copy]").forEach(btn=>{
+    btn.onclick=copyDeepDiveReviewHistory;
   });
 }
 
@@ -1134,7 +1241,8 @@ function renderHelp(d){
 
     '<article class="help-card">'+
       '<h2>業績・財務（EDINET）</h2>'+
-      '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。新規開示や大幅変化を検出した場合は「ChatGPT深掘りトリガー」を表示し、分析プロンプトと選択銘柄の保持データをコピー・共有できます。</p>'+
+      '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。新規開示や大幅変化を検出した場合は「ChatGPT深掘りトリガー」を表示し、分析プロンプトと選択銘柄の保持データをコピー・共有できます。深掘り後は「有用／参考程度／ノイズ」と短いメモをこの端末内に保存でき、評価履歴をChatGPTへコピーして閾値調整に使えます。</p>'+
+      '<button type="button" class="deep-dive-history-copy" data-deep-dive-history-copy>深掘り評価履歴をコピー</button>'+
     '</article>'+
 
     '<article class="help-card">'+
