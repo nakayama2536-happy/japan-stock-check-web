@@ -594,7 +594,7 @@ function renderCommonOverview(c){
   if(root)root.innerHTML="";
 }
 
-function setupNavfunction setupNav(){
+function setupNav(){
   document.querySelectorAll("nav [data-view]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const id=btn.dataset.view;
@@ -711,7 +711,7 @@ function renderTodayOverview(d){
   '</article>';
 }
 
-function renderMarketEnvironmentfunction renderMarketEnvironment(d){
+function renderMarketEnvironment(d){
   const root=document.getElementById("market-environment"),items=d.market_environment||[];
   if(!items.length){root.innerHTML='<article class="market-panel"><div class="section-heading"><div><span class="eyebrow">市場全体</span><h2>市場環境</h2></div><span class="reference-pill">参考情報</span></div><div class="market-empty">次回更新から日経平均・TOPIX・USD/JPYを表示します。</div></article>';return;}
   const marketStatusJa=v=>({ERROR:"取得失敗",STALE:"更新待ち",OK:"正常"}[v]||v||"—");
@@ -794,7 +794,7 @@ function renderDataQuality(d){
   bindQualityAction();
 }
 
-function technicalPanelfunction technicalPanel(s){
+function technicalPanel(s){
   const t=s.technical||{},l=s.levels||{};
   const has=Object.keys(t).length>0||Object.keys(l).length>0||s.weekly_trend;
   if(!has)return '<details class="technical-panel"><summary>テクニカル詳細</summary><div class="technical-empty">次回更新から詳細指標を表示します。</div></details>';
@@ -885,7 +885,7 @@ function renderCards(d){
   bindStockAccordions();
 }
 
-function renderHelpfunction renderHelp(d){
+function renderHelp(d){
   const v=d.shadow_validation||{};
   const t=v.thresholds||{};
   const ready=!!v.production_candidate;
