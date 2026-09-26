@@ -16,9 +16,9 @@
       "ticker": "^N225",
       "name": "日経平均",
       "status": "OK",
-      "value": NaN,
-      "change_pct": NaN,
-      "direction": "FLAT",
+      "value": 0,
+      "change_pct": -100,
+      "direction": "DOWN",
       "as_of": "2026-09-25",
       "unit": "円",
       "display_decimals": 0,
@@ -74,7 +74,7 @@
         },
         {
           "date": "2026-09-16",
-          "value": 63923.0
+          "value": 63923
         },
         {
           "date": "2026-09-17",
@@ -90,7 +90,7 @@
         },
         {
           "date": "2026-09-25",
-          "value": NaN
+          "value": null
         }
       ]
     },
@@ -237,7 +237,7 @@
       "ticker": "6841.T",
       "code": "6841",
       "name": "横河電機",
-      "price": 4740.0,
+      "price": 4740,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -302,24 +302,24 @@
         "macd_state": "BULLISH",
         "macd_cross_state": "GC_ACTIVE",
         "volume_ratio20": 0.958,
-        "ichimoku_tenkan": 4623.0,
-        "ichimoku_kijun": 5049.0,
+        "ichimoku_tenkan": 4623,
+        "ichimoku_kijun": 5049,
         "price_structure": "DOWNTREND"
       },
       "weekly_trend": "DOWN",
       "levels": {
         "supports": [
-          4672.0,
+          4672,
           4596.6
         ],
         "resistances": [
-          4786.0,
-          4830.0
+          4786,
+          4830
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 36.9,
-        "support_1": 4672.0,
-        "resistance_1": 4786.0
+        "support_1": 4672,
+        "resistance_1": 4786
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
@@ -343,9 +343,9 @@
         "independent": "KABUTAN",
         "crosscheck_match": false,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 1.0
+          "open": 0,
+          "high": 0,
+          "low": 1
         }
       },
       "as_of": "2026-09-25"
@@ -355,7 +355,7 @@
       "ticker": "6954.T",
       "code": "6954",
       "name": "ファナック",
-      "price": 5985.0,
+      "price": 5985,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -380,7 +380,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.72,
-            "historical_up_share_pct": 35.0,
+            "historical_up_share_pct": 35,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -408,20 +408,20 @@
         }
       },
       "technical": {
-        "ma5": 5898.0,
+        "ma5": 5898,
         "ma25": 5921.56,
         "ma75": 6596.65,
         "ma25_slope5_pct": -1.972,
         "ma75_slope5_pct": -1.905,
-        "rsi14": 49.0,
+        "rsi14": 49,
         "macd": -111.13,
         "macd_signal": -159.221,
         "macd_hist": 48.091,
         "macd_state": "BULLISH",
         "macd_cross_state": "GC_ACTIVE",
         "volume_ratio20": 1.048,
-        "ichimoku_tenkan": 5821.0,
-        "ichimoku_kijun": 6080.0,
+        "ichimoku_tenkan": 5821,
+        "ichimoku_kijun": 6080,
         "price_structure": "DOWNTREND"
       },
       "weekly_trend": "DOWN",
@@ -431,13 +431,13 @@
           5823.67
         ],
         "resistances": [
-          5993.0,
-          6075.0
+          5993,
+          6075
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 48.43,
         "support_1": 5915.33,
-        "resistance_1": 5993.0
+        "resistance_1": 5993
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
@@ -461,11 +461,11 @@
         "independent": "MONEX_SCOUTER",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-25"
@@ -510,8 +510,8 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.0,
-            "historical_up_share_pct": 50.0,
+            "median_return_pct": 0,
+            "historical_up_share_pct": 50,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -522,7 +522,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.38,
-            "historical_up_share_pct": 45.0,
+            "historical_up_share_pct": 45,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
@@ -547,17 +547,17 @@
       "weekly_trend": "UP",
       "levels": {
         "supports": [
-          2944.0,
+          2944,
           2897.67
         ],
         "resistances": [
-          2984.0,
-          3070.0
+          2984,
+          3070
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 38.53,
-        "support_1": 2944.0,
-        "resistance_1": 2984.0
+        "support_1": 2944,
+        "resistance_1": 2984
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [],
@@ -568,11 +568,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-25"
@@ -607,7 +607,7 @@
           "analog": {
             "sample_count": 40,
             "median_return_pct": -0.45,
-            "historical_up_share_pct": 40.0,
+            "historical_up_share_pct": 40,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -654,7 +654,7 @@
       "weekly_trend": "UP",
       "levels": {
         "supports": [
-          173.0,
+          173,
           171.78
         ],
         "resistances": [
@@ -663,7 +663,7 @@
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 0.97,
-        "support_1": 173.0,
+        "support_1": 173,
         "resistance_1": 176.9
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
@@ -688,11 +688,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-25"
@@ -702,7 +702,7 @@
       "ticker": "1812.T",
       "code": "1812",
       "name": "鹿島建設",
-      "price": 4909.0,
+      "price": 4909,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -711,12 +711,12 @@
       "outlook": {
         "1": {
           "direction": "DOWN",
-          "score": -39.0,
+          "score": -39,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.32,
-            "historical_up_share_pct": 65.0,
+            "historical_up_share_pct": 65,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -744,12 +744,12 @@
         },
         "14": {
           "direction": "DOWN",
-          "score": -27.0,
+          "score": -27,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
             "median_return_pct": 1.62,
-            "historical_up_share_pct": 65.0,
+            "historical_up_share_pct": 65,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
@@ -767,8 +767,8 @@
         "macd_state": "WEAKENING",
         "macd_cross_state": "GC_ACTIVE",
         "volume_ratio20": 0.917,
-        "ichimoku_tenkan": 4974.0,
-        "ichimoku_kijun": 4951.0,
+        "ichimoku_tenkan": 4974,
+        "ichimoku_kijun": 4951,
         "price_structure": "HIGHER_LOW"
       },
       "weekly_trend": "UP",
@@ -778,13 +778,13 @@
           4807.5
         ],
         "resistances": [
-          5049.0,
-          5096.0
+          5049,
+          5096
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 40.91,
         "support_1": 4863.5,
-        "resistance_1": 5049.0
+        "resistance_1": 5049
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
@@ -808,11 +808,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-25"
@@ -822,7 +822,7 @@
       "ticker": "5805.T",
       "code": "5805",
       "name": "SWCC",
-      "price": 13540.0,
+      "price": 13540,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -835,8 +835,8 @@
           "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.0,
-            "historical_up_share_pct": 60.0,
+            "median_return_pct": 1,
+            "historical_up_share_pct": 60,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -864,19 +864,19 @@
         },
         "14": {
           "direction": "NEUTRAL",
-          "score": 14.0,
+          "score": 14,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
             "median_return_pct": 0.8,
-            "historical_up_share_pct": 55.0,
+            "historical_up_share_pct": 55,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 13200.0,
-        "ma25": 13780.0,
+        "ma5": 13200,
+        "ma25": 13780,
         "ma75": 12963.07,
         "ma25_slope5_pct": -1.473,
         "ma75_slope5_pct": -1.102,
@@ -887,24 +887,24 @@
         "macd_state": "IMPROVING",
         "macd_cross_state": "DC_ACTIVE",
         "volume_ratio20": 0.765,
-        "ichimoku_tenkan": 13545.0,
-        "ichimoku_kijun": 13930.0,
+        "ichimoku_tenkan": 13545,
+        "ichimoku_kijun": 13930,
         "price_structure": "HIGHER_LOW"
       },
       "weekly_trend": "DOWN",
       "levels": {
         "supports": [
           13403.33,
-          13000.0
+          13000
         ],
         "resistances": [
-          14105.0,
-          14590.0
+          14105,
+          14590
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
         "cluster_width": 187.07,
         "support_1": 13403.33,
-        "resistance_1": 14105.0
+        "resistance_1": 14105
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
@@ -922,11 +922,11 @@
         "independent": "KABUTAN",
         "crosscheck_match": true,
         "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "open": 0,
+          "high": 0,
+          "low": 0,
+          "close": 0,
+          "volume": 0
         }
       },
       "as_of": "2026-09-25"
