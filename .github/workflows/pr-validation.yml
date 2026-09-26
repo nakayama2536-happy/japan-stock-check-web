@@ -31,7 +31,7 @@ jobs:
           sw=Path("docs/sw.js").read_text(encoding="utf-8")
           manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
           import re
-          m=re.search(r'<small>v([0-9]+\\.[0-9]+\\.[0-9]+)</small>',index)
+          m=re.search(r'<small>v([0-9]+\.[0-9]+\.[0-9]+)</small>',index)
           assert m, "UI version badge missing"
           version=m.group(1)
           assert f"v={version}" in index
@@ -45,7 +45,7 @@ jobs:
           assert '.catch(()=>null)' in app
           assert 'function formalDecisionText(d,s)' in app
           assert 'function stockChartSvg(doc,sec)' in app
-          assert '最新データを再読み込み' in app
+          assert '最新状態を確認' in app
           assert 'GitHubで市場データ更新' in app
           assert '予測の詳細を見る' in app
           assert 'diagnose-quality.yml' in app
