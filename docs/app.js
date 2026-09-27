@@ -96,7 +96,7 @@ const checkStateJa=v=>({PASS:"一致",PENDING:"確認中",FAIL:"要確認"}[v]||
 const actionJa=v=>actionLabels[String(v||"WAIT").toUpperCase()]||v||"—";
 const WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/update-japan.yml";
 const QUALITY_WORKFLOW_URL="https://github.com/nakayama2536-happy/japan-stock-check/actions/workflows/diagnose-quality.yml";
-let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,qualityTimerId=null,lastUiCheckAt=null,chartModal=null,chartZoom=1.25,chartPinch=null;
+let currentSnapshot=null,currentSnapshotKey="",pollTimer=null,qualityPollTimer=null,qualityTimerId=null,lastUiCheckAt=null,chartModal=null,chartZoom=1.25,chartPinch=null,deepDiveBundleCache=new Map();
 
 function toast(message,ms=3500){
   let el=document.getElementById("app-toast");
@@ -990,7 +990,16 @@ async function copyDeepDiveReviewHistory(){
 
 function deepDiveTriggerHtml(s){
   const dd=s.fundamental?.deep_dive||{};
-  if(!dd.recommended)return "";
+  if(!dd.recommended){
+    return '<div class="deep-dive-optional">'+
+      '<div><b>任意のChatGPT深掘り</b><small>トリガーなし・売買判定には未反映</small></div>'+
+      '<p>必要な時だけ、公開manifestとSHA-256を確認した履歴付きデータを作成します。</p>'+
+      '<div class="deep-dive-actions">'+
+        '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">FULLデータをコピー</button>'+
+        '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
+      '</div>'+
+    '</div>';
+  }
   const severity=String(dd.severity||"WATCH").toLowerCase();
   const severityLabel={high:"要深掘り",watch:"確認推奨",info:"新規開示"}[severity]||"確認推奨";
   const reasons=(dd.reasons||[]).map(r=>'<li>'+esc(r.label||r.code||"確認事項")+'</li>').join("");
@@ -1003,86 +1012,66 @@ function deepDiveTriggerHtml(s){
     scoreHtml+
     (reasons?'<ul>'+reasons+'</ul>':"")+
     '<div class="deep-dive-actions">'+
-      '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">深掘り用データをコピー</button>'+
+      '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">FULLデータをコピー</button>'+
       '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
     '</div>'+
-    '<div class="deep-dive-note">優先度は独立した論点をまとめて算出します。純利益とEPSなど相関の強い指標は重複加点しません。</div>'+
+    '<div class="deep-dive-note">優先度は独立した論点をまとめて算出します。生成時に公開manifest・SHA-256・publication IDを確認し、版混在時は共有を止めます。</div>'+
     deepDiveReviewHtml(s)+
   '</div>';
 }
 
-function buildDeepDiveText(code){
-  const d=currentSnapshot||{};
-  const s=(d.securities||[]).find(x=>String(x.code)===String(code));
-  if(!s)return "";
-  const payload={
-    generated_from:"日本株 CHECK",
-    generated_at:new Date().toISOString(),
-    app_meta:{
-      app_version:d.app_version,
-      engine_version:d.engine_version,
-      analytics_version:d.analytics_version,
-      decision_mode:d.decision_mode,
-      run_id:d.run_id,
-      run_status:d.run_status,
-      latest_decision_as_of:d.latest_decision_as_of,
-      market_checked_at:d.market_checked_at,
-      fundamental_checked_at:d.fundamental_checked_at,
-    },
-    market_environment:d.market_environment||[],
-    selected_security:s,
-  };
-  const prompt=[
-    "# 日本株 CHECK — ChatGPT深掘りフルスナップショット",
-    "",
-    "## ChatGPTへの分析依頼",
-    "このデータは日本株 CHECK が保持する選択銘柄の深掘り用スナップショットです。画面上の判断やトリガーをそのまま採用せず、RAW JSONまで検証してください。",
-    "",
-    "1. まず日時、市場休場、データ鮮度、欠損、フォールバック、Source照合状態、EDINETの提出日・対象期間・当期/比較期の整合を点検する。",
-    "2. 日足・週足、MA5/25/75、一目、MACD、RSI、出来高、支持線・抵抗線を独立評価し、反転確認水準・下落再開水準・重要な支持抵抗を整理する。",
-    "3. 1/3/5/14日の方向予測は結論として採用せず、テクニカルとの整合性と矛盾を確認する。",
-    "4. EDINETの売上高/収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本を当期/比較期で確認し、利益と営業CFの乖離、符号反転、大幅変化、財務構造変化を検証する。",
-    "5. 大幅変化について、会計基準変更、M&A、組織再編、一過性損益、為替、減損など追加確認が必要な可能性を列挙する。推測で確定しない。",
-    "6. 外部環境や最新ニュースが判断に影響する場合は、最新の公開情報を確認し、取得日時と出典を明示する。",
-    "7. 売買タイミングを検討する前に、不足情報と確認すべきチャート・データを明示する。必要なら、現在保有か新規か、取得単価、予定資金、想定保有期間、許容損失などユーザー確認事項を先に提示する。",
-    "8. 最後に、深掘りを続けるべき論点、次回再確認トリガー、追加で必要な情報を整理する。アプリの既存BUY/ADD/HOLD/REDUCE/SELLを自動的に追認しない。",
-    "",
-    "## APP DATA",
-    JSON.stringify(payload,null,2),
-  ];
-  return prompt.join("\n");
+async function getDeepDiveArtifact(code,{force=false}={}){
+  code=String(code||"");
+  if(!force&&deepDiveBundleCache.has(code))return deepDiveBundleCache.get(code);
+  if(!window.JPDeepDiveBundle?.build)throw new Error("深掘りbundle機能を読み込めません");
+  const artifact=await window.JPDeepDiveBundle.build(code,{attempts:2});
+  deepDiveBundleCache.set(code,artifact);
+  return artifact;
+}
+
+async function writeDeepDiveClipboard(text){
+  if(navigator.clipboard?.writeText){
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta=document.createElement("textarea");
+  ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();
+  const ok=document.execCommand("copy");
+  ta.remove();
+  if(!ok)throw new Error("クリップボードへコピーできませんでした");
 }
 
 async function copyDeepDiveText(code){
-  const text=buildDeepDiveText(code);
-  if(!text)return;
+  toast("深掘りFULLデータを検証中です…",2500);
   try{
-    if(navigator.clipboard?.writeText){
-      await navigator.clipboard.writeText(text);
-    }else{
-      const ta=document.createElement("textarea");
-      ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
-      document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
-    }
-    toast("ChatGPT深掘り用データをコピーしました。",4500);
-  }catch(_){
-    toast("コピーできませんでした。共有ボタンをお試しください。",5000);
+    const artifact=await getDeepDiveArtifact(code,{force:true});
+    await writeDeepDiveClipboard(artifact.text);
+    toast("検証済みの深掘りFULLデータをコピーしました。",4500);
+  }catch(e){
+    toast("深掘りFULLデータを作成できません："+String(e?.message||e),6500);
   }
 }
 
 async function shareDeepDiveText(code){
-  const text=buildDeepDiveText(code);
-  if(!text)return;
-  const s=(currentSnapshot?.securities||[]).find(x=>String(x.code)===String(code));
-  if(navigator.share){
-    try{
-      await navigator.share({title:"日本株 CHECK 深掘り "+(s?.name||code),text});
-      return;
-    }catch(e){
-      if(e?.name==="AbortError")return;
+  toast("深掘りFULLデータを検証中です…",2500);
+  try{
+    const artifact=await getDeepDiveArtifact(code,{force:true});
+    const s=(currentSnapshot?.securities||[]).find(x=>String(x.code)===String(code));
+    if(navigator.share){
+      try{
+        await navigator.share({title:"日本株 CHECK 深掘り "+(s?.name||code),text:artifact.text});
+        toast("共有シートへ検証済みデータを渡しました。",3500);
+        return;
+      }catch(e){
+        if(e?.name==="AbortError")return;
+      }
     }
+    await writeDeepDiveClipboard(artifact.text);
+    toast("共有機能が使えないため、検証済みデータをコピーしました。",4500);
+  }catch(e){
+    toast("深掘りFULLデータを共有できません："+String(e?.message||e),6500);
   }
-  await copyDeepDiveText(code);
 }
 
 function bindDeepDiveActions(){
@@ -1387,7 +1376,7 @@ async function load(opts={}){
       fetch("data/common_snapshot.json?t="+stamp,{cache:"no-store"}).then(x=>x.ok?x.json():null).catch(()=>null)
     ]);
     if(!r.ok)throw new Error("snapshot "+r.status);
-    const d=await r.json(),nextKey=snapshotKey(d),changed=!!currentSnapshotKey&&nextKey!==currentSnapshotKey;
+    const d=await r.json(),nextKey=snapshotKey(d),changed=!!currentSnapshotKey&&nextKey!==currentSnapshotKey;\n    if(changed)deepDiveBundleCache.clear();
     lastUiCheckAt=new Date().toISOString();
     if(opts.onlyIfChanged&&!changed)return false;
     currentSnapshotKey=nextKey;
