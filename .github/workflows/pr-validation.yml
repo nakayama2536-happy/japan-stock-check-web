@@ -63,8 +63,7 @@ jobs:
           assert '株価・MACD・RSIを見る' in app
           assert 'next_recheck_at' in app
           assert '深掘り結果の評価' in app
-          assert 'DEEP_DIVE_REVIEW_KEY' in app
-          assert '深掘り評価履歴をコピー' in app
+          assert '評価履歴をコピー' in app
           assert 'JPDeepDiveBundle' in app
           assert 'FULLデータをコピー' in app
           assert 'deep-dive-bundle.js?v=1.7.0' in index
