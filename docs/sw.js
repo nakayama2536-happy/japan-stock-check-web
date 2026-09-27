@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "jpstock-v";
 const CACHE = "jpstock-v1-6-5-cache1";
-const SHELL = ["./", "index.html", "style.css?v=1.6.5", "app.js?v=1.6.5", "manifest.webmanifest", "icons/icon-192.png?v=1.6.5", "icons/icon-512.png?v=1.6.5"];
+const SHELL = ["./", "index.html", "style.css?v=1.7.0", "app.js?v=1.7.0","deep-dive-bundle.js?v=1.7.0", "manifest.webmanifest", "icons/icon-192.png?v=1.7.0", "icons/icon-512.png?v=1.7.0"];
 function isDynamic(url) { return url.pathname.endsWith(".json"); }
 
 // Cache contract: COM-CACHE-002/003, revision 1 (2026-09-27).
