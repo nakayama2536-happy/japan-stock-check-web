@@ -722,3 +722,14 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
   .deep-dive-optional{background:#0f172a;border-color:#475569}
   .deep-dive-optional b,.deep-dive-optional small,.deep-dive-optional p{color:#cbd5e1}
 }
+
+
+/* v1.8.0 review-history/0.1 */
+.deep-dive-review-error{margin-top:7px;padding:7px 8px;border-radius:8px;background:#fef2f2;color:#991b1b;font-size:9px;line-height:1.45}
+.review-history-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.review-history-actions .deep-dive-history-copy{margin-top:0}
+.review-history-note{margin-top:7px;font-size:9px;line-height:1.5;color:#64748b}
+@media(prefers-color-scheme:dark){
+  .deep-dive-review-error{background:#450a0a;color:#fecaca}
+  .review-history-note{color:#cbd5e1}
+}
