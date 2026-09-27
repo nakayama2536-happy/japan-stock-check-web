@@ -1,0 +1,42 @@
+name: Deep Dive Bundle Contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/deep-dive-bundle.js'
+      - 'docs/app.js'
+      - 'docs/index.html'
+      - 'docs/manifest.webmanifest'
+      - 'docs/sw.js'
+      - 'tests/deep-dive-bundle.test.cjs'
+      - '.github/workflows/deep-dive-bundle.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/deep-dive-bundle.js'
+      - 'docs/app.js'
+      - 'docs/index.html'
+      - 'docs/manifest.webmanifest'
+      - 'docs/sw.js'
+      - 'tests/deep-dive-bundle.test.cjs'
+      - '.github/workflows/deep-dive-bundle.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  deep-dive-bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Check bundle loader syntax
+        run: node --check docs/deep-dive-bundle.js
+      - name: Execute bundle integrity tests
+        run: node --test tests/deep-dive-bundle.test.cjs
