@@ -63,13 +63,18 @@ jobs:
           assert '株価・MACD・RSIを見る' in app
           assert 'next_recheck_at' in app
           assert '深掘り結果の評価' in app
-          assert 'DEEP_DIVE_REVIEW_KEY' in app
-          assert '深掘り評価履歴をコピー' in app
+          assert '評価履歴をコピー' in app
           assert 'JPDeepDiveBundle' in app
           assert 'FULLデータをコピー' in app
-          assert 'deep-dive-bundle.js?v=1.7.0' in index
+          assert f'deep-dive-bundle.js?v={version}' in index
           assert Path('docs/deep-dive-bundle.js').exists()
           assert Path('tests/deep-dive-bundle.test.cjs').exists()
+          assert 'JPReviewHistory' in app
+          assert f'review-history.js?v={version}' in index
+          assert 'バックアップJSONを保存' in app
+          assert 'バックアップを復元' in app
+          assert Path('docs/review-history.js').exists()
+          assert Path('tests/review-history.test.cjs').exists()
           assert 'banner-status-strip' in app
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app

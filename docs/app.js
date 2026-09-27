@@ -895,97 +895,99 @@ function fmtFundamentalChange(v){
   const n=Number(v);
   return (n>0?"+":"")+n.toFixed(1)+"%";
 }
-const DEEP_DIVE_REVIEW_KEY="jpstock.deepDiveReviews.v1";
-
-function deepDiveReviewKey(s){
-  const f=s?.fundamental||{};
-  const id=f.document_id||[f.submitted_at||"",f.period_end||"",f.document_type||""].join("|");
-  return String(s?.code||"")+"|"+String(id||"unknown");
+function reviewContext(s){
+  if(!window.JPReviewHistory?.contextFromSecurity)return null;
+  const bundleId=deepDiveBundleCache.get(String(s?.code||""))?.bundle?.bundle_id||null;
+  return window.JPReviewHistory.contextFromSecurity(s,{bundleId});
 }
-function loadDeepDiveReviews(){
+function currentDeepDiveReviewView(s){
   try{
-    const raw=JSON.parse(localStorage.getItem(DEEP_DIVE_REVIEW_KEY)||"{}");
-    return raw&&typeof raw==="object"&&!Array.isArray(raw)?raw:{};
-  }catch(_){return {};}
-}
-function saveDeepDiveReviews(reviews){
-  try{
-    const entries=Object.entries(reviews||{}).sort((a,b)=>String(b[1]?.reviewed_at||"").localeCompare(String(a[1]?.reviewed_at||""))).slice(0,100);
-    localStorage.setItem(DEEP_DIVE_REVIEW_KEY,JSON.stringify(Object.fromEntries(entries)));
-    return true;
-  }catch(_){return false;}
-}
-function currentDeepDiveReview(s){
-  return loadDeepDiveReviews()[deepDiveReviewKey(s)]||null;
+    const ctx=reviewContext(s);
+    if(!ctx)return {ok:false,state:"ERROR",record:null,error:"評価履歴モジュール未読込"};
+    return window.JPReviewHistory.viewForContext(ctx,localStorage);
+  }catch(e){return {ok:false,state:"ERROR",record:null,error:String(e?.message||e)};}
 }
 function deepDiveReviewHtml(s){
-  const review=currentDeepDiveReview(s)||{};
-  const value=review.value||"";
+  const view=currentDeepDiveReviewView(s),review=view.record||{};
+  const utility=String(review.utility||"");
+  const value=window.JPReviewHistory?.legacyUtility?window.JPReviewHistory.legacyUtility(utility):"";
   const labels={useful:"有用",reference:"参考程度",noise:"ノイズ"};
   const buttons=["useful","reference","noise"].map(v=>
     '<button type="button" class="deep-dive-review-btn '+(value===v?"selected":"")+'" data-deep-dive-review="'+esc(s.code)+'" data-review-value="'+v+'">'+labels[v]+'</button>'
   ).join("");
-  const stamp=review.reviewed_at?'<small>前回評価 '+esc(fmtDateTime(review.reviewed_at))+'</small>':"<small>未評価</small>";
+  const stateLabel={
+    REVIEWED:"確認済み",REVIEWED_LEGACY:"旧形式の評価あり",
+    RECHECK_REQUIRED:"再確認が必要",UNREVIEWED:"未評価",ERROR:"履歴要確認"
+  }[view.state]||view.state||"未評価";
+  const stamp=review.updated_at||review.reviewed_at;
+  const meta='<small>'+esc(stateLabel)+(stamp?'・'+esc(fmtDateTime(stamp)):'')+'</small>';
+  const error=!view.ok?'<div class="deep-dive-review-error">'+esc(view.error||"評価履歴を読み込めません")+'</div>':"";
   return '<div class="deep-dive-review" data-review-box="'+esc(s.code)+'">'+
-    '<div class="deep-dive-review-head"><b>深掘り結果の評価</b>'+stamp+'</div>'+
+    '<div class="deep-dive-review-head"><b>深掘り結果の評価</b>'+meta+'</div>'+
+    error+
     '<div class="deep-dive-review-buttons">'+buttons+'</div>'+
     '<textarea rows="2" maxlength="240" data-deep-dive-note="'+esc(s.code)+'" placeholder="重要だった点・ノイズだった理由（任意）">'+esc(review.note||"")+'</textarea>'+
-    '<div class="deep-dive-review-footer"><button type="button" data-deep-dive-save="'+esc(s.code)+'">評価を保存</button><span>この端末内だけに保存します。</span></div>'+
+    '<div class="deep-dive-review-footer"><button type="button" data-deep-dive-save="'+esc(s.code)+'" '+(!view.ok?'disabled':'')+'>評価を保存</button><span>端末内保存。コピー/共有だけでは確認済みになりません。</span></div>'+
   '</div>';
 }
 function saveDeepDiveReview(code){
   const s=(currentSnapshot?.securities||[]).find(x=>String(x.code)===String(code));
-  if(!s)return;
+  if(!s||!window.JPReviewHistory)return;
   const box=document.querySelector('[data-review-box="'+CSS.escape(String(code))+'"]');
   if(!box)return;
   const selected=box.querySelector(".deep-dive-review-btn.selected")?.dataset.reviewValue||"";
   const note=(box.querySelector("[data-deep-dive-note]")?.value||"").trim();
-  if(!selected){
-    toast("有用・参考程度・ノイズのいずれかを選んでください。",4000);
-    return;
+  if(!selected){toast("有用・参考程度・ノイズのいずれかを選んでください。",4000);return;}
+  try{
+    const ctx=reviewContext(s);
+    const record=window.JPReviewHistory.saveReview(ctx,selected,note,localStorage);
+    const stamp=box.querySelector(".deep-dive-review-head small");
+    if(stamp)stamp.textContent="確認済み・"+fmtDateTime(record.updated_at);
+    toast("深掘り結果の評価を新形式で保存しました。旧形式の記録は保持しています。",4500);
+  }catch(e){
+    toast("評価を保存できません："+String(e?.message||e),6500);
   }
-  const reviews=loadDeepDiveReviews();
-  reviews[deepDiveReviewKey(s)]={
-    code:String(s.code||""),
-    name:String(s.name||""),
-    document_id:String(s.fundamental?.document_id||""),
-    submitted_at:String(s.fundamental?.submitted_at||""),
-    priority_score:Number(s.fundamental?.deep_dive?.priority_score||0),
-    severity:String(s.fundamental?.deep_dive?.severity||""),
-    reasons:(s.fundamental?.deep_dive?.reasons||[]).map(r=>String(r.label||r.code||"")),
-    value:selected,
-    note,
-    reviewed_at:new Date().toISOString(),
-  };
-  if(!saveDeepDiveReviews(reviews)){
-    toast("評価を保存できませんでした。",4000);
-    return;
-  }
-  const stamp=box.querySelector(".deep-dive-review-head small");
-  if(stamp)stamp.textContent="前回評価 "+fmtDateTime(reviews[deepDiveReviewKey(s)].reviewed_at);
-  toast("深掘り結果の評価を保存しました。",3500);
 }
 function buildDeepDiveReviewHistoryText(){
-  const reviews=loadDeepDiveReviews();
-  const rows=Object.values(reviews).sort((a,b)=>String(b.reviewed_at||"").localeCompare(String(a.reviewed_at||"")));
+  if(!window.JPReviewHistory)return "";
+  const result=window.JPReviewHistory.reportRows(localStorage);
+  if(!result.ok)throw new Error(result.error||"評価履歴を読み込めません");
   return [
-    "# 日本株 CHECK — 深掘り評価履歴",
+    "# 日本株 CHECK — 深掘り評価履歴 review-history/0.1",
     "",
-    "この履歴を使い、トリガー基準が厳しすぎるか・緩すぎるか、見逃しやノイズがないかを評価してください。単純な件数だけでなく、priority_score・理由・ユーザー評価・メモの関係を確認してください。",
+    "この履歴は売買判断を自動変更しません。review_state、utility、rule_version、evidence_identity、trigger_signatureを分けて確認してください。",
     "",
-    JSON.stringify(rows,null,2),
+    JSON.stringify(result.records,null,2),
   ].join("\n");
 }
 async function copyDeepDiveReviewHistory(){
-  const text=buildDeepDiveReviewHistoryText();
   try{
-    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);
-    else{
-      const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
-      document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();
-    }
+    const text=buildDeepDiveReviewHistoryText();
+    await writeDeepDiveClipboard(text);
     toast("深掘り評価履歴をコピーしました。",4000);
-  }catch(_){toast("評価履歴をコピーできませんでした。",4000);}
+  }catch(e){toast("評価履歴をコピーできません："+String(e?.message||e),6000);}
+}
+function downloadDeepDiveReviewBackup(){
+  try{
+    const text=window.JPReviewHistory.backupText(localStorage);
+    const blob=new Blob([text],{type:"application/json;charset=utf-8"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="Japan_DeepDive_Reviews_Backup_"+new Date().toISOString().slice(0,10)+".json";
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+    toast("評価履歴バックアップを保存しました。個人メモを含むためPublic GitHubへ置かないでください。",5500);
+  }catch(e){toast("バックアップを作成できません："+String(e?.message||e),6500);}
+}
+async function importDeepDiveReviewBackup(file){
+  if(!file||!window.JPReviewHistory)return;
+  try{
+    const text=await file.text();
+    const preview=window.JPReviewHistory.inspectImport(text,localStorage);
+    const msg="評価履歴バックアップを確認しました。\n追加 "+preview.add+"件 / 同一 "+preview.same+"件 / 競合 "+preview.conflict+"件\n競合は既存記録を優先して上書きしません。追加分だけ復元しますか？";
+    if(!confirm(msg))return;
+    const result=window.JPReviewHistory.applyImport(preview,localStorage);
+    toast("評価履歴を復元しました。追加 "+result.added+"件、競合スキップ "+result.skipped_conflict+"件。",5000);
+    if(currentSnapshot)renderCards(currentSnapshot);
+  }catch(e){toast("評価履歴を復元できません："+String(e?.message||e),6500);}
 }
 
 function deepDiveTriggerHtml(s){
@@ -998,6 +1000,7 @@ function deepDiveTriggerHtml(s){
         '<button type="button" class="deep-dive-copy" data-deep-dive-copy="'+esc(s.code)+'">FULLデータをコピー</button>'+
         '<button type="button" class="deep-dive-share" data-deep-dive-share="'+esc(s.code)+'">共有</button>'+
       '</div>'+
+      deepDiveReviewHtml(s)+
     '</div>';
   }
   const severity=String(dd.severity||"WATCH").toLowerCase();
@@ -1094,6 +1097,14 @@ function bindDeepDiveActions(){
   document.querySelectorAll("[data-deep-dive-history-copy]").forEach(btn=>{
     btn.onclick=copyDeepDiveReviewHistory;
   });
+  document.querySelectorAll("[data-deep-dive-backup]").forEach(btn=>{
+    btn.onclick=downloadDeepDiveReviewBackup;
+  });
+  document.querySelectorAll("[data-deep-dive-import]").forEach(btn=>{
+    btn.onclick=()=>document.getElementById("deep-dive-review-import-file")?.click();
+  });
+  const importFile=document.getElementById("deep-dive-review-import-file");
+  if(importFile)importFile.onchange=async()=>{const file=importFile.files?.[0];importFile.value="";if(file)await importDeepDiveReviewBackup(file);};
 }
 
 function fundamentalPanel(s){
@@ -1317,7 +1328,13 @@ function renderHelp(d){
     '<article class="help-card">'+
       '<h2>業績・財務（EDINET）</h2>'+
       '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。新規開示や大幅変化を検出した場合は「ChatGPT深掘りトリガー」を表示し、分析プロンプトと選択銘柄の保持データをコピー・共有できます。深掘り後は「有用／参考程度／ノイズ」と短いメモをこの端末内に保存でき、評価履歴をChatGPTへコピーして閾値調整に使えます。</p>'+
-      '<button type="button" class="deep-dive-history-copy" data-deep-dive-history-copy>深掘り評価履歴をコピー</button>'+
+      '<div class="review-history-actions">'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-history-copy>評価履歴をコピー</button>'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-backup>バックアップJSONを保存</button>'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-import>バックアップを復元</button>'+
+        '<input id="deep-dive-review-import-file" type="file" accept="application/json,.json" hidden>'+
+      '</div>'+
+      '<p class="review-history-note">旧形式の評価は読み取り互換で保持し、新形式へ勝手に上書きしません。100件到達時も古い記録を自動削除しません。バックアップには個人メモが含まれるためPublic GitHubへ保存しないでください。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
@@ -1367,6 +1384,7 @@ function renderAll(d,commonResult){
   renderCards(d);
   renderDataQuality(d);
   renderHelp(d);
+  bindDeepDiveActions();
 }
 async function load(opts={}){
   try{
@@ -1392,4 +1410,4 @@ async function load(opts={}){
 
 setupNav();
 load();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.7.0");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js?v=1.8.0");
