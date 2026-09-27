@@ -67,7 +67,7 @@ jobs:
           assert '深掘り評価履歴をコピー' in app
           assert 'JPDeepDiveBundle' in app
           assert 'FULLデータをコピー' in app
-          assert 'deep-dive-bundle.js?v=1.7.0' in html
+          assert 'deep-dive-bundle.js?v=1.7.0' in index
           assert Path('docs/deep-dive-bundle.js').exists()
           assert Path('tests/deep-dive-bundle.test.cjs').exists()
           assert 'banner-status-strip' in app
