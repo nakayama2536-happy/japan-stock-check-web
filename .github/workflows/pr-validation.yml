@@ -70,6 +70,12 @@ jobs:
           assert 'deep-dive-bundle.js?v=1.7.0' in index
           assert Path('docs/deep-dive-bundle.js').exists()
           assert Path('tests/deep-dive-bundle.test.cjs').exists()
+          assert 'JPReviewHistory' in app
+          assert 'review-history.js?v=1.8.0' in index
+          assert 'バックアップJSONを保存' in app
+          assert 'バックアップを復元' in app
+          assert Path('docs/review-history.js').exists()
+          assert Path('tests/review-history.test.cjs').exists()
           assert 'banner-status-strip' in app
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
