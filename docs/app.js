@@ -1376,7 +1376,8 @@ async function load(opts={}){
       fetch("data/common_snapshot.json?t="+stamp,{cache:"no-store"}).then(x=>x.ok?x.json():null).catch(()=>null)
     ]);
     if(!r.ok)throw new Error("snapshot "+r.status);
-    const d=await r.json(),nextKey=snapshotKey(d),changed=!!currentSnapshotKey&&nextKey!==currentSnapshotKey;\n    if(changed)deepDiveBundleCache.clear();
+    const d=await r.json(),nextKey=snapshotKey(d),changed=!!currentSnapshotKey&&nextKey!==currentSnapshotKey;
+    if(changed)deepDiveBundleCache.clear();
     lastUiCheckAt=new Date().toISOString();
     if(opts.onlyIfChanged&&!changed)return false;
     currentSnapshotKey=nextKey;
