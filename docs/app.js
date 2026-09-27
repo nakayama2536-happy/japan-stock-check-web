@@ -1328,13 +1328,13 @@ function renderHelp(d){
     '<article class="help-card">'+
       '<h2>業績・財務（EDINET）</h2>'+
       '<p>金融庁EDINETの開示データから、売上高・収益、営業利益、親会社帰属利益、EPS、営業CF、総資産、純資産・資本の当期・比較期を表示します。現在はShadow表示専用で、売買判断や1・3・5・14日の方向計算には使用しません。新規開示や大幅変化を検出した場合は「ChatGPT深掘りトリガー」を表示し、分析プロンプトと選択銘柄の保持データをコピー・共有できます。深掘り後は「有用／参考程度／ノイズ」と短いメモをこの端末内に保存でき、評価履歴をChatGPTへコピーして閾値調整に使えます。</p>'+
-      '<div class="review-history-actions">
-        <button type="button" class="deep-dive-history-copy" data-deep-dive-history-copy>評価履歴をコピー</button>
-        <button type="button" class="deep-dive-history-copy" data-deep-dive-backup>バックアップJSONを保存</button>
-        <button type="button" class="deep-dive-history-copy" data-deep-dive-import>バックアップを復元</button>
-        <input id="deep-dive-review-import-file" type="file" accept="application/json,.json" hidden>
-      </div>
-      <p class="review-history-note">旧形式の評価は読み取り互換で保持し、新形式へ勝手に上書きしません。100件到達時も古い記録を自動削除しません。バックアップには個人メモが含まれるためPublic GitHubへ保存しないでください。</p>'+
+      '<div class="review-history-actions">'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-history-copy>評価履歴をコピー</button>'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-backup>バックアップJSONを保存</button>'+
+        '<button type="button" class="deep-dive-history-copy" data-deep-dive-import>バックアップを復元</button>'+
+        '<input id="deep-dive-review-import-file" type="file" accept="application/json,.json" hidden>'+
+      '</div>'+
+      '<p class="review-history-note">旧形式の評価は読み取り互換で保持し、新形式へ勝手に上書きしません。100件到達時も古い記録を自動削除しません。バックアップには個人メモが含まれるためPublic GitHubへ保存しないでください。</p>'+
     '</article>'+
 
     '<article class="help-card">'+
