@@ -66,11 +66,11 @@ jobs:
           assert '評価履歴をコピー' in app
           assert 'JPDeepDiveBundle' in app
           assert 'FULLデータをコピー' in app
-          assert 'deep-dive-bundle.js?v=1.7.0' in index
+          assert f'deep-dive-bundle.js?v={version}' in index
           assert Path('docs/deep-dive-bundle.js').exists()
           assert Path('tests/deep-dive-bundle.test.cjs').exists()
           assert 'JPReviewHistory' in app
-          assert 'review-history.js?v=1.8.0' in index
+          assert f'review-history.js?v={version}' in index
           assert 'バックアップJSONを保存' in app
           assert 'バックアップを復元' in app
           assert Path('docs/review-history.js').exists()
