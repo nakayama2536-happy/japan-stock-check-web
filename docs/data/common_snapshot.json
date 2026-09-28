@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -64,7 +64,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source照合不一致: LOW_MISMATCH",
+          "label": "Source間の取引日不一致",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -84,7 +84,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -148,7 +148,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -168,7 +168,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source間の取引日不一致",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -182,7 +182,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -197,15 +197,6 @@
         "独立Source Contract未確定のため正式判断には使用しません"
       ],
       "pending_conditions": [
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "終値で転換線割れ",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": true,
-          "purpose": "REDUCE"
-        },
         {
           "id": null,
           "category": "TECHNICAL",
@@ -225,13 +216,22 @@
           "impact": "NEGATIVE",
           "required": true,
           "purpose": "REDUCE"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "終値で転換線割れ",
+          "status": "WARN",
+          "impact": "NEGATIVE",
+          "required": true,
+          "purpose": "REDUCE"
         }
       ],
       "blocking_conditions": [
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source間の取引日不一致",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -241,13 +241,8 @@
       "change_conditions": [
         {
           "target_action": "REDUCE",
-          "label": "終値で転換線割れ",
-          "priority": 1
-        },
-        {
-          "target_action": "REDUCE",
           "label": "価格構造悪化",
-          "priority": 2
+          "priority": 1
         }
       ]
     },
@@ -256,7 +251,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -295,7 +290,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source間の取引日不一致",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -315,7 +310,7 @@
       "subject_type": "SECURITY",
       "subject_label": "SWCC",
       "ticker": "5805.T",
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -345,7 +340,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source間の取引日不一致",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -362,7 +357,7 @@
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-09-25",
-    "calculated_at": "2026-09-26T23:49:37.940209+09:00"
+    "market_as_of": "2026-09-28",
+    "calculated_at": "2026-09-28T17:53:08.201507+09:00"
   }
 }

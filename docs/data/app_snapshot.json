@@ -4,11 +4,11 @@
   "engine_version": "1.3.4",
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
-  "run_id": "RUN_20260925_1700",
+  "run_id": "RUN_20260928_1700",
   "run_status": "SHADOW_PARTIAL",
-  "latest_decision_run_id": "RUN_20260925_1700",
-  "latest_decision_as_of": "2026-09-25",
-  "market_run_id": "RUN_20260925_1700",
+  "latest_decision_run_id": "RUN_20260928_1700",
+  "latest_decision_as_of": "2026-09-28",
+  "market_run_id": "RUN_20260928_1700",
   "market_run_status": "SHADOW_PARTIAL",
   "market_environment": [
     {
@@ -16,18 +16,14 @@
       "ticker": "^N225",
       "name": "日経平均",
       "status": "OK",
-      "value": 66364.203125,
-      "change_pct": 1.2978,
-      "direction": "UP",
-      "as_of": "2026-09-25",
+      "value": 65877.617188,
+      "change_pct": -0.7332,
+      "direction": "DOWN",
+      "as_of": "2026-09-28",
       "unit": "円",
       "display_decimals": 0,
       "source": "YFINANCE_REFERENCE",
       "history": [
-        {
-          "date": "2026-08-31",
-          "value": 66311.929688
-        },
         {
           "date": "2026-09-01",
           "value": 66215.34375
@@ -91,6 +87,10 @@
         {
           "date": "2026-09-25",
           "value": 66364.203125
+        },
+        {
+          "date": "2026-09-28",
+          "value": 65877.617188
         }
       ]
     },
@@ -98,7 +98,7 @@
       "market_id": "TOPIX",
       "ticker": "998405.T",
       "name": "TOPIX",
-      "status": "OK",
+      "status": "STALE",
       "value": 4128.59,
       "change_pct": 1.3076,
       "direction": "UP",
@@ -107,10 +107,6 @@
       "display_decimals": 2,
       "source": "YAHOO_JAPAN_HISTORY",
       "history": [
-        {
-          "date": "2026-08-31",
-          "value": 4156.29
-        },
         {
           "date": "2026-09-01",
           "value": 4181.86
@@ -182,18 +178,14 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 158.811005,
-      "change_pct": 0.345,
-      "direction": "UP",
-      "as_of": "2026-09-25",
+      "value": 156.914001,
+      "change_pct": -1.1945,
+      "direction": "DOWN",
+      "as_of": "2026-09-28",
       "unit": "円/USD",
       "display_decimals": 2,
       "source": "YFINANCE_REFERENCE",
       "history": [
-        {
-          "date": "2026-08-31",
-          "value": 160.121994
-        },
         {
           "date": "2026-09-01",
           "value": 159.746994
@@ -269,21 +261,25 @@
         {
           "date": "2026-09-25",
           "value": 158.811005
+        },
+        {
+          "date": "2026-09-28",
+          "value": 156.914001
         }
       ]
     }
   ],
-  "updated_at": "2026-09-26T23:49:37.940209+09:00",
-  "market_checked_at": "2026-09-26T23:49:37.940209+09:00",
-  "next_recheck_at": "2026-09-28T15:45:00+09:00",
+  "updated_at": "2026-09-28T17:53:08.201507+09:00",
+  "market_checked_at": "2026-09-28T17:53:08.201507+09:00",
+  "next_recheck_at": "2026-09-29T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
-  "backup_recheck_at": "2026-09-28T16:15:00+09:00",
+  "backup_recheck_at": "2026-09-29T16:15:00+09:00",
   "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
   "shadow_validation": {
-    "run_count": 2,
-    "security_check_count": 12,
-    "source_fetch_rate": 0.9167,
-    "ohlcv_match_rate": 0.8182,
+    "run_count": 3,
+    "security_check_count": 18,
+    "source_fetch_rate": 0.9444,
+    "ohlcv_match_rate": 0.5882,
     "decision_sample_count": 0,
     "decision_match_rate": null,
     "production_candidate": false,
@@ -399,7 +395,7 @@
       "ticker": "6841.T",
       "code": "6841",
       "name": "横河電機",
-      "price": 4740.0,
+      "price": 4701.0,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -412,8 +408,8 @@
           "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.06,
-            "historical_up_share_pct": 47.5,
+            "median_return_pct": 0.64,
+            "historical_up_share_pct": 62.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -423,8 +419,8 @@
           "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.34,
-            "historical_up_share_pct": 47.5,
+            "median_return_pct": 0.05,
+            "historical_up_share_pct": 52.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -434,52 +430,52 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.3,
-            "historical_up_share_pct": 47.5,
+            "median_return_pct": 0.96,
+            "historical_up_share_pct": 62.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
           "direction": "STRONG_DOWN",
           "score": -41.5,
-          "confidence": "HIGH",
+          "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.36,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 1.87,
+            "historical_up_share_pct": 60.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 4682.2,
-        "ma25": 4840.8,
-        "ma75": 5281.69,
-        "ma25_slope5_pct": -3.405,
-        "ma75_slope5_pct": -0.672,
-        "rsi14": 42.96,
-        "macd": -160.105,
-        "macd_signal": -188.479,
-        "macd_hist": 28.374,
+        "ma5": 4694.0,
+        "ma25": 4825.68,
+        "ma75": 5278.49,
+        "ma25_slope5_pct": -3.064,
+        "ma75_slope5_pct": -0.624,
+        "rsi14": 41.31,
+        "macd": -148.714,
+        "macd_signal": -180.526,
+        "macd_hist": 31.812,
         "macd_state": "BULLISH",
         "macd_cross_state": "GC_ACTIVE",
-        "volume_ratio20": 0.958,
-        "ichimoku_tenkan": 4623.0,
-        "ichimoku_kijun": 5049.0,
+        "volume_ratio20": 0.924,
+        "ichimoku_tenkan": 4629.5,
+        "ichimoku_kijun": 4864.5,
         "price_structure": "DOWNTREND"
       },
       "weekly_trend": "DOWN",
       "levels": {
         "supports": [
           4672.0,
-          4596.6
+          4626.0
         ],
         "resistances": [
           4786.0,
           4830.0
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 36.9,
+        "cluster_width": 34.14,
         "support_1": 4672.0,
         "resistance_1": 4786.0
       },
@@ -504,25 +500,21 @@
         "転換線回復"
       ],
       "data_quality": "HOLD",
-      "source_gate_reason": "LOW_MISMATCH",
+      "source_gate_reason": "TRADE_DATE_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
         "crosscheck_match": false,
-        "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 1.0
-        }
+        "diffs": {}
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-18 15:31",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -655,8 +647,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YE3H",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YE3H"
       }
     },
     {
@@ -664,7 +655,7 @@
       "ticker": "6954.T",
       "code": "6954",
       "name": "ファナック",
-      "price": 5985.0,
+      "price": 5943.0,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -674,11 +665,11 @@
         "1": {
           "direction": "STRONG_UP",
           "score": 45.2,
-          "confidence": "MEDIUM",
+          "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.26,
-            "historical_up_share_pct": 47.5,
+            "median_return_pct": -0.62,
+            "historical_up_share_pct": 40.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -688,8 +679,8 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.72,
-            "historical_up_share_pct": 35.0,
+            "median_return_pct": -0.63,
+            "historical_up_share_pct": 45.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -710,27 +701,27 @@
           "confidence": "HIGH",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -1.04,
-            "historical_up_share_pct": 42.5,
+            "median_return_pct": -1.49,
+            "historical_up_share_pct": 40.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 5898.0,
-        "ma25": 5921.56,
-        "ma75": 6596.65,
-        "ma25_slope5_pct": -1.972,
-        "ma75_slope5_pct": -1.905,
-        "rsi14": 49.0,
-        "macd": -111.13,
-        "macd_signal": -159.221,
-        "macd_hist": 48.091,
+        "ma5": 5919.0,
+        "ma25": 5916.76,
+        "ma75": 6580.85,
+        "ma25_slope5_pct": -1.476,
+        "ma75_slope5_pct": -1.703,
+        "rsi14": 47.46,
+        "macd": -98.607,
+        "macd_signal": -147.098,
+        "macd_hist": 48.492,
         "macd_state": "BULLISH",
         "macd_cross_state": "GC_ACTIVE",
-        "volume_ratio20": 1.048,
+        "volume_ratio20": 0.957,
         "ichimoku_tenkan": 5821.0,
-        "ichimoku_kijun": 6080.0,
+        "ichimoku_kijun": 5900.0,
         "price_structure": "DOWNTREND"
       },
       "weekly_trend": "DOWN",
@@ -741,10 +732,10 @@
         ],
         "resistances": [
           5993.0,
-          6075.0
+          6068.75
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 48.43,
+        "cluster_width": 47.85,
         "support_1": 5915.33,
         "resistance_1": 5993.0
       },
@@ -782,14 +773,14 @@
           "volume": 0.0
         }
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-22 15:50",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -922,8 +913,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YG3Q",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YG3Q"
       }
     },
     {
@@ -944,19 +934,19 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.89,
-            "historical_up_share_pct": 67.5,
+            "median_return_pct": 0.31,
+            "historical_up_share_pct": 55.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "3": {
           "direction": "DOWN",
           "score": -29.8,
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.68,
-            "historical_up_share_pct": 57.5,
+            "median_return_pct": -0.58,
+            "historical_up_share_pct": 47.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -966,54 +956,54 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.0,
-            "historical_up_share_pct": 50.0,
+            "median_return_pct": -0.29,
+            "historical_up_share_pct": 45.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
           "direction": "UP",
           "score": 28.5,
-          "confidence": "LOW",
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.38,
-            "historical_up_share_pct": 45.0,
+            "median_return_pct": 0.0,
+            "historical_up_share_pct": 47.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 3033.9,
-        "ma25": 2948.64,
-        "ma75": 2779.23,
-        "ma25_slope5_pct": 1.707,
-        "ma75_slope5_pct": 1.026,
+        "ma5": 3007.2,
+        "ma25": 2955.0,
+        "ma75": 2783.29,
+        "ma25_slope5_pct": 1.539,
+        "ma75_slope5_pct": 0.968,
         "rsi14": 49.23,
-        "macd": 58.205,
-        "macd_signal": 72.221,
-        "macd_hist": -14.016,
+        "macd": 48.011,
+        "macd_signal": 67.379,
+        "macd_hist": -19.368,
         "macd_state": "BEARISH",
         "macd_cross_state": "DC_ACTIVE",
-        "volume_ratio20": 0.788,
-        "ichimoku_tenkan": 3073.75,
-        "ichimoku_kijun": 2966.25,
+        "volume_ratio20": 0.727,
+        "ichimoku_tenkan": 3073.5,
+        "ichimoku_kijun": 2986.0,
         "price_structure": "UPTREND"
       },
       "weekly_trend": "UP",
       "levels": {
         "supports": [
           2944.0,
-          2897.67
+          2876.0
         ],
         "resistances": [
-          2984.0,
-          3070.0
+          2977.8,
+          3056.67
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 38.53,
+        "cluster_width": 36.74,
         "support_1": 2944.0,
-        "resistance_1": 2984.0
+        "resistance_1": 2977.8
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [],
@@ -1022,28 +1012,22 @@
         "価格構造",
         "MACD"
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "TRADE_DATE_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": true,
-        "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
-        }
+        "crosscheck_match": false,
+        "diffs": {}
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-15 15:09",
         "period_start": "2025-11-01",
         "period_end": "2026-10-31",
@@ -1187,8 +1171,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YB47",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YB47"
       }
     },
     {
@@ -1196,7 +1179,7 @@
       "ticker": "9432.T",
       "code": "9432",
       "name": "NTT",
-      "price": 176.1,
+      "price": 174.7,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -1209,8 +1192,8 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.6,
-            "historical_up_share_pct": 27.5,
+            "median_return_pct": -0.44,
+            "historical_up_share_pct": 35.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -1220,8 +1203,8 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.45,
-            "historical_up_share_pct": 40.0,
+            "median_return_pct": -0.2,
+            "historical_up_share_pct": 45.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -1231,8 +1214,8 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": -0.5,
-            "historical_up_share_pct": 42.5,
+            "median_return_pct": -0.21,
+            "historical_up_share_pct": 45.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -1242,27 +1225,27 @@
           "confidence": "HIGH",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.29,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 0.71,
+            "historical_up_share_pct": 57.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 177.08,
-        "ma25": 172.15,
-        "ma75": 157.79,
-        "ma25_slope5_pct": 1.94,
-        "ma75_slope5_pct": 1.273,
-        "rsi14": 60.13,
-        "macd": 3.952,
-        "macd_signal": 4.412,
-        "macd_hist": -0.46,
+        "ma5": 176.6,
+        "ma25": 172.76,
+        "ma75": 158.16,
+        "ma25_slope5_pct": 1.851,
+        "ma75_slope5_pct": 1.256,
+        "rsi14": 56.83,
+        "macd": 3.6,
+        "macd_signal": 4.25,
+        "macd_hist": -0.65,
         "macd_state": "BEARISH",
         "macd_cross_state": "DC_ACTIVE",
-        "volume_ratio20": 0.878,
-        "ichimoku_tenkan": 175.7,
-        "ichimoku_kijun": 169.45,
+        "volume_ratio20": 1.076,
+        "ichimoku_tenkan": 177.0,
+        "ichimoku_kijun": 169.5,
         "price_structure": "UPTREND"
       },
       "weekly_trend": "UP",
@@ -1272,22 +1255,16 @@
           171.78
         ],
         "resistances": [
-          176.9,
-          177.9
+          175.83,
+          176.9
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 0.97,
+        "cluster_width": 0.95,
         "support_1": 173.0,
-        "resistance_1": 176.9
+        "resistance_1": 175.83
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
-        {
-          "label": "終値で転換線割れ",
-          "status": "PENDING",
-          "required": true,
-          "purpose": "REDUCE"
-        },
         {
           "label": "価格構造悪化",
           "status": "PENDING",
@@ -1297,31 +1274,25 @@
       ],
       "next_business_day_watch": [
         "データ品質と独立ソース照合を再確認",
-        "終値で転換線割れ",
-        "価格構造悪化"
+        "価格構造悪化",
+        "MACDデッドクロス"
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "TRADE_DATE_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": true,
-        "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
-        }
+        "crosscheck_match": false,
+        "diffs": {}
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-16 15:51",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1474,8 +1445,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YCP3",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YCP3"
       }
     },
     {
@@ -1483,7 +1453,7 @@
       "ticker": "1812.T",
       "code": "1812",
       "name": "鹿島建設",
-      "price": 4909.0,
+      "price": 4888.0,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -1491,60 +1461,60 @@
       "secondary_state": "ADD_WAIT",
       "outlook": {
         "1": {
-          "direction": "DOWN",
-          "score": -39.0,
+          "direction": "STRONG_DOWN",
+          "score": -44.0,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.32,
-            "historical_up_share_pct": 65.0,
+            "median_return_pct": 0.94,
+            "historical_up_share_pct": 70.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "3": {
           "direction": "STRONG_DOWN",
-          "score": -46.2,
+          "score": -51.2,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.37,
+            "median_return_pct": 1.58,
             "historical_up_share_pct": 72.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "5": {
           "direction": "STRONG_DOWN",
-          "score": -50.8,
-          "confidence": "HIGH",
+          "score": -55.8,
+          "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.54,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 1.59,
+            "historical_up_share_pct": 60.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
-          "direction": "DOWN",
-          "score": -27.0,
+          "direction": "STRONG_DOWN",
+          "score": -52.0,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.62,
-            "historical_up_share_pct": 65.0,
+            "median_return_pct": 1.48,
+            "historical_up_share_pct": 55.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 4977.8,
-        "ma25": 4915.64,
-        "ma75": 5358.43,
-        "ma25_slope5_pct": 0.281,
-        "ma75_slope5_pct": -0.694,
-        "rsi14": 45.43,
-        "macd": -33.016,
-        "macd_signal": -49.406,
-        "macd_hist": 16.39,
+        "ma5": 4965.4,
+        "ma25": 4923.08,
+        "ma75": 5351.72,
+        "ma25_slope5_pct": 0.365,
+        "ma75_slope5_pct": -0.652,
+        "rsi14": 44.5,
+        "macd": -36.494,
+        "macd_signal": -46.824,
+        "macd_hist": 10.33,
         "macd_state": "WEAKENING",
         "macd_cross_state": "GC_ACTIVE",
         "volume_ratio20": 0.917,
@@ -1552,20 +1522,20 @@
         "ichimoku_kijun": 4951.0,
         "price_structure": "HIGHER_LOW"
       },
-      "weekly_trend": "UP",
+      "weekly_trend": "NEUTRAL",
       "levels": {
         "supports": [
           4863.5,
           4807.5
         ],
         "resistances": [
-          5049.0,
-          5096.0
+          4892.0,
+          5049.0
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 40.91,
+        "cluster_width": 40.97,
         "support_1": 4863.5,
-        "resistance_1": 5049.0
+        "resistance_1": 4892.0
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
@@ -1587,28 +1557,22 @@
         "主要抵抗帯を回復",
         "主要抵抗帯回復"
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "TRADE_DATE_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": true,
-        "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
-        }
+        "crosscheck_match": false,
+        "diffs": {}
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-24 10:22",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -1778,8 +1742,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YGGI",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YGGI"
       }
     },
     {
@@ -1787,7 +1750,7 @@
       "ticker": "5805.T",
       "code": "5805",
       "name": "SWCC",
-      "price": 13540.0,
+      "price": 13400.0,
       "formal_decision": "WAIT",
       "shadow_action": "WAIT",
       "confidence": "NOT_AVAILABLE",
@@ -1800,8 +1763,8 @@
           "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.0,
-            "historical_up_share_pct": 60.0,
+            "median_return_pct": 0.17,
+            "historical_up_share_pct": 52.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -1811,19 +1774,19 @@
           "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.45,
-            "historical_up_share_pct": 62.5,
+            "median_return_pct": 1.13,
+            "historical_up_share_pct": 55.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "5": {
           "direction": "UP",
           "score": 36.2,
-          "confidence": "HIGH",
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.1,
-            "historical_up_share_pct": 57.5,
+            "median_return_pct": 0.64,
+            "historical_up_share_pct": 52.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
@@ -1833,33 +1796,33 @@
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.8,
+            "median_return_pct": 1.67,
             "historical_up_share_pct": 55.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 13200.0,
-        "ma25": 13780.0,
-        "ma75": 12963.07,
-        "ma25_slope5_pct": -1.473,
-        "ma75_slope5_pct": -1.102,
-        "rsi14": 50.82,
-        "macd": -48.405,
-        "macd_signal": 51.13,
-        "macd_hist": -99.535,
+        "ma5": 13278.0,
+        "ma25": 13770.4,
+        "ma75": 12959.87,
+        "ma25_slope5_pct": -1.381,
+        "ma75_slope5_pct": -0.895,
+        "rsi14": 49.39,
+        "macd": -46.209,
+        "macd_signal": 31.662,
+        "macd_hist": -77.871,
         "macd_state": "IMPROVING",
         "macd_cross_state": "DC_ACTIVE",
-        "volume_ratio20": 0.765,
-        "ichimoku_tenkan": 13545.0,
-        "ichimoku_kijun": 13930.0,
+        "volume_ratio20": 0.744,
+        "ichimoku_tenkan": 13195.0,
+        "ichimoku_kijun": 13835.0,
         "price_structure": "HIGHER_LOW"
       },
       "weekly_trend": "DOWN",
       "levels": {
         "supports": [
-          13403.33,
+          13345.0,
           13000.0
         ],
         "resistances": [
@@ -1867,8 +1830,8 @@
           14590.0
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 187.07,
-        "support_1": 13403.33,
+        "cluster_width": 184.5,
+        "support_1": 13345.0,
         "resistance_1": 14105.0
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
@@ -1885,28 +1848,22 @@
         "週足悪化なし",
         "MACD改善"
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "TRADE_DATE_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "KABUTAN",
-        "crosscheck_match": true,
-        "diffs": {
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
-        }
+        "crosscheck_match": false,
+        "diffs": {}
       },
-      "as_of": "2026-09-25",
+      "as_of": "2026-09-28",
       "fundamental": {
         "status": "OK",
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-09-25",
-        "refresh_status": "NOT_CONFIGURED_PRESERVED",
+        "checked_on": "2026-09-28",
+        "refresh_status": "NO_NEW_FILING",
         "submitted_at": "2026-06-18 13:47",
         "period_start": "2025-04-01",
         "period_end": "2026-03-31",
@@ -2076,8 +2033,7 @@
           "purpose": "CHATGPT_DEEP_DIVE_TRIGGER",
           "action": "REVIEW_ONLY"
         },
-        "document_id": "S100YE42",
-        "refresh_error": "NOT_CONFIGURED"
+        "document_id": "S100YE42"
       }
     }
   ]
