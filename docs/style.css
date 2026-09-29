@@ -733,3 +733,19 @@ html.chart-modal-open,html.chart-modal-open body{overflow:hidden}
   .deep-dive-review-error{background:#450a0a;color:#fecaca}
   .review-history-note{color:#cbd5e1}
 }
+
+
+/* v1.8.1 17:05 update-deadline fail-safe */
+.deadline-alert{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 2px;padding:10px 11px;border:1px solid #f59e0b;border-radius:11px;background:#fffbeb;color:#92400e}
+.deadline-alert>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.deadline-alert b{font-size:12px}
+.deadline-alert span{font-size:10px;line-height:1.45}
+.deadline-alert button{flex:0 0 auto;min-height:36px;padding:7px 10px;border:0;border-radius:9px;background:#92400e;color:#fff;font-size:10px;font-weight:850;cursor:pointer}
+@media(max-width:520px){
+  .deadline-alert{align-items:stretch;flex-direction:column}
+  .deadline-alert button{width:100%}
+}
+@media(prefers-color-scheme:dark){
+  .deadline-alert{background:#451a03;border-color:#d97706;color:#fde68a}
+  .deadline-alert button{background:#f59e0b;color:#451a03}
+}
