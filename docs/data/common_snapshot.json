@@ -10,12 +10,12 @@
     "state": "CURRENT"
   },
   "incident": {
-    "level": "BLOCKED",
+    "level": "WARNING",
     "error_codes": []
   },
   "data_quality": {
     "data_state": "FRESH",
-    "qc_state": "FAIL",
+    "qc_state": "WARN",
     "completeness_pct": null
   },
   "decision_scope": "MULTI",
@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -64,7 +64,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source間の取引日不一致",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -84,7 +84,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -103,6 +103,15 @@
           "id": null,
           "category": "TECHNICAL",
           "label": "6,000円回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACD改善",
           "status": "PENDING",
           "impact": "NEUTRAL",
           "required": true,
@@ -138,8 +147,13 @@
         },
         {
           "target_action": "ADD",
-          "label": "週足悪化なし",
+          "label": "MACD改善",
           "priority": 2
+        },
+        {
+          "target_action": "ADD",
+          "label": "週足悪化なし",
+          "priority": 3
         }
       ]
     },
@@ -148,7 +162,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -168,7 +182,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source間の取引日不一致",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -182,7 +196,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -231,7 +245,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source間の取引日不一致",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -251,7 +265,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -274,15 +288,6 @@
           "impact": "NEUTRAL",
           "required": true,
           "purpose": "ADD"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "出来高20日平均以上",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": false,
-          "purpose": "ADD"
         }
       ],
       "risk_conditions": [],
@@ -290,7 +295,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source間の取引日不一致",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -310,7 +315,7 @@
       "subject_type": "SECURITY",
       "subject_label": "SWCC",
       "ticker": "5805.T",
-      "as_of": "2026-09-28",
+      "as_of": "2026-09-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -328,6 +333,24 @@
         {
           "id": null,
           "category": "TECHNICAL",
+          "label": "参考：13,300円回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": false,
+          "purpose": "ENTRY"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACD改善",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ENTRY"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
           "label": "週足悪化なし",
           "status": "PENDING",
           "impact": "NEUTRAL",
@@ -340,7 +363,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Source間の取引日不一致",
+          "label": "Production Source Contract未確定",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -350,14 +373,19 @@
       "change_conditions": [
         {
           "target_action": "BUY",
-          "label": "週足悪化なし",
+          "label": "MACD改善",
           "priority": 1
+        },
+        {
+          "target_action": "BUY",
+          "label": "週足悪化なし",
+          "priority": 2
         }
       ]
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-09-28",
-    "calculated_at": "2026-09-28T23:30:28.002194+09:00"
+    "market_as_of": "2026-09-29",
+    "calculated_at": "2026-09-29T17:53:35.411268+09:00"
   }
 }
