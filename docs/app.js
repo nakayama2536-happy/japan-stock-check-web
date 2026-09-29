@@ -299,6 +299,15 @@ function startPolling(){
     }
   },5000);
 }
+function updateDeadlineState(d,now=new Date()){
+  const next=String(d?.next_recheck_at||"");
+  const match=next.match(/^(\d{4}-\d{2}-\d{2})T/);
+  if(!match)return null;
+  const target=match[1],latest=String(d?.latest_decision_as_of||"");
+  const deadline=new Date(target+"T17:05:00+09:00");
+  if(!Number.isFinite(deadline.getTime())||now.getTime()<deadline.getTime()||latest>=target)return null;
+  return {target,deadline};
+}
 function bindUpdateControls(){
   const refresh=document.getElementById("refresh-data-btn");
   if(refresh)refresh.onclick=async()=>{
@@ -310,8 +319,10 @@ function bindUpdateControls(){
       toast(closed?"本日は休場日のため、最新判断日は "+latest+" のままです。表示データは再確認済みです。":"新しい判断データはまだありません。表示中のデータを再確認しました。",6000);
     }
   };
-  const update=document.getElementById("github-update-btn");
-  if(update)update.onclick=openWorkflowUpdate;
+  ["github-update-btn","deadline-update-btn"].forEach(id=>{
+    const update=document.getElementById(id);
+    if(update)update.onclick=openWorkflowUpdate;
+  });
 }
 function qualityIssueCount(d){
   return (d?.securities||[]).filter(s=>sourceCheckState(s)!=="PASS").length;
@@ -731,11 +742,16 @@ function renderBanner(d){
       metric("判断比較",(v.decision_sample_count??0)+"/"+(t.min_decision_samples??60),String(t.min_decision_samples??60),(v.decision_sample_count||0)>=(t.min_decision_samples||60))+
     "</div>";
   const recheck=d.next_recheck_at?esc(fmtDateTime(d.next_recheck_at)):"未定";
+  const late=updateDeadlineState(d);
+  const deadlineAlert=late
+    ? '<div class="deadline-alert" role="alert"><div><b>17:05更新目標を超過</b><span>'+esc(fmtDate(late.target))+'の当日データがまだ反映されていません。定期実行の遅延または取得停止を確認してください。</span></div><button id="deadline-update-btn" type="button">手動更新を実行</button></div>'
+    : "";
   document.getElementById("banner").innerHTML=
     '<div class="banner compact-banner v155-banner">'+
       '<div class="banner-head"><div><b>'+(d.decision_mode==="SHADOW"?"検証中":"正式運用")+'</b><div class="banner-sub-short">'+
         (d.decision_mode==="SHADOW"?"参考分析のみ表示・正式判断には未使用":"正式判断を表示中")+
       '</div></div><span class="status-pill '+(ready?"ready":"pending")+'">本番移行 '+(ready?"候補":"未達")+'</span></div>'+
+      deadlineAlert+
       '<div class="banner-status-strip">'+
         '<span>判断基準 <b>'+esc(fmtDate(latest))+'</b></span>'+
         '<span class="'+(issues.length?"warn":"ok")+'">品質 <b>'+(issues.length?"要確認 "+issues.length:"正常")+'</b></span>'+
