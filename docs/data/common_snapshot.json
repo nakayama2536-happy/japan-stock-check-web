@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -84,7 +84,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -162,7 +162,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -196,7 +196,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -265,7 +265,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -315,7 +315,7 @@
       "subject_type": "SECURITY",
       "subject_label": "SWCC",
       "ticker": "5805.T",
-      "as_of": "2026-09-29",
+      "as_of": "2026-09-30",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -337,15 +337,6 @@
           "status": "PENDING",
           "impact": "NEUTRAL",
           "required": false,
-          "purpose": "ENTRY"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "MACD改善",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": true,
           "purpose": "ENTRY"
         },
         {
@@ -373,19 +364,14 @@
       "change_conditions": [
         {
           "target_action": "BUY",
-          "label": "MACD改善",
-          "priority": 1
-        },
-        {
-          "target_action": "BUY",
           "label": "週足悪化なし",
-          "priority": 2
+          "priority": 1
         }
       ]
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-09-29",
-    "calculated_at": "2026-09-29T23:03:45.010719+09:00"
+    "market_as_of": "2026-09-30",
+    "calculated_at": "2026-09-30T17:53:21.376026+09:00"
   }
 }
