@@ -98,11 +98,11 @@
       "market_id": "TOPIX",
       "ticker": "998405.T",
       "name": "TOPIX",
-      "status": "STALE",
-      "value": 4131.98,
-      "change_pct": 0.5678,
-      "direction": "UP",
-      "as_of": "2026-10-01",
+      "status": "OK",
+      "value": 4091.0,
+      "change_pct": -0.9918,
+      "direction": "DOWN",
+      "as_of": "2026-10-02",
       "unit": "",
       "display_decimals": 2,
       "source": "YAHOO_JAPAN_HISTORY",
@@ -170,6 +170,10 @@
         {
           "date": "2026-10-01",
           "value": 4131.98
+        },
+        {
+          "date": "2026-10-02",
+          "value": 4091.0
         }
       ]
     },
@@ -178,8 +182,8 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 157.634995,
-      "change_pct": 0.0489,
+      "value": 157.623001,
+      "change_pct": 0.0413,
       "direction": "FLAT",
       "as_of": "2026-10-02",
       "unit": "円/USD",
@@ -264,13 +268,13 @@
         },
         {
           "date": "2026-10-02",
-          "value": 157.634995
+          "value": 157.623001
         }
       ]
     }
   ],
-  "updated_at": "2026-10-02T17:50:20.449142+09:00",
-  "market_checked_at": "2026-10-02T17:50:20.449142+09:00",
+  "updated_at": "2026-10-02T19:23:07.329439+09:00",
+  "market_checked_at": "2026-10-02T19:23:07.329439+09:00",
   "next_recheck_at": "2026-10-05T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-10-05T16:15:00+09:00",
