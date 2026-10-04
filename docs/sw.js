@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "jpstock-v";
-const CACHE = "jpstock-v1-11-0-active-universe";
-const SHELL = ["./", "index.html", "style.css?v=1.11.0", "decision-experience.css?v=1.11.0", "decision-experience.js?v=1.11.0", "active-universe.js?v=1.11.0", "quality-details.css?v=1.11.0", "quality-details.js?v=1.11.0", "app.js?v=1.11.0","deep-dive-bundle.js?v=1.11.0","review-history.js?v=1.11.0", "manifest.webmanifest", "icons/icon-192.png?v=1.11.0", "icons/icon-512.png?v=1.11.0"];
+const CACHE = "jpstock-v1-12-0-evidence-workflows";
+const SHELL = ["./", "index.html", "style.css?v=1.12.0", "decision-experience.css?v=1.12.0", "decision-experience.js?v=1.12.0", "active-universe.js?v=1.12.0", "quality-details.css?v=1.12.0", "quality-details.js?v=1.12.0", "app.js?v=1.12.0","deep-dive-bundle.js?v=1.12.0","review-history.js?v=1.12.0", "evidence-workflows.js?v=1.12.0", "evidence-workflows-ui.js?v=1.12.0", "evidence-workflows.css?v=1.12.0", "manifest.webmanifest", "icons/icon-192.png?v=1.12.0", "icons/icon-512.png?v=1.12.0"];
 function isDynamic(url) { return url.pathname.endsWith(".json"); }
 
 // Cache contract: COM-CACHE-002/003, revision 1 (2026-09-27).
