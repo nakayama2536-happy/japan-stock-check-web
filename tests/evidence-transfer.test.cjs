@@ -13,13 +13,15 @@ test('brief null omission preserves meaningful zero false empty arrays and posit
 });
 test('current five-stock investigation has a usable brief below 8000 including instructions',async()=>{
  const text=E.diagnosisText(model()),a=await T.prepare(text),p=payload(a.briefText);
+ const debug=path.join(root,'test-output/decision-experience');fs.mkdirSync(debug,{recursive:true});fs.writeFileSync(path.join(debug,'investigation-evidence.txt'),text);fs.writeFileSync(path.join(debug,'investigation-brief.txt'),a.briefText);
+ const normal=T.makeBrief(payload(text),{filename:a.filename,sha256:a.sha256});console.log('BRIEF_COMPONENTS',JSON.stringify(Object.fromEntries(Object.entries(normal).map(([k,v])=>[k,JSON.stringify(v).length]))));
  assert.equal(a.mode,'BRIEF_WITH_FULL_EVIDENCE');assert(a.briefText.length<=8000);
  assert.equal(p.expected_security_count,5);assert.equal(p.securities.length,5);
  assert.equal(p.common_quality.displayed_qc,'WARN');assert.equal(p.manifest_verification.state,'NOT_CHECKED');
  assert.equal(p.display_identity.run_id,d.run_id);assert.equal(p.securities[0].source_evidence.diffs.close,0);
  assert(!a.briefText.includes('5805'));assert(!a.briefText.includes('SWCC'));
  assert(p.common_items.find(x=>x.subject_id==='SEC_JP_9432').risk_conditions.length>0);
- assert(p.conditions.some(x=>x.required===false));assert(p.conditions.some(x=>x.purpose==='REDUCE'));
+ assert(p.conditions.some(x=>x[p.condition_columns.indexOf('required')]===false));assert(p.conditions.some(x=>x[p.condition_columns.indexOf('purpose')]==='REDUCE'));
  assert.equal(a.fullText,text);assert.equal(a.sha256,crypto.createHash('sha256').update(text).digest('hex'));
  assert.equal(a.parts.map(body).join(''),text);assert(a.parts.every(x=>x.length<=8000));
  assert.equal(p.full_evidence.auto_attached,false);
