@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "jpstock-v";
-const CACHE = "jpstock-v1-10-0-decision-experience";
-const SHELL = ["./", "index.html", "style.css?v=1.10.0", "decision-experience.css?v=1.10.0", "decision-experience.js?v=1.10.0", "app.js?v=1.10.0","deep-dive-bundle.js?v=1.10.0","review-history.js?v=1.10.0", "manifest.webmanifest", "icons/icon-192.png?v=1.10.0", "icons/icon-512.png?v=1.10.0"];
+const CACHE = "jpstock-v1-10-1-quality-details";
+const SHELL = ["./", "index.html", "style.css?v=1.10.1", "decision-experience.css?v=1.10.1", "quality-details.css?v=1.10.1", "quality-details.js?v=1.10.1", "decision-experience.js?v=1.10.1", "app.js?v=1.10.1","deep-dive-bundle.js?v=1.10.1","review-history.js?v=1.10.1", "manifest.webmanifest", "icons/icon-192.png?v=1.10.1", "icons/icon-512.png?v=1.10.1"];
 function isDynamic(url) { return url.pathname.endsWith(".json"); }
 
 // Cache contract: COM-CACHE-002/003, revision 1 (2026-09-27).
