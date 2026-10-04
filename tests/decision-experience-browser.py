@@ -14,6 +14,8 @@ server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
 threading.Thread(target=server.serve_forever, daemon=True).start()
 BASE = f'http://127.0.0.1:{server.server_port}'
 common = json.loads((ROOT / 'docs/data/common_snapshot.json').read_text())
+raw_snapshot = json.loads((ROOT / 'docs/data/app_snapshot.json').read_text())
+EXPECTED = ['6841','6954','3038','9432','1812']
 report = []
 try:
     with sync_playwright() as pw:
@@ -30,35 +32,48 @@ try:
                   window.Date=class extends RealDate {constructor(...a){super(...(a.length?a:[fixed]));}static now(){return fixed;}};
                   window.__copies=[]; Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__copies.push(text);}}});
                   localStorage.setItem('other-app.test-sentinel','PRESERVE');
+                  localStorage.setItem('jpstock.review.retired-5805-test','KEEP_HISTORY');
                 })();""")
                 page.goto(BASE+'/', wait_until='networkidle')
                 page.wait_for_selector('.dx-hero')
-                assert page.locator('.brand').inner_text().endswith('v1.10.1')
-                assert page.locator('.dx-stock').count()==6
-                assert page.locator('.dx-horizon').count()==24
-                assert '保有継続' in page.locator('.dx-headline').inner_text()
+                assert page.locator('.brand').inner_text().endswith('v1.11.0')
+                assert page.locator('.dx-stock').count()==5
+                assert page.locator('.stock-card').count()==5
+                assert page.locator('.dx-horizon').count()==20
+                assert page.locator('.forecast-matrix-row').count()==5
+                assert page.locator('.dx-forecast-detail').count()==5
                 assert 'SHADOW' in page.locator('.dx-hero .dx-safety').inner_text()
                 assert page.locator('#manage-updates #refresh-data-btn').count()==1
                 assert page.locator('#decision-view #refresh-data-btn').count()==0
                 assert page.locator('.dx-headline').bounding_box()['y']<height-80
                 assert float(page.locator('.dx-action').first.evaluate('(e)=>getComputedStyle(e).fontSize').removesuffix('px'))>=20
+                assert page.evaluate('currentSnapshot.securities.map(s=>s.code)')==EXPECTED
+                assert page.evaluate("([d,c])=>{const before=JSON.stringify([d,c]);renderAll(d,c);return before===JSON.stringify([d,c]);}",[raw_snapshot,common])
+                assert page.locator('.dx-stock').count()==5
+                assert page.locator('[data-stock="5805"], [data-dx-stock="5805"], [data-dx-copy="5805"]').count()==0
                 before = page.evaluate('JSON.stringify(currentSnapshot)')
                 page.locator('[data-dx-copy="all"]').click()
                 page.wait_for_function('window.__copies.length===1')
                 payload = page.evaluate('window.__copies[0]')
                 assert 'DISPLAY_SUMMARY_ONLY_NOT_FULL_HISTORY' in payload
-                assert 'PRESERVE' not in payload
+                assert 'PRESERVE' not in payload and 'KEEP_HISTORY' not in payload
+                assert '5805' not in payload and 'SWCC' not in payload
                 parsed = json.loads(payload[payload.index('{'):])
-                assert parsed['ui_version']=='1.10.1'
-                assert len(parsed['securities'])==6
+                assert parsed['ui_version']=='1.11.0'
+                assert parsed['scope']=='active-securities'
+                assert parsed['active_universe_version']=='JP-ACTIVE-20261004-v3'
+                assert parsed['expected_security_count']==5
+                assert [s['code'] for s in parsed['securities']]==EXPECTED
                 assert all(s['formal_action'] is None for s in parsed['securities'])
                 assert before==page.evaluate('JSON.stringify(currentSnapshot)')
                 assert page.locator('.dx-consult a').get_attribute('href')=='https://chatgpt.com/'
                 assert not external, external
                 assert page.evaluate("localStorage.getItem('other-app.test-sentinel')")=='PRESERVE'
+                assert page.evaluate("localStorage.getItem('jpstock.review.retired-5805-test')")=='KEEP_HISTORY'
                 for view in ['decision-view','stocks-view','forecast-view','quality-view','manage-view']:
                     page.locator('.primary-nav [data-view="'+view+'"]').click()
                     assert page.locator('#'+view).is_visible()
+                    assert 'SWCC' not in page.locator('#'+view).inner_text()
                     size=page.evaluate('({w:innerWidth,doc:document.documentElement.scrollWidth})')
                     if size['doc']>size['w']+1:
                         offenders=page.evaluate("""Array.from(document.querySelectorAll('body *')).filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.right>innerWidth+1;}).map(e=>({tag:e.tagName,id:e.id,cls:e.className,right:e.getBoundingClientRect().right})).slice(0,30)""")
@@ -69,6 +84,7 @@ try:
                     if view=='quality-view':
                         assert page.locator('button.dx-tile').count()==6
                         assert page.locator('#quality-digest').is_visible()
+                        assert '/5一致' in page.locator('[data-quality-detail="sources"]').inner_text()
                         for key, title in [('sources','独立データ照合'),('issues','要確認・未確認'),('qc','共通の品質検査'),('freshness','データの鮮度'),('formal','正式売買への利用'),('schedule','次回再判定の予定')]:
                             tile=page.locator('[data-quality-detail="'+key+'"]')
                             assert tile.bounding_box()['height']>=44
@@ -78,6 +94,9 @@ try:
                             assert page.evaluate('document.activeElement.id')=='quality-detail-heading'
                             assert page.locator('#quality-digest').is_hidden()
                             assert page.locator('#data-quality').is_hidden()
+                            assert 'SWCC' not in page.locator('#quality-detail-screen').inner_text()
+                            if key=='sources':
+                                assert page.locator('#quality-detail-screen .qd-evidence').count()==5
                             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,color,key)
                             assert before==page.evaluate('JSON.stringify(currentSnapshot)')
                             if key=='qc' and width==393:
@@ -117,11 +136,11 @@ try:
                 page.wait_for_function('window.__copies.length===2')
                 single=page.evaluate('window.__copies[1]');data=json.loads(single[single.index('{'):])
                 assert [s['code'] for s in data['securities']]==['6841']
-                # Do not return the assigned function: Playwright auto-invokes returned functions.
                 page.evaluate("() => { navigator.clipboard.writeText=async()=>{throw Error('blocked')}; }")
                 page.locator('[data-dx-copy="all"]').click()
                 page.locator('#consultation-copy-text').wait_for(state='visible')
                 assert 'SHADOW' in page.locator('#consultation-copy-text').input_value()
+                assert 'SWCC' not in page.locator('#consultation-copy-text').input_value()
                 page.evaluate('renderAll(currentSnapshot, null)')
                 assert 'データ確認を優先' in page.locator('.dx-hero').inner_text()
                 page.evaluate('(c)=>renderAll(currentSnapshot,c)',common)
@@ -132,9 +151,10 @@ try:
                 page.locator('[data-quality-detail="freshness"]').click()
                 assert '再読込に失敗' in page.locator('#quality-detail-screen').inner_text()
                 assert before==page.evaluate('JSON.stringify(currentSnapshot)')
+                assert page.evaluate("localStorage.getItem('jpstock.review.retired-5805-test')")=='KEEP_HISTORY'
                 assert not errors, errors
                 assert not external, external
-                report.append({'width':width,'height':height,'scheme':color,'status':'PASS','quality_details_checked':6,'js_errors':len(errors),'outbound_requests':len(external)})
+                report.append({'width':width,'height':height,'scheme':color,'status':'PASS','active_securities':5,'quality_details_checked':6,'js_errors':len(errors),'outbound_requests':len(external)})
                 context.close()
         browser.close()
 finally:

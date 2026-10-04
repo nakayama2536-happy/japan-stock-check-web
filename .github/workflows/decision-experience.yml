@@ -7,6 +7,7 @@ on:
       - 'docs/**'
       - 'tests/decision-experience*'
       - 'tests/quality-details*'
+      - 'tests/active-universe*'
       - '.github/workflows/decision-experience.yml'
 permissions:
   contents: read
@@ -25,7 +26,8 @@ jobs:
         run: |
           node --check docs/decision-experience.js
           node --check docs/quality-details.js
-          node --test tests/decision-experience.test.cjs tests/quality-details.test.cjs
+          node --check docs/active-universe.js
+          node --test tests/decision-experience.test.cjs tests/quality-details.test.cjs tests/active-universe.test.cjs
       - name: Install pinned browser test dependency
         run: |
           python -m pip install playwright==1.55.0
