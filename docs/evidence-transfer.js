@@ -5,7 +5,7 @@
   if(root)root.JPEvidenceTransfer=api;
 })(typeof window==='undefined'?null:window,function(){
   'use strict';
-  const VERSION='1.12.1',LIMIT=8000,CHUNK=7200;
+  const VERSION='1.12.2',LIMIT=8000,CHUNK=7200;
   const keys=(v,list)=>Object.fromEntries(list.split(' ').filter(k=>v&&Object.prototype.hasOwnProperty.call(v,k)).map(k=>[k,v[k]]));
   const list=v=>Array.isArray(v)?v:[];
   // Only the brief omits null object fields. Keep zero, false, [], and null array slots.
@@ -50,7 +50,8 @@
       if(!s)return {data_state:'MISSING'};
       const out=keys(s,'code name price as_of shadow_action formal_decision data_quality source_gate_reason weekly_trend');
       out.display_source_check=check;out.source_evidence=s.source_evidence;
-      out.next_conditions=refs(s.next_conditions);out.policy_context=s.policy_context;
+      out.next_conditions=refs(s.next_conditions);
+      if(!diagnostic)out.policy_context=s.policy_context;
       out.forecast=Object.entries(s.outlook||{}).map(([h,f])=>{
         const a=f&&f.analog||{};return [Number(h),f&&f.direction,f&&f.score,f&&f.confidence,a.median_return_pct,a.historical_up_share_pct,a.sample_count];
       });
@@ -74,11 +75,21 @@
       forecast_columns:['営業日','方向','score','confidence','過去中央値%','過去上昇割合%','例数'],
       securities:rows,common_items:items,condition_columns:conditionKeys,conditions:conditions.map(c=>c&&typeof c==='object'?conditionKeys.map(k=>c[k]===undefined?null:c[k]):null),reason_texts:reasonTexts,
       observations:grouped(p.diagnostic_observations||p.observations),historical_validation_note:p.historical_validation&&p.historical_validation.scope_note,
-      full_only:diagnostic?['technical全数値','財務当期/比較期の全数値・単位','全subject inventory・移行/過去実績内訳','条件のcategory/impact/priority/id・Common monitor']:['OHLCV全行','市場履歴','source inventory全件','追加必須確認事項・Common monitor・条件補助項目'],
+      full_only:diagnostic?['technical全数値','財務当期/比較期の全数値・単位','全subject inventory・移行/過去実績内訳','条件のcategory/impact/priority/id・Common monitor','audit_context全評価条件・公開方針本文']:['OHLCV全行','市場履歴','source inventory全件','追加必須確認事項・Common monitor・条件補助項目','audit_context全評価条件'],
       not_included:p.not_included,investigation_targets:list(p.investigation_targets).map(x=>keys(x,'repository paths')),
       scope:p.scope,limitations:p.limitations,
       required_for_recalculation:'履歴からの独立再計算・網羅監査は詳細ファイル添付または全分割を受領後。保存済み指標だけから再計算済みとしない。'
     };
+    const originals=diagnostic?list(p.securities).map(r=>r.saved_fields):[p.security];
+    const coverage=[];
+    for(const s of originals){
+      if(!s||!s.audit_context)continue;
+      const a=s.audit_context,group=compact({state:a.validation_state||a.availability,conditions_state:a.conditions_state,policy_state:a.policy_state,errors:a.validation_errors&&a.validation_errors.length?a.validation_errors:undefined});
+      let g=coverage.find(x=>JSON.stringify(x.status)===JSON.stringify(group));
+      if(!g){g={status:group,rows:[]};coverage.push(g);}
+      g.rows.push([s.code,a.condition_count===undefined?null:a.condition_count,(s.policy_context||{}).policy_code||null]);
+    }
+    if(coverage.length){out.audit_coverage_columns=['code','condition_count','policy_code'];out.audit_coverage=coverage;out.audit_note='全評価条件は詳細ファイル。NOT_RECORDED/NULL/EMPTYを補完せず、画面3件と区別。';}
     if(diagnostic){
       const sourceKeys=['primary','independent','crosscheck_match'],diffKeys=['open','high','low','close','volume'];
       const periodKeys=['status','document_id','submitted_at','period_start','period_end','document_type'];
