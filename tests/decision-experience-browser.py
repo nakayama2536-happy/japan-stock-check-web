@@ -1,5 +1,4 @@
-"""Real app.js integration, deterministic public fixtures; not an iPhone device pass."""
-import copy
+"""Real app.js integration, public snapshot input; not an iPhone device pass."""
 import functools
 import http.server
 import json
@@ -60,6 +59,10 @@ try:
                     page.locator('.primary-nav [data-view="'+view+'"]').click()
                     assert page.locator('#'+view).is_visible()
                     size=page.evaluate('({w:innerWidth,doc:document.documentElement.scrollWidth})')
+                    if size['doc']>size['w']+1:
+                        offenders=page.evaluate("""Array.from(document.querySelectorAll('body *')).filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.right>innerWidth+1;}).map(e=>({tag:e.tagName,id:e.id,cls:e.className,right:e.getBoundingClientRect().right})).slice(0,30)""")
+                        page.screenshot(path=str(OUT/f'overflow-{width}-{color}-{view}.png'),full_page=True)
+                        print(json.dumps(offenders,ensure_ascii=False))
                     assert size['doc']<=size['w']+1, (width,color,view,size)
                     assert page.locator('.primary-nav [aria-current="page"]').count()==1
                     if view=='quality-view':
@@ -82,7 +85,8 @@ try:
                 page.wait_for_function('window.__copies.length===2')
                 single=page.evaluate('window.__copies[1]');data=json.loads(single[single.index('{'):])
                 assert [s['code'] for s in data['securities']]==['6841']
-                page.evaluate("navigator.clipboard.writeText=async()=>{throw Error('blocked')}")
+                # Do not return the assigned function: Playwright auto-invokes returned functions.
+                page.evaluate("() => { navigator.clipboard.writeText=async()=>{throw Error('blocked')}; }")
                 page.locator('[data-dx-copy="all"]').click()
                 page.locator('#consultation-copy-text').wait_for(state='visible')
                 assert 'SHADOW' in page.locator('#consultation-copy-text').input_value()
