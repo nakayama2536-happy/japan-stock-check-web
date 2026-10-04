@@ -29,7 +29,7 @@
   }
   function relatedEvidence(m,c){
     if(!m.cMatch||!c)return para('同一版の共通品質情報を確認できないため、関連する根拠は表示できません。');
-    return list(c.decision_items).filter(x=>x&&typeof x==='object').map(x=>{
+    return list(c.decision_items).filter(x=>x&&typeof x==='object'&&list(m.rows).some(r=>x.subject_id==='SEC_JP_'+r.code)).map(x=>{
       const rows=[];
       list(x.reason_summary).forEach(t=>{if(typeof t==='string')rows.push(['判断理由（保存文）',t]);});
       for(const [key,label] of [['blocking_conditions','利用を保留する条件'],['risk_conditions','注意・リスク条件']]){
@@ -41,9 +41,9 @@
   }
   function detailHtml(kind,m,common){
     if(!Object.prototype.hasOwnProperty.call(TITLES,kind)||!m)return '';
-    const d=m.d||{},c=m.cMatch&&common?common:null;
+    const d=m.d||{},c=m.cMatch&&common?common:null,n=list(m.rows).length;
     let body='';
-    if(kind==='sources')body=para('対象6銘柄の照合結果と取得元です。照合一致は正式売買への利用許可ではありません。')+list(m.rows).map(stockEvidence).join('');
+    if(kind==='sources')body=para('対象'+n+'銘柄の照合結果と取得元です。照合一致は正式売買への利用許可ではありません。')+list(m.rows).map(stockEvidence).join('');
     if(kind==='issues'){
       const xs=list(m.rows).filter(r=>r.check!=='PASS');
       body=pairs([['照合要確認',m.fail],['未確認',m.pending],['対象外・識別不明',m.unexpected]])+
@@ -51,7 +51,7 @@
         xs.map(stockEvidence).join('')+para('照合0件でも、売買条件の価格基準・予測精度・正式系との一致まで保証するものではありません。');
     }
     if(kind==='qc')body=pairs([['保存された共通品質判定',m.qc==='PASS'?'正常（PASS）':state(m.qc)],['同一版との対応',m.cMatch?'確認済み':'未確認']])+
-      para('個別の価格照合が6/6一致でも、共通品質判定は注意になり得ます。この画面では保存された判定を変更しません。')+
+      para('個別の価格照合が'+n+'/'+n+'一致でも、共通品質判定は注意になり得ます。この画面では保存された判定を変更しません。')+
       para('エラーコード記録：'+(c&&list(c.incident&&c.incident.error_codes).length?list(c.incident.error_codes).map(value).join(' / '):'記録なし、または未確認'))+
       '<h3>関連する保存済みの理由・条件</h3>'+para('以下は共通データに保存された文言です。品質判定との直接の因果関係はこのデータだけでは確定できません。最新の実装進捗を示すものでもありません。')+relatedEvidence(m,c);
     if(kind==='freshness')body=pairs([['表示上の鮮度',m.freshness],['判断基準日',m.asOf],['データ生成時刻',stamp(d.updated_at)],['共通データの基準日',c&&c.timestamps&&c.timestamps.market_as_of],['共通データの生成時刻',stamp(c&&c.timestamps&&c.timestamps.calculated_at)],['保存時の鮮度区分',c&&c.data_quality&&c.data_quality.data_state]])+

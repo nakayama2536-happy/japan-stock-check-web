@@ -1,14 +1,15 @@
-/* Japan UI 1.10.1: presentation adapter. No market calculation or storage writes. */
+/* Japan UI 1.11.0: presentation adapter. No market calculation or storage writes. */
 (function (root, factory) {
   'use strict';
-  const api = factory();
+  const universe = typeof module === 'object' && module.exports ? require('./active-universe.js') : root.JPActiveUniverse;
+  const api = factory(universe);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root && root.document) { root.JPDecisionExperience = api; api.install(root); }
-})(typeof window === 'undefined' ? null : window, function () {
+})(typeof window === 'undefined' ? null : window, function (universe) {
   'use strict';
-  const VERSION = '1.10.1';
-  const CODES = Object.freeze(['6841', '6954', '3038', '9432', '1812', '5805']);
-  const NAMES = Object.freeze(['横河電機', 'ファナック', '神戸物産', 'NTT', '鹿島建設', 'SWCC']);
+  const VERSION = '1.11.0';
+  const CODES = universe.CODES;
+  const NAMES = universe.NAMES;
   const ACTIONS = Object.freeze({HOLD:'保有継続', WAIT:'待機', BUY:'新規買い', ADD:'追加買い', REDUCE:'縮小', SELL:'売却'});
   const DIRECTIONS = Object.freeze({STRONG_UP:['↑↑','強い上向き','up'], UP:['↑','上向き','up'], NEUTRAL:['→','中立','flat'], DOWN:['↓','下向き','down'], STRONG_DOWN:['↓↓','強い下向き','down']});
   const HORIZONS = Object.freeze(['1','3','5','14']);
@@ -24,7 +25,8 @@
     return x && Number.isFinite(d.getTime()) ? new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d) : '未確認';
   }
   function makeModel(snapshot, common, options) {
-    const d = snapshot && typeof snapshot === 'object' ? snapshot : {};
+    const scoped = universe.project(snapshot,common);
+    const d = scoped.snapshot; common = scoped.common;
     const o = options || {}, now = o.now || new Date();
     const raw = Array.isArray(d.securities) ? d.securities : [];
     const asOf = dateOnly(d.latest_decision_as_of);
@@ -72,7 +74,7 @@
     if(!cMatch) notes.push('同じ基準日の共通品質情報を確認できません。');
     if(cMatch && q.qc_state==='FAIL') notes.push('共通品質検査に不合格があります。');
     if(rows.some(r=>r.action==='UNKNOWN')) notes.push('参考判断が未確認の銘柄があります。待機で補完しません。');
-    return {d, rows, asOf, counts, pass, fail, pending, unexpected, cMatch, qc:text(q.qc_state)||'UNKNOWN',
+    return {d, common, rows, asOf, counts, pass, fail, pending, unexpected, cMatch, qc:text(q.qc_state)||'UNKNOWN',
       runState, referenceOnly, attention, freshness, notes,
       summary:counts.map(x=>x.label+' '+x.count).join(' / ') || '参考判断データなし',
       formalText:referenceOnly?'未連携（SHADOW）':'銘柄詳細で確認',
@@ -93,7 +95,8 @@
         source_check:r.check,data_quality:text(s.data_quality)||null,source_gate_reason:text(s.source_gate_reason)||null,
         forecast, next_conditions:(Array.isArray(s.next_conditions)?s.next_conditions:[]).filter(c=>c&&typeof c==='object').map(c=>({label:text(c.label),status:text(c.status)||null}))};
     });
-    const payload = {schema:'jp-consultation-summary/1',ui_version:VERSION,scope:code?'single-security':'six-securities',
+    const payload = {schema:'jp-consultation-summary/1',ui_version:VERSION,scope:code?'single-security':'active-securities',
+      active_universe_version:universe.VERSION,data_projection:'ACTIVE_UNIVERSE_VIEW_OF_SAVED_SNAPSHOT',
       completeness:'DISPLAY_SUMMARY_ONLY_NOT_FULL_HISTORY',decision_mode:text(m.d.decision_mode)||'UNKNOWN',
       decision_as_of:m.asOf,generated_at:text(m.d.updated_at)||null,source_run_id:text(m.d.latest_decision_run_id || m.d.run_id)||null,
       source_match_count:m.pass,expected_security_count:CODES.length,common_quality_bound:m.cMatch,
@@ -113,13 +116,13 @@
       '<div class="dx-headline">'+(countHtml||'<span>参考判断データなし</span>')+'</div>'+
       (m.candidateCount?'<p class="dx-candidate">売買候補の参考表示 '+m.candidateCount+'銘柄。正式な発注判断ではありません。</p>':'')+
       '<p class="dx-safety">'+(m.referenceOnly?'SHADOW検証中。正式な売買判断には未使用です。':'参考分析の集計です。正式判断は銘柄詳細で別に確認してください。')+'</p>'+
-      '<p class="dx-date">基準日 '+esc(m.asOf?m.asOf.replace(/-/g,'/'):'未確認')+'</p>'+
+      '<p class="dx-date">基準日 '+esc(m.asOf?m.asOf.replace(/-/g,'/'):'未確認')+' ／ 対象'+CODES.length+'銘柄</p>'+
       (m.notes.length?'<div class="dx-warning" role="status">'+m.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>':'')+
       '<button class="dx-quality-link" type="button" data-dx-view="quality-view">独立照合 '+m.pass+'/'+CODES.length+'一致'+(m.fail+m.pending?'・要確認あり':'')+' <span>品質詳細へ ›</span></button>'+
       '<div class="dx-consult"><h3>ChatGPTで判断を相談</h3><div class="dx-consult-actions"><button type="button" class="dx-primary" data-dx-copy="all">① 相談文をコピー</button><a class="dx-secondary" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② ChatGPTを開く</a></div><p>表示要約のみ・自動送信なし。FULL履歴は銘柄詳細へ。</p><p id="consultation-copy-status" role="status" aria-live="polite"></p><details id="consultation-copy-fallback" hidden><summary>相談文を表示してコピー</summary><label for="consultation-copy-text">全選択してコピーしてください</label><textarea id="consultation-copy-text" rows="8" readonly></textarea></details></div></article>';
   }
   function rowsHtml(m) {
-    return '<article class="dx-list"><div class="dx-title-line"><h2>6銘柄の判断・営業日予測</h2></div><p class="dx-caption">各判断は参考。予測は上昇＝赤／下落＝青。数字は営業日です。</p>'+
+    return '<article class="dx-list"><div class="dx-title-line"><h2>'+CODES.length+'銘柄の判断・営業日予測</h2></div><p class="dx-caption">各判断は参考。予測は上昇＝赤／下落＝青。数字は営業日です。</p>'+
       m.rows.map(r=>{
         const s=r.source||{};
         const forecast = HORIZONS.map(h=>{
@@ -137,7 +140,7 @@
       ['データの鮮度',m.freshness,m.attention?'warn':'neutral'],
       ['正式売買への利用',m.referenceOnly?'未連携':'銘柄詳細で確認','neutral'],
       ['次回再判定の予定',clock(m.d.next_recheck_at),'neutral']];
-    return '<article class="dx-quality-digest"><h2>品質ダイジェスト</h2><p class="dx-safety">'+(m.referenceOnly?'6/6一致でも、正式な売買判断には使えません。':'照合一致だけで売買可否を判定しません。')+'</p><div class="dx-quality-grid">'+
+    return '<article class="dx-quality-digest"><h2>品質ダイジェスト</h2><p class="dx-safety">'+(m.referenceOnly?CODES.length+'/'+CODES.length+'一致でも、正式な売買判断には使えません。':'照合一致だけで売買可否を判定しません。')+'</p><div class="dx-quality-grid">'+
       tiles.map(([label,value,tone],i)=>'<button type="button" class="dx-tile dx-tone-'+tone+'" data-quality-detail="'+keys[i]+'" aria-controls="quality-detail-screen"><span>'+label+'</span><b>'+esc(value)+'</b><small class="qd-hint">詳細を見る ›</small></button>').join('')+'</div>'+
       '<p class="dx-caption">基準日 '+esc(m.asOf||'未確認')+' ／ 生成 '+esc(clock(m.d.updated_at))+'。予定時刻と実行済みは別です。</p>'+
       (m.notes.length?'<div class="dx-warning">'+m.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>':'<p class="dx-caption">各項目をタップすると、対応する根拠・確認事項の詳細を開けます。</p>')+'</article>';
@@ -163,7 +166,7 @@
       const m=model();
       doc.getElementById('today-overview').innerHTML=summaryHtml(m)+rowsHtml(m);
       const q=doc.getElementById('quality-digest');if(q)q.innerHTML=qualityHtml(m);
-      if(qualityDetails)qualityDetails.update(m,c);
+      if(qualityDetails)qualityDetails.update(m,m.common);
       const status=doc.getElementById('banner'),dest=doc.getElementById('manage-updates');
       // Move the actual controls, not clones: keep their listeners and unique IDs.
       if(status&&dest&&status.firstElementChild&&!status.querySelector('.error')) dest.replaceChildren(...status.childNodes);
@@ -199,7 +202,7 @@
       try {
         if(!w.navigator.clipboard || !w.navigator.clipboard.writeText)throw new Error('clipboard unavailable');
         await w.navigator.clipboard.writeText(prompt);
-        out.textContent=(key==='all'?'6銘柄':NAMES[CODES.indexOf(key)])+'の相談文をコピーしました。ChatGPTを開き、貼り付けて送信してください。';
+        out.textContent=(key==='all'?CODES.length+'銘柄':NAMES[CODES.indexOf(key)])+'の相談文をコピーしました。ChatGPTを開き、貼り付けて送信してください。';
         fallback.hidden=true;
         if(typeof w.toast==='function')w.toast('相談文をコピーしました。自動送信はしていません。',4500);
       } catch(_) {
@@ -207,7 +210,6 @@
         area.value=prompt;fallback.hidden=false;fallback.open=true;area.focus();area.select();
       } finally { button.disabled=false; }
     });
-    // Existing loader writes failures here. Surface them without hiding old-data warnings in Management.
     const banner=doc.getElementById('banner');
     if(banner&&w.MutationObserver)new w.MutationObserver(()=>{
       if(banner.querySelector('.error')&&lastD&&!loadFailed){loadFailed=true;refresh(lastD,lastC);}
