@@ -5,7 +5,8 @@
   if(root)root.JPEvidenceWorkflows=api;
 })(typeof window==='undefined'?null:window,function(){
   'use strict';
-  const VERSION='1.12.0',HORIZONS=['1','3','5','14'];
+  const VERSION='1.12.2',HORIZONS=['1','3','5','14'];
+  const A=typeof module==='object'&&module.exports?require('./audit-context.js'):window.JPAuditContext;
   const scalar=v=>v===null||typeof v==='string'||typeof v==='boolean'||(typeof v==='number'&&Number.isFinite(v))?v:null;
   const pick=(v,keys)=>Object.fromEntries(keys.split(' ').map(k=>[k,scalar(v&&v[k])]));
   const array=(v,fn)=>Array.isArray(v)?v.map(fn):null;
@@ -30,7 +31,7 @@
     for(const k of ['passed_conditions','pending_conditions','risk_conditions','blocking_conditions','change_conditions'])out[k]=array(v[k],condition);
     return out;
   }
-  function security(v){
+  function security(v,identity){
     if(!v||typeof v!=='object')return null;
     const out=pick(v,'security_id code ticker name price as_of shadow_action formal_decision confidence reference_signal secondary_state data_quality source_gate_reason weekly_trend');
     out.formal_decision_note='保存フィールド。SHADOWのWAIT等を正式採用された判断と解釈しない。';
@@ -39,6 +40,7 @@
     out.reason_summary=typeof v.reason_summary==='string'?v.reason_summary:array(v.reason_summary,scalar);
     out.next_conditions=array(v.next_conditions,condition);out.next_business_day_watch=array(v.next_business_day_watch,scalar);
     out.policy_context={...pick(v.policy_context,'security_id policy_code label objective'),focus:array(v.policy_context&&v.policy_context.focus,scalar)};
+    out.audit_context=A.project(v,identity);
     out.outlook=Object.fromEntries(HORIZONS.map(h=>{
       const x=v.outlook&&v.outlook[h];
       return [h,x?{...pick(x,'direction score confidence'),analog:x.analog?pick(x.analog,'sample_count median_return_pct historical_up_share_pct p25_return_pct p75_return_pct note'):null}:null];
@@ -72,7 +74,8 @@
       actual_subject_inventory:array(d.securities,x=>pick(x,'code security_id ticker as_of')),
       scope_checks:{missing_or_unconfirmed:m.pending,failed:m.fail,unexpected:m.unexpected},
       common_items:array(c.decision_items,commonItem),
-      securities:rows.map(r=>({code:r.code,display_source_check:r.check,saved_fields:security(r.source)})),
+      securities:rows.map(r=>({code:r.code,display_source_check:r.check,saved_fields:security(r.source,d)})),
+      audit_semantics:'audit_context.conditionsは同一Runで評価した全行（PASSを含む）のlabel/status/required/purpose。next_conditionsは画面用最大3件。NOT_RECORDEDは旧保存値等の未収録、NULL/EMPTY/RECORDEDとは別。MATCHEDはRun/日付/銘柄/件数の対応であり正しさや正式採用の保証ではない。未記録を最新設定やCommonの一部から補完しない。数値比較式・閾値は元decisionに未収録。',
       diagnostic_observations:observations(m),
       saved_migration:{...pick(d.report_migration,'formal_source parity_version feature_parity_ready shadow_validation_ready'),capabilities:array(d.report_migration&&d.report_migration.capabilities,x=>pick(x,'id label required status'))},
       historical_validation:{...pick(d.shadow_validation,'run_count decision_sample_count source_fetch_rate ohlcv_match_rate decision_match_rate production_candidate'),readiness_reasons:array(d.shadow_validation&&d.shadow_validation.readiness_reasons,scalar),scope_note:'保存当時の対象を含む。現在5銘柄だけの実績ではない。'},
@@ -112,7 +115,8 @@
     requireEqual(p.scope&&p.scope.codes,[code],'SUBJECT_SCOPE_MISMATCH');
     requireEqual(p.scope&&p.scope.subject_ids,['SEC_JP_'+code],'SUBJECT_SCOPE_MISMATCH');
     requireEqual(pick(raw.app_meta,'run_id latest_decision_run_id latest_decision_as_of updated_at engine_version analytics_version decision_mode'),pick(m.d,'run_id latest_decision_run_id latest_decision_as_of updated_at engine_version analytics_version decision_mode'),'DISPLAY_VERSION_MISMATCH');
-    requireEqual(security(raw.security),security(r.source),'DISPLAY_SECURITY_MISMATCH');
+    requireEqual(security(raw.security,raw.app_meta),security(r.source,m.d),'DISPLAY_SECURITY_MISMATCH');
+    A.assertBound(raw.security,raw.app_meta);A.assertBound(r.source,m.d);
     if(!raw.common_decision_item||raw.common_decision_item.subject_id!=='SEC_JP_'+code||raw.common_decision_item.as_of!==m.asOf)throw failure('COMMON_SUBJECT_MISMATCH');
     const chart=raw.chart,scope=p.scope;
     if(!chart||chart.ticker!==code+'.T'||!Array.isArray(chart.rows)||!chart.rows.length)throw failure('HISTORY_MISSING');
@@ -130,11 +134,11 @@
       verification:{payload_sha256:'VERIFIED_BY_EXISTING_BUNDLE_LOADER',manifest_before_after:'SAME_PUBLICATION',display_identity:'MATCHED',source_files_hashes:'MANIFEST_REFERENCES_CHECKED_NOT_INDIVIDUALLY_REFETCHED'},
       versions:pick(p.versions,'app_version engine_version analytics_version common_spec_version bundle_contract trigger_rule_version'),
       source_inventory:array(p.sources,x=>pick(x,'source_id path purpose status sha256 bytes revision required_for_bundle as_of history_start history_end rows')),
-      security:security(raw.security),common_decision_item:commonItem(raw.common_decision_item),
+      security:security(raw.security,raw.app_meta),common_decision_item:commonItem(raw.common_decision_item),
       chart:{ticker:chart.ticker,rows:array(chart.rows,x=>pick(x,'date open high low close volume'))},
       market_environment:array(raw.market_environment,x=>({...pick(x,'market_id ticker name status value change_pct direction as_of unit source'),history:array(x&&x.history,r=>pick(r,'date value'))})),
       trigger_context:{...pick(p.trigger_context,'category priority_band priority_score score_scale data_review_required analysis_use'),mandatory_checks:array(p.trigger_context&&p.trigger_context.mandatory_checks,scalar),reasons:array(p.trigger_context&&p.trigger_context.reasons,x=>pick(x,'code label'))},
-      limitations:['公開履歴付きデータであり、計算本体の全履歴ではない。','類似日一覧・長期履歴・生成版の計算環境がなく、40類似局面の完全再現は未実施。','EMA/週足等は公開期間外の初期値・履歴の影響を受け得る。','外部ニュースは含まない。追加確認時は一次資料・確認日時・保存値との違いを明示。','私的保有数量・取得単価・口座・個人メモ・認証情報を収集しない。'],
+      limitations:['audit_contextの全行は同じdecisionが評価した条件のlabel/status/required/purpose。数値比較式は含まない。NOT_RECORDED/NULL/EMPTYを補完せず、画面のnext_conditions最大3件と区別する。','公開履歴付きデータであり、計算本体の全履歴ではない。','類似日一覧・長期履歴・生成版の計算環境がなく、40類似局面の完全再現は未実施。','EMA/週足等は公開期間外の初期値・履歴の影響を受け得る。','外部ニュースは含まない。追加確認時は一次資料・確認日時・保存値との違いを明示。','私的保有数量・取得単価・口座・個人メモ・認証情報を収集しない。'],
       observations:observations({...m,rows:m.rows.filter(r=>r.code===code)}),
       local_data:null,automatic_trading_or_config_change:false
     };
