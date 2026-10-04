@@ -694,7 +694,12 @@ function setupNav(){
     btn.addEventListener("click",()=>{
       const id=btn.dataset.view;
       document.querySelectorAll(".view").forEach(v=>v.hidden=v.id!==id);
-      document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b===btn));
+      document.querySelectorAll("nav [data-view]").forEach(b=>{
+        const active=b===btn;
+        b.classList.toggle("active",active);
+        if(active)b.setAttribute("aria-current","page");
+        else b.removeAttribute("aria-current");
+      });
       window.scrollTo({top:0,behavior:"smooth"});
     });
   });
@@ -809,6 +814,26 @@ function renderTodayOverview(d){
     '<details class="overview-list" open><summary>6銘柄を一覧で確認</summary>'+rows+'</details>'+
     changeHtml+
   '</article>';
+}
+
+function renderPortfolioForecast(d){
+  const root=document.getElementById("portfolio-forecast"),items=d.securities||[];
+  if(!root)return;
+  if(!items.length){
+    root.innerHTML='<article class="portfolio-forecast-panel"><div class="section-heading"><div><span class="eyebrow">6銘柄比較</span><h2>予測一覧</h2></div></div><div class="overview-empty">予測データ待ちです。</div></article>';
+    return;
+  }
+  const horizons=["1","3","5","14"];
+  const head='<div class="forecast-matrix-head"><span>銘柄</span>'+horizons.map(h=>'<span>'+h+'日</span>').join("")+'</div>';
+  const rows=items.map(s=>{
+    const cells=horizons.map(h=>{
+      const o=s.outlook?.[h]||{};
+      const dir=o.direction||"";
+      return '<div class="forecast-cell '+directionClass(dir)+'"><b>'+(arrows[dir]||"—")+'</b><small>'+(confidenceLabels[o.confidence]||"—")+'</small></div>';
+    }).join("");
+    return '<div class="forecast-matrix-row"><div class="forecast-matrix-name"><b>'+esc(s.name)+'</b><small>'+esc(s.code)+' / '+(s.price==null?"—":Number(s.price).toLocaleString("ja-JP")+"円")+'</small></div>'+cells+'</div>';
+  }).join("");
+  root.innerHTML='<article class="portfolio-forecast-panel"><div class="section-heading"><div><span class="eyebrow">6銘柄比較</span><h2>1・3・5・14営業日予測</h2></div><span class="reference-pill">参考分析</span></div><div class="forecast-matrix">'+head+rows+'</div><p class="forecast-matrix-note">矢印は既存の参考分析を横並びにした表示です。正式判断への昇格や予測値の再計算は行いません。詳細は銘柄タブで確認します。</p></article>';
 }
 
 function renderMarketEnvironment(d){
@@ -1396,6 +1421,7 @@ function renderAll(d,commonResult){
   renderBanner(d);
   renderCommonOverview(commonResult);
   renderTodayOverview(d);
+  renderPortfolioForecast(d);
   renderMarketEnvironment(d);
   renderCards(d);
   renderDataQuality(d);

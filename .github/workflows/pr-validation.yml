@@ -76,6 +76,13 @@ jobs:
           assert Path('docs/review-history.js').exists()
           assert Path('tests/review-history.test.cjs').exists()
           assert 'banner-status-strip' in app
+          for view_id in ('decision-view','stocks-view','forecast-view','quality-view','manage-view'):
+              assert f'id="{view_id}"' in index, f"{view_id} missing"
+          for label in ('判断','銘柄','予測','品質','管理'):
+              assert f'>{label}</button>' in index, f"{label} tab missing"
+          assert 'primary-nav' in index
+          assert 'function renderPortfolioForecast(d)' in app
+          assert 'portfolio-forecast' in index
           assert 'なし（検証中）' in app
           assert 'SHADOW_PARTIAL:"検証結果保存済み・要確認"' in app
           assert 'LOW_MISMATCH:"安値データ差異あり"' in app
