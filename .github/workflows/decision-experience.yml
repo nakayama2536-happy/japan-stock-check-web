@@ -1,0 +1,39 @@
+name: Decision Experience UI
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'tests/decision-experience*'
+      - '.github/workflows/decision-experience.yml'
+permissions:
+  contents: read
+jobs:
+  decision-experience:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Unit and boundary tests
+        run: |
+          node --check docs/decision-experience.js
+          node --test tests/decision-experience.test.cjs
+      - name: Install pinned browser test dependency
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Actual app integration at five viewport sizes, light and dark
+        run: python tests/decision-experience-browser.py
+      - name: Preserve browser evidence (not device approval)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: decision-experience-browser-evidence
+          path: test-output/decision-experience/
+          retention-days: 14
