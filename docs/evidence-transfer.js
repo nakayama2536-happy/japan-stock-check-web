@@ -33,7 +33,7 @@
   }
   function makeBrief(p,evidence){
     const diagnostic=p.schema==='jp-data-investigation/1',conditions=[],reasonTexts=[];
-    const conditionKeys='id category label status impact required purpose target_action priority metric operator reference value'.split(' ');
+    const allConditionKeys='label status required purpose target_action metric operator reference value'.split(' ');
     function reasonRefs(v){return list(typeof v==='string'?[v]:v).map(x=>{let i=reasonTexts.indexOf(x);if(i<0){i=reasonTexts.length;reasonTexts.push(x);}return i;});}
     function refs(rows){
       if(!Array.isArray(rows))return null;
@@ -41,7 +41,7 @@
     }
     function common(c){
       if(!c)return null;
-      const out=keys(c,'subject_id eligibility analysis_action formal_action strategy_action monitor');
+      const out=keys(c,'subject_id eligibility analysis_action formal_action strategy_action');
       out.reason_refs=reasonRefs(c.reason_summary);
       for(const k of ['passed_conditions','pending_conditions','risk_conditions','blocking_conditions','change_conditions'])out[k]=refs(c[k]);
       return out;
@@ -62,23 +62,32 @@
     }
     const rows=diagnostic?list(p.securities).map(r=>stock(r.saved_fields,r.display_source_check)):[stock(p.security,null)];
     const items=diagnostic?list(p.common_items).map(common):[common(p.common_decision_item)];
+    const conditionKeys=allConditionKeys.filter(k=>conditions.some(c=>c&&c[k]!==null&&c[k]!==undefined));
     const out={
       schema:'jp-evidence-brief/1',ui_version:VERSION,source_export_schema:p.schema,source_export_ui_version:p.ui_version,purpose:p.purpose,
       transfer_mode:'BRIEF_WITH_FULL_EVIDENCE',character_limit:LIMIT,full_evidence:evidence,
-      brief_semantics:'nullのオブジェクト項目は未記録として省略。0/false/空配列は保持。元のnull/欠損の区別は詳細ファイル。条件番号はconditionsの0始まり参照（列名condition_columns）。reason_refsはreason_texts参照。符号差casesは[銘柄,営業日]、数値はforecast参照。',
+      brief_semantics:'nullのオブジェクト項目は未記録として省略。0/false/空配列は保持。元のnull/欠損の区別は詳細ファイル。*_columnsは同名の表の列名。条件番号はconditionsの0始まり参照（列名condition_columns）。reason_refsはreason_texts参照。符号差casesは[銘柄,営業日]、数値はforecast参照。',
       active_universe_version:p.active_universe_version,expected_security_count:p.expected_security_count,code:p.code,
       display_identity:p.display_identity,source_match_count:p.source_match_count,common_quality_bound:p.common_quality_bound,
       common_quality:p.common_quality,common_qc:p.common_qc,freshness_display:p.freshness_display,display_notes:p.display_notes,
-      manifest_verification:p.manifest_verification,verification:p.verification,incident:p.incident,scope_checks:p.scope_checks,
+      manifest_verification:keys(p.manifest_verification,'state hash_check'),verification:p.verification,incident:p.incident,scope_checks:p.scope_checks,
       forecast_columns:['営業日','方向','score','confidence','過去中央値%','過去上昇割合%','例数'],
       securities:rows,common_items:items,condition_columns:conditionKeys,conditions:conditions.map(c=>c&&typeof c==='object'?conditionKeys.map(k=>c[k]===undefined?null:c[k]):null),reason_texts:reasonTexts,
-      observations:grouped(p.diagnostic_observations||p.observations),historical_validation:p.historical_validation,
-      full_only:diagnostic?['technical全数値','財務当期/比較期の全数値・単位','全subject inventory・移行内訳']:['OHLCV全行','市場履歴','source inventory全件','追加必須確認事項'],
+      observations:grouped(p.diagnostic_observations||p.observations),historical_validation_note:p.historical_validation&&p.historical_validation.scope_note,
+      full_only:diagnostic?['technical全数値','財務当期/比較期の全数値・単位','全subject inventory・移行/過去実績内訳','条件のcategory/impact/priority/id・Common monitor']:['OHLCV全行','市場履歴','source inventory全件','追加必須確認事項・Common monitor・条件補助項目'],
       not_included:p.not_included,investigation_targets:list(p.investigation_targets).map(x=>keys(x,'repository paths')),
       scope:p.scope,limitations:p.limitations,
       required_for_recalculation:'履歴からの独立再計算・網羅監査は詳細ファイル添付または全分割を受領後。保存済み指標だけから再計算済みとしない。'
     };
-    if(!diagnostic){out.market_environment=list(p.market_environment).map(m=>keys(m,'market_id name status value change_pct as_of unit source'));out.publication_id=p.publication_id;}
+    if(diagnostic){
+      const sourceKeys=['primary','independent','crosscheck_match'],diffKeys=['open','high','low','close','volume'];
+      const periodKeys=['status','document_id','submitted_at','period_start','period_end','document_type'];
+      const packed=rows.map(r=>({...r,source_evidence:[...sourceKeys.map(k=>r.source_evidence&&r.source_evidence[k]),diffKeys.map(k=>r.source_evidence&&r.source_evidence.diffs&&r.source_evidence.diffs[k])],financial_period:periodKeys.map(k=>r.financial_period&&r.financial_period[k])}));
+      const columns=Array.from(new Set(packed.flatMap(Object.keys))),commonColumns=Array.from(new Set(items.filter(Boolean).flatMap(Object.keys)));
+      out.security_columns=columns;out.securities=packed.map(r=>columns.map(k=>r[k]===undefined?null:r[k]));
+      out.source_columns=[...sourceKeys,'diffs [open,high,low,close,volume]'];out.financial_period_columns=periodKeys;
+      out.common_item_columns=commonColumns;out.common_items=items.map(r=>r?commonColumns.map(k=>r[k]===undefined?null:r[k]):null);
+    }else{out.market_environment=list(p.market_environment).map(m=>keys(m,'market_id name status value change_pct as_of unit source'));out.publication_id=p.publication_id;}
     return compact(out);
   }
   function prompt(p,mode){
