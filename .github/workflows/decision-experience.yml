@@ -9,6 +9,7 @@ on:
       - 'tests/quality-details*'
       - 'tests/active-universe*'
       - 'tests/evidence-workflows*'
+      - 'tests/evidence-transfer*'
       - '.github/workflows/decision-experience.yml'
 permissions:
   contents: read
@@ -30,7 +31,8 @@ jobs:
           node --check docs/active-universe.js
           node --check docs/evidence-workflows.js
           node --check docs/evidence-workflows-ui.js
-          node --test tests/decision-experience.test.cjs tests/quality-details.test.cjs tests/active-universe.test.cjs tests/evidence-workflows.test.cjs
+          node --check docs/evidence-transfer.js
+          node --test tests/decision-experience.test.cjs tests/quality-details.test.cjs tests/active-universe.test.cjs tests/evidence-workflows.test.cjs tests/evidence-transfer.test.cjs
       - name: Install pinned browser test dependency
         run: |
           python -m pip install playwright==1.55.0
