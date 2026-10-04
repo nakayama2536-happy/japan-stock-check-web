@@ -13,6 +13,8 @@ server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(http.se
 threading.Thread(target=server.serve_forever,daemon=True).start()
 BASE=f'http://127.0.0.1:{server.server_port}'
 common=json.loads((ROOT/'docs/data/common_snapshot.json').read_text())
+source_snapshot=json.loads((ROOT/'docs/data/app_snapshot.json').read_text())
+source_by_code={s['code']:s for s in source_snapshot['securities']}
 report=[]
 def parse_prompt(text):return json.loads(text[text.index('\n{')+1:])
 def chars(text):return len(text.encode('utf-16-le'))//2
@@ -21,6 +23,18 @@ def prepared(page):
     page.wait_for_function("!document.getElementById('aw-result').hidden || document.getElementById('aw-status').textContent.includes('検証を通過できない')",timeout=25000)
     assert page.locator('#aw-result').is_visible(),page.locator('#aw-status').inner_text()
 def full(page):return page.locator('#aw-full-text').input_value()
+def check_receipt(exported,source):
+    audit=exported['audit_context']
+    if 'audit_context' not in source:
+        assert audit['availability']=='NOT_RECORDED'
+    else:
+        expected=source['audit_context']
+        assert audit['validation_state']=='MATCHED'
+        assert audit['run_id']==source_snapshot['run_id']
+        for key in ['conditions','condition_count','conditions_state','policy_state','security_id','as_of']:
+            assert audit[key]==expected[key],key
+        for key,value in (source.get('policy_context') or {}).items():
+            assert exported['policy_context'][key]==value
 try:
   with sync_playwright() as pw:
     browser=pw.chromium.launch()
@@ -46,9 +60,11 @@ try:
         assert page.locator('#decision-view #refresh-data-btn').count()==0
         assert float(page.locator('.dx-action').first.evaluate('(e)=>getComputedStyle(e).fontSize').removesuffix('px'))>=20
         before=page.evaluate('JSON.stringify(currentSnapshot)')
-        # Synthetic new-receipt reader proof; never mutates the saved market snapshot.
+        # Synthetic old/new receipts; never mutate the saved market snapshot.
         assert page.evaluate("""() => {
           const s=structuredClone(currentSnapshot.securities[0]);
+          delete s.audit_context;delete s.policy_context;
+          if(JPAuditContext.project(s,currentSnapshot).availability!=='NOT_RECORDED')return false;
           s.policy_context={security_id:s.security_id,policy_code:'TEST',label:'公開試験',objective:'確認',focus:[]};
           s.audit_context={schema_version:'1.0',run_id:currentSnapshot.run_id,as_of:s.as_of,security_id:s.security_id,conditions_source:'decision.next_conditions',conditions_state:'RECORDED',condition_count:4,display_limit:3,policy_source:'decision.policy_context',policy_state:'RECORDED',conditions:Array.from({length:4},(_,i)=>({label:'条件'+i,status:i?'PENDING':'PASS',purpose:i===3?'SELL':'ENTRY',required:i!==1}))};
           const a=JPEvidenceWorkflows.security(s,currentSnapshot).audit_context;
@@ -67,8 +83,11 @@ try:
         assert diagnostic['schema']=='jp-data-investigation/1'
         assert diagnostic['expected_security_count']==5 and len(diagnostic['securities'])==5
         assert all(s['code']!='5805' for s in diagnostic['securities'])
-        assert all(s['saved_fields']['audit_context']['availability']=='NOT_RECORDED' for s in diagnostic['securities'])
-        assert brief['audit_coverage'][0]['status']['state']=='NOT_RECORDED'
+        coverage={row[0]:group['status'] for group in brief['audit_coverage'] for row in group['rows']}
+        for s in diagnostic['securities']:
+            check_receipt(s['saved_fields'],source_by_code[s['code']])
+            a=s['saved_fields']['audit_context']
+            assert coverage[s['code']]['state']==a.get('validation_state',a['availability'])
         assert diagnostic['manifest_verification']['state']=='NOT_CHECKED'
         assert diagnostic['common_quality']['displayed_qc']=='WARN'
         assert 'source_evidence' in diagnostic['securities'][0]['saved_fields']
@@ -98,7 +117,7 @@ try:
           assert bp['transfer_mode']=='BRIEF_WITH_FULL_EVIDENCE'
           assert payload['schema']=='jp-security-analysis/1' and payload['code']==code
           assert payload['scope']['history_rows']==len(payload['chart']['rows']) and payload['scope']['history_rows']>0
-          assert payload['security']['audit_context']['availability']=='NOT_RECORDED'
+          check_receipt(payload['security'],source_by_code[code])
           assert '全計算履歴ではありません' in page.locator('#aw-evidence-note').inner_text()
           assert payload['verification']['display_identity']=='MATCHED' and payload['local_data'] is None
           assert payload['security']['technical']
