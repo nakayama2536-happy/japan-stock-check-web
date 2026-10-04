@@ -1,4 +1,4 @@
-/* Japan UI 1.10.0: presentation adapter. No market calculation or storage writes. */
+/* Japan UI 1.10.1: presentation adapter. No market calculation or storage writes. */
 (function (root, factory) {
   'use strict';
   const api = factory();
@@ -6,7 +6,7 @@
   if (root && root.document) { root.JPDecisionExperience = api; api.install(root); }
 })(typeof window === 'undefined' ? null : window, function () {
   'use strict';
-  const VERSION = '1.10.0';
+  const VERSION = '1.10.1';
   const CODES = Object.freeze(['6841', '6954', '3038', '9432', '1812', '5805']);
   const NAMES = Object.freeze(['横河電機', 'ファナック', '神戸物産', 'NTT', '鹿島建設', 'SWCC']);
   const ACTIONS = Object.freeze({HOLD:'保有継続', WAIT:'待機', BUY:'新規買い', ADD:'追加買い', REDUCE:'縮小', SELL:'売却'});
@@ -130,6 +130,7 @@
       }).join('')+'<button type="button" class="dx-secondary dx-wide" data-dx-view="forecast-view">信頼度・過去統計を予測タブで確認 ›</button></article>';
   }
   function qualityHtml(m) {
+    const keys=['sources','issues','qc','freshness','formal','schedule'];
     const tiles=[['独立データ照合',m.pass+'/'+CODES.length+'一致',m.pass===CODES.length&&!m.unexpected?'good':'warn'],
       ['要確認・未確認',String(m.fail+m.pending)+'銘柄',m.fail+m.pending?'warn':'good'],
       ['共通の品質検査',({PASS:'正常（保存時）',WARN:'注意',FAIL:'不合格'}[m.qc]||'未確認'),m.qc==='PASS'?'good':m.qc==='FAIL'?'bad':'warn'],
@@ -137,14 +138,15 @@
       ['正式売買への利用',m.referenceOnly?'未連携':'銘柄詳細で確認','neutral'],
       ['次回再判定の予定',clock(m.d.next_recheck_at),'neutral']];
     return '<article class="dx-quality-digest"><h2>品質ダイジェスト</h2><p class="dx-safety">'+(m.referenceOnly?'6/6一致でも、正式な売買判断には使えません。':'照合一致だけで売買可否を判定しません。')+'</p><div class="dx-quality-grid">'+
-      tiles.map(([label,value,tone])=>'<div class="dx-tile dx-tone-'+tone+'"><span>'+label+'</span><b>'+esc(value)+'</b></div>').join('')+'</div>'+
+      tiles.map(([label,value,tone],i)=>'<button type="button" class="dx-tile dx-tone-'+tone+'" data-quality-detail="'+keys[i]+'" aria-controls="quality-detail-screen"><span>'+label+'</span><b>'+esc(value)+'</b><small class="qd-hint">詳細を見る ›</small></button>').join('')+'</div>'+
       '<p class="dx-caption">基準日 '+esc(m.asOf||'未確認')+' ／ 生成 '+esc(clock(m.d.updated_at))+'。予定時刻と実行済みは別です。</p>'+
-      (m.notes.length?'<div class="dx-warning">'+m.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>':'<p class="dx-caption">個別の取得元・差異は下のデータ品質詳細を開いて確認できます。</p>')+'</article>';
+      (m.notes.length?'<div class="dx-warning">'+m.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>':'<p class="dx-caption">各項目をタップすると、対応する根拠・確認事項の詳細を開けます。</p>')+'</article>';
   }
   function install(w) {
     const doc = w.document;
     if(w.JPDecisionExperienceInstalled || typeof w.renderAll !== 'function' || !doc.getElementById('today-overview')) return;
     w.JPDecisionExperienceInstalled=true;
+    const qualityDetails=w.JPQualityDetails?w.JPQualityDetails.createController(w):null;
     let lastD=null,lastC=null,loadFailed=false;
     const sourceState = s=>typeof w.sourceCheckState==='function'?w.sourceCheckState(s):'PENDING';
     const model = ()=>makeModel(lastD,lastC,{sourceState,now:new Date(),loadFailed,offline:w.navigator.onLine===false,
@@ -161,6 +163,7 @@
       const m=model();
       doc.getElementById('today-overview').innerHTML=summaryHtml(m)+rowsHtml(m);
       const q=doc.getElementById('quality-digest');if(q)q.innerHTML=qualityHtml(m);
+      if(qualityDetails)qualityDetails.update(m,c);
       const status=doc.getElementById('banner'),dest=doc.getElementById('manage-updates');
       // Move the actual controls, not clones: keep their listeners and unique IDs.
       if(status&&dest&&status.firstElementChild&&!status.querySelector('.error')) dest.replaceChildren(...status.childNodes);

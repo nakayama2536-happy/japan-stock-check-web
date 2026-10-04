@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/**'
       - 'tests/decision-experience*'
+      - 'tests/quality-details*'
       - '.github/workflows/decision-experience.yml'
 permissions:
   contents: read
@@ -23,7 +24,8 @@ jobs:
       - name: Unit and boundary tests
         run: |
           node --check docs/decision-experience.js
-          node --test tests/decision-experience.test.cjs
+          node --check docs/quality-details.js
+          node --test tests/decision-experience.test.cjs tests/quality-details.test.cjs
       - name: Install pinned browser test dependency
         run: |
           python -m pip install playwright==1.55.0

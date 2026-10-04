@@ -33,7 +33,7 @@ try:
                 })();""")
                 page.goto(BASE+'/', wait_until='networkidle')
                 page.wait_for_selector('.dx-hero')
-                assert page.locator('.brand').inner_text().endswith('v1.10.0')
+                assert page.locator('.brand').inner_text().endswith('v1.10.1')
                 assert page.locator('.dx-stock').count()==6
                 assert page.locator('.dx-horizon').count()==24
                 assert '保有継続' in page.locator('.dx-headline').inner_text()
@@ -49,6 +49,7 @@ try:
                 assert 'DISPLAY_SUMMARY_ONLY_NOT_FULL_HISTORY' in payload
                 assert 'PRESERVE' not in payload
                 parsed = json.loads(payload[payload.index('{'):])
+                assert parsed['ui_version']=='1.10.1'
                 assert len(parsed['securities'])==6
                 assert all(s['formal_action'] is None for s in parsed['securities'])
                 assert before==page.evaluate('JSON.stringify(currentSnapshot)')
@@ -66,8 +67,39 @@ try:
                     assert size['doc']<=size['w']+1, (width,color,view,size)
                     assert page.locator('.primary-nav [aria-current="page"]').count()==1
                     if view=='quality-view':
-                        assert page.locator('.dx-tile').count()==6
+                        assert page.locator('button.dx-tile').count()==6
                         assert page.locator('#quality-digest').is_visible()
+                        for key, title in [('sources','独立データ照合'),('issues','要確認・未確認'),('qc','共通の品質検査'),('freshness','データの鮮度'),('formal','正式売買への利用'),('schedule','次回再判定の予定')]:
+                            tile=page.locator('[data-quality-detail="'+key+'"]')
+                            assert tile.bounding_box()['height']>=44
+                            tile.click()
+                            assert page.locator('#quality-detail-screen').is_visible()
+                            assert page.locator('#quality-detail-heading').inner_text()==title+'の詳細'
+                            assert page.evaluate('document.activeElement.id')=='quality-detail-heading'
+                            assert page.locator('#quality-digest').is_hidden()
+                            assert page.locator('#data-quality').is_hidden()
+                            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,color,key)
+                            assert before==page.evaluate('JSON.stringify(currentSnapshot)')
+                            if key=='qc' and width==393:
+                                page.screenshot(path=str(OUT/f'quality-qc-detail-{color}.png'))
+                            page.locator('[data-quality-return]').click()
+                            assert page.locator('#quality-digest').is_visible()
+                            assert page.locator('#quality-detail-screen').is_hidden()
+                            assert page.evaluate("document.activeElement.getAttribute('data-quality-detail')")==key
+                        page.locator('[data-quality-detail="qc"]').focus()
+                        page.keyboard.press('Enter')
+                        assert page.locator('#quality-detail-screen').is_visible()
+                        page.evaluate('renderAll(currentSnapshot, null)')
+                        assert '表示できません' in page.locator('#quality-detail-screen').inner_text()
+                        page.evaluate('(c)=>renderAll(currentSnapshot,c)',common)
+                        assert page.locator('#quality-detail-screen').is_visible()
+                        page.keyboard.press('Escape')
+                        assert page.locator('#quality-digest').is_visible()
+                        page.locator('[data-quality-detail="schedule"]').click()
+                        page.locator('.primary-nav [data-view="decision-view"]').click()
+                        page.locator('.primary-nav [data-view="quality-view"]').click()
+                        assert page.locator('#quality-digest').is_visible()
+                        assert page.locator('#quality-detail-screen').is_hidden()
                     if width==393:
                         page.screenshot(path=str(OUT/f'{view}-{color}.png'), full_page=False)
                 page.locator('.primary-nav [data-view="decision-view"]').click()
@@ -96,10 +128,13 @@ try:
                 page.evaluate("document.getElementById('banner').innerHTML='<div class=\"banner error\">テスト用通信失敗</div>'")
                 page.wait_for_function("document.querySelector('.dx-hero').textContent.includes('再読込に失敗')")
                 assert page.locator('#decision-view .banner.error').is_visible()
+                page.locator('.primary-nav [data-view="quality-view"]').click()
+                page.locator('[data-quality-detail="freshness"]').click()
+                assert '再読込に失敗' in page.locator('#quality-detail-screen').inner_text()
                 assert before==page.evaluate('JSON.stringify(currentSnapshot)')
                 assert not errors, errors
                 assert not external, external
-                report.append({'width':width,'height':height,'scheme':color,'status':'PASS','js_errors':len(errors),'outbound_requests':len(external)})
+                report.append({'width':width,'height':height,'scheme':color,'status':'PASS','quality_details_checked':6,'js_errors':len(errors),'outbound_requests':len(external)})
                 context.close()
         browser.close()
 finally:
