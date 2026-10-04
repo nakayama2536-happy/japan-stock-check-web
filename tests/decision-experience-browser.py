@@ -38,7 +38,7 @@ try:
           localStorage.setItem('jp-retired-test-sentinel','5805-PRESERVE');
         })();""")
         page.goto(BASE+'/',wait_until='networkidle');page.wait_for_selector('.aw-hub')
-        assert page.locator('.brand').inner_text().endswith('v1.12.1')
+        assert page.locator('.brand').inner_text().endswith('v1.12.2')
         assert page.locator('.dx-stock').count()==5 and page.locator('.dx-horizon').count()==20
         assert '保有継続' in page.locator('.dx-headline').inner_text()
         assert 'SHADOW' in page.locator('.dx-hero .dx-safety').inner_text()
@@ -46,6 +46,16 @@ try:
         assert page.locator('#decision-view #refresh-data-btn').count()==0
         assert float(page.locator('.dx-action').first.evaluate('(e)=>getComputedStyle(e).fontSize').removesuffix('px'))>=20
         before=page.evaluate('JSON.stringify(currentSnapshot)')
+        # Synthetic new-receipt reader proof; never mutates the saved market snapshot.
+        assert page.evaluate("""() => {
+          const s=structuredClone(currentSnapshot.securities[0]);
+          s.policy_context={security_id:s.security_id,policy_code:'TEST',label:'公開試験',objective:'確認',focus:[]};
+          s.audit_context={schema_version:'1.0',run_id:currentSnapshot.run_id,as_of:s.as_of,security_id:s.security_id,conditions_source:'decision.next_conditions',conditions_state:'RECORDED',condition_count:4,display_limit:3,policy_source:'decision.policy_context',policy_state:'RECORDED',conditions:Array.from({length:4},(_,i)=>({label:'条件'+i,status:i?'PENDING':'PASS',purpose:i===3?'SELL':'ENTRY',required:i!==1}))};
+          const a=JPEvidenceWorkflows.security(s,currentSnapshot).audit_context;
+          if(a.validation_state!=='MATCHED'||a.conditions.length!==4||a.conditions[1].required!==false)return false;
+          s.audit_context.run_id='OTHER';
+          return JPAuditContext.project(s,currentSnapshot).validation_state==='INVALID';
+        }""")
         page.locator('.aw-hub [data-aw-diagnose]').click();prepared(page)
         assert '未実施' in page.locator('#aw-evidence-note').inner_text()
         page.locator('[data-aw-copy]').click();page.wait_for_function('__copies.length===1')
@@ -57,6 +67,8 @@ try:
         assert diagnostic['schema']=='jp-data-investigation/1'
         assert diagnostic['expected_security_count']==5 and len(diagnostic['securities'])==5
         assert all(s['code']!='5805' for s in diagnostic['securities'])
+        assert all(s['saved_fields']['audit_context']['availability']=='NOT_RECORDED' for s in diagnostic['securities'])
+        assert brief['audit_coverage'][0]['status']['state']=='NOT_RECORDED'
         assert diagnostic['manifest_verification']['state']=='NOT_CHECKED'
         assert diagnostic['common_quality']['displayed_qc']=='WARN'
         assert 'source_evidence' in diagnostic['securities'][0]['saved_fields']
@@ -68,7 +80,6 @@ try:
         assert hashlib.sha256(saved_bytes).hexdigest()==brief['full_evidence']['sha256']
         assert download.value.suggested_filename==brief['full_evidence']['filename']
         assert saved!=copied
-        # All pieces must reconstruct exact full export, including the final piece.
         page.locator('#aw-parts>summary').click();pieces=[]
         count=page.locator('#aw-part-select option').count()
         for i in range(count):
@@ -87,6 +98,7 @@ try:
           assert bp['transfer_mode']=='BRIEF_WITH_FULL_EVIDENCE'
           assert payload['schema']=='jp-security-analysis/1' and payload['code']==code
           assert payload['scope']['history_rows']==len(payload['chart']['rows']) and payload['scope']['history_rows']>0
+          assert payload['security']['audit_context']['availability']=='NOT_RECORDED'
           assert '全計算履歴ではありません' in page.locator('#aw-evidence-note').inner_text()
           assert payload['verification']['display_identity']=='MATCHED' and payload['local_data'] is None
           assert payload['security']['technical']
@@ -96,7 +108,6 @@ try:
             n=page.evaluate('__copies.length');page.locator('[data-aw-copy]').click();page.wait_for_function('__copies.length>'+str(n))
             assert parse_prompt(page.evaluate('__copies.at(-1)'))['code']=='6841'
           close(page)
-        # Permission failure exposes only selected bounded text; full save remains available.
         page.evaluate("()=>{navigator.clipboard.writeText=async()=>{throw Error('blocked')}}")
         page.locator('.aw-hub [data-aw-diagnose]').click();prepared(page)
         page.locator('[data-aw-copy]').click();page.wait_for_selector('#aw-text:visible')
@@ -133,7 +144,6 @@ try:
         page.wait_for_function("document.getElementById('aw-status').textContent.includes('検証を通過できない')")
         assert page.locator('#aw-result').is_hidden() and not full(page) and not page.locator('#aw-text').input_value();close(page)
         page.unroute('**/data/deep_dive/6841.json?*')
-        # Generated text is invalidated on refresh, not saved under a different revision.
         page.locator('.aw-hub [data-aw-diagnose]').click();prepared(page);page.evaluate('(c)=>renderAll(currentSnapshot,c)',common)
         assert page.locator('#aw-result').is_hidden() and not full(page);close(page)
         page.evaluate("document.getElementById('banner').innerHTML='<div class=\"banner error\">テスト用通信失敗</div>'")
@@ -147,7 +157,7 @@ try:
         assert page.evaluate("localStorage.getItem('jp-retired-test-sentinel')")=='5805-PRESERVE'
         assert not errors,errors
         assert not external,external
-        report.append({'width':width,'height':height,'scheme':color,'status':'PASS','bundles_checked':5,'quality_details_checked':6,'clipboard_limit':8000,'full_parts_reconstructed':count,'js_errors':len(errors),'external_requests':len(external)})
+        report.append({'width':width,'height':height,'scheme':color,'status':'PASS','bundles_checked':5,'quality_details_checked':6,'clipboard_limit':8000,'full_parts_reconstructed':count,'audit_legacy_and_synthetic_new_checked':True,'js_errors':len(errors),'external_requests':len(external)})
         context.close()
     browser.close()
 finally:
