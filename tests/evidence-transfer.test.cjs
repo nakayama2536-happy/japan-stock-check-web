@@ -8,6 +8,7 @@ const model=()=>D.makeModel(d,c,{now:new Date('2026-10-04T06:32:05Z'),sourceStat
 const payload=t=>JSON.parse(t.slice(t.indexOf('\n{')+1));
 const body=t=>t.split('--- データ開始 ---\n')[1].split('\n--- データ終了 ---')[0];
 const report=[];
+const records=(rows,cols)=>cols?rows.map(r=>r&&Object.fromEntries(cols.map((k,i)=>[k,r[i]]))):rows;
 test('brief null omission preserves meaningful zero false empty arrays and positional null',()=>{
  assert.deepEqual(T.compact({missing:null,zero:0,no:false,empty:[],arr:[null,0,false],o:{nil:null}}),{zero:0,no:false,empty:[],arr:[null,0,false],o:{}});
 });
@@ -18,9 +19,9 @@ test('current five-stock investigation has a usable brief below 8000 including i
  assert.equal(a.mode,'BRIEF_WITH_FULL_EVIDENCE');assert(a.briefText.length<=8000);
  assert.equal(p.expected_security_count,5);assert.equal(p.securities.length,5);
  assert.equal(p.common_quality.displayed_qc,'WARN');assert.equal(p.manifest_verification.state,'NOT_CHECKED');
- assert.equal(p.display_identity.run_id,d.run_id);assert.equal(p.securities[0].source_evidence.diffs.close,0);
+ assert.equal(p.display_identity.run_id,d.run_id);const stocks=records(p.securities,p.security_columns),items=records(p.common_items,p.common_item_columns);assert.equal(stocks[0].source_evidence[3][3],0);
  assert(!a.briefText.includes('5805'));assert(!a.briefText.includes('SWCC'));
- assert(p.common_items.find(x=>x.subject_id==='SEC_JP_9432').risk_conditions.length>0);
+ assert(items.find(x=>x.subject_id==='SEC_JP_9432').risk_conditions.length>0);
  assert(p.conditions.some(x=>x[p.condition_columns.indexOf('required')]===false));assert(p.conditions.some(x=>x[p.condition_columns.indexOf('purpose')]==='REDUCE'));
  assert.equal(a.fullText,text);assert.equal(a.sha256,crypto.createHash('sha256').update(text).digest('hex'));
  assert.equal(a.parts.map(body).join(''),text);assert(a.parts.every(x=>x.length<=8000));
