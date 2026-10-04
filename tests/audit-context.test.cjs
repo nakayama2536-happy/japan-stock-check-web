@@ -1,7 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const A=require('../docs/audit-context.js'),E=require('../docs/evidence-workflows.js'),D=require('../docs/decision-experience.js'),T=require('../docs/evidence-transfer.js');
 const read=p=>JSON.parse(fs.readFileSync(path.join(__dirname,'..',p),'utf8'));
-function model(){return D.makeModel(read('docs/data/app_snapshot.json'),read('docs/data/common_snapshot.json'),{now:new Date('2026-10-04T06:32:05Z'),sourceState:s=>s.source_evidence?.crosscheck_match?'PASS':'PENDING'});}
+function model(){
+ const d=read('docs/data/app_snapshot.json');
+ // Explicit legacy fixture: do not assume future publications will lack evidence.
+ for(const s of d.securities||[]){delete s.audit_context;delete s.policy_context;}
+ return D.makeModel(d,read('docs/data/common_snapshot.json'),{now:new Date('2026-10-04T06:32:05Z'),sourceState:s=>s.source_evidence?.crosscheck_match?'PASS':'PENDING'});
+}
 function addAudit(s,run){
  s.policy_context={security_id:s.security_id,policy_code:'AUDIT_TEST_PUBLIC',label:'公開試験方針',objective:'条件を確認',focus:['MACD','週足']};
  s.audit_context={schema_version:'1.0',run_id:run,as_of:s.as_of,security_id:s.security_id,conditions_source:'decision.next_conditions',conditions_state:'RECORDED',condition_count:5,display_limit:3,policy_source:'decision.policy_context',policy_state:'RECORDED',conditions:[
