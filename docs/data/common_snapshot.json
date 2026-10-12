@@ -3,14 +3,14 @@
   "common_spec_version": "1.0-draft",
   "market": "JAPAN",
   "snapshot": {
-    "state": "CURRENT"
+    "state": "LAST_VALID"
   },
   "adapter_status": "PARALLEL_SHADOW",
   "market_state": {
-    "state": "CONFIRMED"
+    "state": "CLOSED"
   },
   "incident": {
-    "level": "WARNING",
+    "level": "NORMAL",
     "error_codes": []
   },
   "data_quality": {
@@ -27,7 +27,7 @@
       "ticker": "6841.T",
       "as_of": "2026-10-09",
       "mode": "SHADOW",
-      "phase": "DECISION",
+      "phase": null,
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "WAIT",
       "formal_action": null,
@@ -66,15 +66,6 @@
           "impact": "NEUTRAL",
           "required": true,
           "purpose": "ENTRY"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "週足悪化なし",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": true,
-          "purpose": "ENTRY"
         }
       ],
       "risk_conditions": [],
@@ -99,11 +90,6 @@
           "target_action": "BUY",
           "label": "MACD改善",
           "priority": 2
-        },
-        {
-          "target_action": "BUY",
-          "label": "週足悪化なし",
-          "priority": 3
         }
       ]
     },
@@ -114,7 +100,7 @@
       "ticker": "6954.T",
       "as_of": "2026-10-09",
       "mode": "SHADOW",
-      "phase": "DECISION",
+      "phase": null,
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -164,7 +150,7 @@
       "ticker": "3038.T",
       "as_of": "2026-10-09",
       "mode": "SHADOW",
-      "phase": "DECISION",
+      "phase": null,
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -198,7 +184,7 @@
       "ticker": "9432.T",
       "as_of": "2026-10-09",
       "mode": "SHADOW",
-      "phase": "DECISION",
+      "phase": null,
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -230,17 +216,7 @@
           "purpose": "REDUCE"
         }
       ],
-      "risk_conditions": [
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "MACDデッドクロス",
-          "status": "WARN",
-          "impact": "NEGATIVE",
-          "required": true,
-          "purpose": "REDUCE"
-        }
-      ],
+      "risk_conditions": [],
       "blocking_conditions": [
         {
           "id": null,
@@ -272,7 +248,7 @@
       "ticker": "1812.T",
       "as_of": "2026-10-09",
       "mode": "SHADOW",
-      "phase": "DECISION",
+      "phase": null,
       "eligibility": "NOT_ELIGIBLE",
       "analysis_action": "HOLD",
       "formal_action": null,
@@ -327,6 +303,6 @@
   ],
   "timestamps": {
     "market_as_of": "2026-10-09",
-    "calculated_at": "2026-10-09T23:21:30.991558+09:00"
+    "calculated_at": "2026-10-12T18:36:14.830030+09:00"
   }
 }
