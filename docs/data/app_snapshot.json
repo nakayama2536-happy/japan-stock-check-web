@@ -170,8 +170,8 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 158.031006,
-      "change_pct": -0.1838,
+      "value": 157.830994,
+      "change_pct": -0.3101,
       "direction": "DOWN",
       "as_of": "2026-10-15",
       "unit": "円/USD",
@@ -256,13 +256,13 @@
         },
         {
           "date": "2026-10-15",
-          "value": 158.031006
+          "value": 157.830994
         }
       ]
     }
   ],
-  "updated_at": "2026-10-15T16:39:24.551443+09:00",
-  "market_checked_at": "2026-10-15T16:39:24.551443+09:00",
+  "updated_at": "2026-10-15T18:01:32.189654+09:00",
+  "market_checked_at": "2026-10-15T18:01:32.189654+09:00",
   "next_recheck_at": "2026-10-16T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-10-16T16:15:00+09:00",
