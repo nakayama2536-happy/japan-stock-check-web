@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-19",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -98,7 +98,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-19",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -162,7 +162,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-19",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -196,7 +196,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-19",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -270,7 +270,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-19",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -293,6 +293,24 @@
           "impact": "NEUTRAL",
           "required": true,
           "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "週足悪化なし",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "出来高20日平均以上",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": false,
+          "purpose": "ADD"
         }
       ],
       "risk_conditions": [],
@@ -312,12 +330,17 @@
           "target_action": "ADD",
           "label": "主要抵抗帯を回復",
           "priority": 1
+        },
+        {
+          "target_action": "ADD",
+          "label": "週足悪化なし",
+          "priority": 2
         }
       ]
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-10-16",
-    "calculated_at": "2026-10-16T21:23:51.471907+09:00"
+    "market_as_of": "2026-10-19",
+    "calculated_at": "2026-10-19T17:01:00.732358+09:00"
   }
 }
