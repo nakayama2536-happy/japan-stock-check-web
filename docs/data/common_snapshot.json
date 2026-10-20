@@ -25,11 +25,11 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-10-19",
+      "as_of": "2026-10-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
-      "analysis_action": "WAIT",
+      "analysis_action": "BUY",
       "formal_action": null,
       "monitor": {
         "state": "WATCH",
@@ -48,24 +48,6 @@
           "impact": "NEUTRAL",
           "required": false,
           "purpose": "ENTRY"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "終値で転換線を回復",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": true,
-          "purpose": "ENTRY"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "MACD改善",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": true,
-          "purpose": "ENTRY"
         }
       ],
       "risk_conditions": [],
@@ -80,25 +62,14 @@
           "purpose": null
         }
       ],
-      "change_conditions": [
-        {
-          "target_action": "BUY",
-          "label": "終値で転換線を回復",
-          "priority": 1
-        },
-        {
-          "target_action": "BUY",
-          "label": "MACD改善",
-          "priority": 2
-        }
-      ]
+      "change_conditions": []
     },
     {
       "subject_id": "SEC_JP_6954",
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-10-19",
+      "as_of": "2026-10-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -162,7 +133,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-10-19",
+      "as_of": "2026-10-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -196,7 +167,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-10-19",
+      "as_of": "2026-10-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -214,6 +185,15 @@
         {
           "id": null,
           "category": "TECHNICAL",
+          "label": "MACDデッドクロス",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "REDUCE"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
           "label": "終値で転換線割れ",
           "status": "PENDING",
           "impact": "NEUTRAL",
@@ -230,17 +210,7 @@
           "purpose": "REDUCE"
         }
       ],
-      "risk_conditions": [
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "MACDデッドクロス",
-          "status": "WARN",
-          "impact": "NEGATIVE",
-          "required": true,
-          "purpose": "REDUCE"
-        }
-      ],
+      "risk_conditions": [],
       "blocking_conditions": [
         {
           "id": null,
@@ -255,13 +225,18 @@
       "change_conditions": [
         {
           "target_action": "REDUCE",
-          "label": "終値で転換線割れ",
+          "label": "MACDデッドクロス",
           "priority": 1
         },
         {
           "target_action": "REDUCE",
-          "label": "価格構造悪化",
+          "label": "終値で転換線割れ",
           "priority": 2
+        },
+        {
+          "target_action": "REDUCE",
+          "label": "価格構造悪化",
+          "priority": 3
         }
       ]
     },
@@ -270,7 +245,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-10-19",
+      "as_of": "2026-10-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -340,7 +315,7 @@
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-10-19",
-    "calculated_at": "2026-10-19T23:39:26.222562+09:00"
+    "market_as_of": "2026-10-20",
+    "calculated_at": "2026-10-20T16:51:03.508788+09:00"
   }
 }
