@@ -52,7 +52,7 @@ try:
           localStorage.setItem('jp-retired-test-sentinel','5805-PRESERVE');
         })();""")
         page.goto(BASE+'/',wait_until='networkidle');page.wait_for_selector('.aw-hub')
-        assert page.locator('.brand').inner_text().endswith('v1.12.2')
+        assert page.locator('.brand').inner_text().endswith('v1.12.3')
         assert page.locator('.dx-stock').count()==5 and page.locator('.dx-horizon').count()==20
         assert '保有継続' in page.locator('.dx-headline').inner_text()
         assert 'SHADOW' in page.locator('.dx-hero .dx-safety').inner_text()

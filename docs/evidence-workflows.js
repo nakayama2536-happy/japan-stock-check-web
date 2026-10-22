@@ -5,7 +5,7 @@
   if(root)root.JPEvidenceWorkflows=api;
 })(typeof window==='undefined'?null:window,function(){
   'use strict';
-  const VERSION='1.12.2',HORIZONS=['1','3','5','14'];
+  const VERSION='1.12.3',HORIZONS=['1','3','5','14'];
   const A=typeof module==='object'&&module.exports?require('./audit-context.js'):window.JPAuditContext;
   const scalar=v=>v===null||typeof v==='string'||typeof v==='boolean'||(typeof v==='number'&&Number.isFinite(v))?v:null;
   const pick=(v,keys)=>Object.fromEntries(keys.split(' ').map(k=>[k,scalar(v&&v[k])]));

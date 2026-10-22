@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "jpstock-v";
-const CACHE = "jpstock-v1-12-2-audit-context";
-const SHELL = ["./", "index.html", "style.css?v=1.12.2", "decision-experience.css?v=1.12.2", "decision-experience.js?v=1.12.2", "active-universe.js?v=1.12.2", "quality-details.css?v=1.12.2", "quality-details.js?v=1.12.2", "app.js?v=1.12.2","deep-dive-bundle.js?v=1.12.2","review-history.js?v=1.12.2", "audit-context.js?v=1.12.2", "evidence-workflows.js?v=1.12.2", "evidence-transfer.js?v=1.12.2", "evidence-workflows-ui.js?v=1.12.2", "evidence-workflows.css?v=1.12.2", "manifest.webmanifest", "icons/icon-192.png?v=1.12.2", "icons/icon-512.png?v=1.12.2"];
+const CACHE = "jpstock-v1-12-3-audit-context";
+const SHELL = ["./", "index.html", "style.css?v=1.12.3", "decision-experience.css?v=1.12.3", "decision-experience.js?v=1.12.3", "active-universe.js?v=1.12.3", "quality-details.css?v=1.12.3", "quality-details.js?v=1.12.3", "app.js?v=1.12.3","deep-dive-bundle.js?v=1.12.3","review-history.js?v=1.12.3", "audit-context.js?v=1.12.3", "evidence-workflows.js?v=1.12.3", "evidence-transfer.js?v=1.12.3", "evidence-workflows-ui.js?v=1.12.3", "evidence-workflows.css?v=1.12.3", "manifest.webmanifest", "icons/icon-192.png?v=1.12.3", "icons/icon-512.png?v=1.12.3"];
 function isDynamic(url) { return url.pathname.endsWith(".json"); }
 
 // Cache contract: COM-CACHE-002/003, revision 1 (2026-09-27).
