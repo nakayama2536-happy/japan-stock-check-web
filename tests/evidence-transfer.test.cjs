@@ -21,7 +21,8 @@ test('current five-stock investigation has a usable brief below 8000 including i
  assert.equal(p.common_quality.displayed_qc,'WARN');assert.equal(p.manifest_verification.state,'NOT_CHECKED');
  assert.equal(p.display_identity.run_id,d.run_id);const stocks=records(p.securities,p.security_columns),items=records(p.common_items,p.common_item_columns);assert.equal(stocks[0].source_evidence[3][3],0);
  assert(!a.briefText.includes('5805'));assert(!a.briefText.includes('SWCC'));
- assert(items.find(x=>x.subject_id==='SEC_JP_9432').risk_conditions.length>0);
+ const recordedNtt=(payload(text).common_items||[]).find(x=>x.subject_id==='SEC_JP_9432'); const exportedNtt=items.find(x=>x.subject_id==='SEC_JP_9432');
+ assert(exportedNtt && recordedNtt);assert.equal(exportedNtt.risk_conditions.length,(recordedNtt.risk_conditions||[]).length);
  assert(p.conditions.some(x=>x[p.condition_columns.indexOf('required')]===false));assert(p.conditions.some(x=>x[p.condition_columns.indexOf('purpose')]==='REDUCE'));
  assert.equal(a.fullText,text);assert.equal(a.sha256,crypto.createHash('sha256').update(text).digest('hex'));
  assert.equal(a.parts.map(body).join(''),text);assert(a.parts.every(x=>x.length<=8000));
