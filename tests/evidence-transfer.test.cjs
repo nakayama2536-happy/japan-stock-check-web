@@ -26,6 +26,12 @@ test('current five-stock investigation has a usable brief below 8000 including i
  assert.equal(a.fullText,text);assert.equal(a.sha256,crypto.createHash('sha256').update(text).digest('hex'));
  assert.equal(a.parts.map(body).join(''),text);assert(a.parts.every(x=>x.length<=8000));
  assert.equal(p.full_evidence.auto_attached,false);
+ assert.deepEqual(p.observations,T.makeBrief(payload(text),{filename:a.filename,sha256:a.sha256}).observations);
+ assert.deepEqual(p.audit_coverage,T.makeBrief(payload(text),{filename:a.filename,sha256:a.sha256}).audit_coverage);
+ assert.deepEqual(p.conditions,T.makeBrief(payload(text),{filename:a.filename,sha256:a.sha256}).conditions);
+ assert(p.investigation_targets||p.investigation_targets_summary);
+ if(p.investigation_targets_summary)assert(p.investigation_targets_note.includes('全文'));
+ console.log('LATEST_INVESTIGATION_CHARS',a.briefText.length,a.mode);
  report.push({purpose:'diagnostic',full_characters:text.length,copy_characters:a.briefText.length,parts:a.parts.length,mode:a.mode});
  const out=path.join(root,'test-output/decision-experience');fs.mkdirSync(out,{recursive:true});
  fs.writeFileSync(path.join(out,'investigation-brief.txt'),a.briefText);fs.writeFileSync(path.join(out,'investigation-evidence.txt'),text);
