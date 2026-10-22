@@ -5,7 +5,7 @@
   if(root)root.JPEvidenceTransfer=api;
 })(typeof window==='undefined'?null:window,function(){
   'use strict';
-  const VERSION='1.12.2',LIMIT=8000,CHUNK=7200;
+  const VERSION='1.12.3',LIMIT=8000,CHUNK=7200;
   const keys=(v,list)=>Object.fromEntries(list.split(' ').filter(k=>v&&Object.prototype.hasOwnProperty.call(v,k)).map(k=>[k,v[k]]));
   const list=v=>Array.isArray(v)?v:[];
   // Only the brief omits null object fields. Keep zero, false, [], and null array slots.
