@@ -89,7 +89,10 @@ try:
             a=s['saved_fields']['audit_context']
             assert coverage[s['code']]['state']==a.get('validation_state',a['availability'])
         assert diagnostic['manifest_verification']['state']=='NOT_CHECKED'
-        assert diagnostic['common_quality']['displayed_qc']=='WARN'
+        expected_qc=common['data_quality']['qc_state']
+        assert expected_qc in ('PASS','WARN','FAIL')
+        assert diagnostic['common_quality']['displayed_qc']==expected_qc
+        assert diagnostic['common_quality']['qc_state']==expected_qc
         assert 'source_evidence' in diagnostic['securities'][0]['saved_fields']
         assert all('purpose' in x and 'required' in x for x in diagnostic['securities'][0]['saved_fields']['next_conditions'])
         assert page.locator('.aw-chat').get_attribute('href')=='https://chatgpt.com/'
