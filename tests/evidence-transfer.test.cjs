@@ -18,7 +18,11 @@ test('current five-stock investigation has a usable brief below 8000 including i
  const normal=T.makeBrief(payload(text),{filename:a.filename,sha256:a.sha256});console.log('BRIEF_COMPONENTS',JSON.stringify(Object.fromEntries(Object.entries(normal).map(([k,v])=>[k,JSON.stringify(v).length]))));
  assert.equal(a.mode,'BRIEF_WITH_FULL_EVIDENCE');assert(a.briefText.length<=8000);
  assert.equal(p.expected_security_count,5);assert.equal(p.securities.length,5);
- assert.equal(p.common_quality.displayed_qc,'WARN');assert.equal(p.manifest_verification.state,'NOT_CHECKED');
+ const qc=c.data_quality&&c.data_quality.qc_state;
+ assert(['PASS','WARN','FAIL'].includes(qc));
+ assert.equal(p.common_quality.displayed_qc,qc);
+ assert.equal(p.common_quality.qc_state,qc);
+ assert.equal(p.manifest_verification.state,'NOT_CHECKED');
  assert.equal(p.display_identity.run_id,d.run_id);const stocks=records(p.securities,p.security_columns),items=records(p.common_items,p.common_item_columns);assert.equal(stocks[0].source_evidence[3][3],0);
  assert(!a.briefText.includes('5805'));assert(!a.briefText.includes('SWCC'));
  const recordedNtt=(payload(text).common_items||[]).find(x=>x.subject_id==='SEC_JP_9432'); const exportedNtt=items.find(x=>x.subject_id==='SEC_JP_9432');

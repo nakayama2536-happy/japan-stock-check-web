@@ -89,7 +89,10 @@ try:
             a=s['saved_fields']['audit_context']
             assert coverage[s['code']]['state']==a.get('validation_state',a['availability'])
         assert diagnostic['manifest_verification']['state']=='NOT_CHECKED'
-        assert diagnostic['common_quality']['displayed_qc']=='WARN'
+        expected_qc=common['data_quality']['qc_state']
+        assert expected_qc in ('PASS','WARN','FAIL')
+        assert diagnostic['common_quality']['displayed_qc']==expected_qc
+        assert diagnostic['common_quality']['qc_state']==expected_qc
         assert 'source_evidence' in diagnostic['securities'][0]['saved_fields']
         assert all('purpose' in x and 'required' in x for x in diagnostic['securities'][0]['saved_fields']['next_conditions'])
         assert page.locator('.aw-chat').get_attribute('href')=='https://chatgpt.com/'
@@ -168,7 +171,15 @@ try:
         page.evaluate("document.getElementById('banner').innerHTML='<div class=\"banner error\">テスト用通信失敗</div>'")
         page.wait_for_function("document.querySelector('.dx-hero').textContent.includes('再読込に失敗')")
         page.locator('.aw-hub [data-aw-diagnose]').click();prepared(page)
-        assert '再読込に失敗' in page.locator('#aw-text').input_value();close(page)
+        assert '再読込に失敗' in full(page)
+        fallback=parse_prompt(page.locator('#aw-text').input_value())
+        if fallback['transfer_mode']=='BRIEF_WITH_FULL_EVIDENCE':
+            assert '再読込に失敗' in page.locator('#aw-text').input_value()
+        else:
+            assert fallback['transfer_mode']=='ATTACHMENT_REQUIRED'
+            assert fallback['full_evidence']['sha256']==hashlib.sha256(full(page).encode('utf8')).hexdigest()
+            assert '添付' in page.locator('#aw-status').inner_text()
+        close(page)
         page.locator('.primary-nav [data-view="quality-view"]').click();page.locator('[data-quality-detail="freshness"]').click()
         assert '再読込に失敗' in page.locator('#quality-detail-screen').inner_text()
         assert before==page.evaluate('JSON.stringify(currentSnapshot)')
