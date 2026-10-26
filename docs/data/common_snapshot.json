@@ -10,12 +10,12 @@
     "state": "CONFIRMED"
   },
   "incident": {
-    "level": "WARNING",
+    "level": "BLOCKED",
     "error_codes": []
   },
   "data_quality": {
     "data_state": "FRESH",
-    "qc_state": "WARN",
+    "qc_state": "FAIL",
     "completeness_pct": null
   },
   "decision_scope": "MULTI",
@@ -123,7 +123,7 @@
         {
           "id": null,
           "category": "DATA_QUALITY",
-          "label": "Production Source Contract未確定",
+          "label": "Source照合不一致: LOW_MISMATCH",
           "status": "BLOCKED",
           "impact": "BLOCKING",
           "required": true,
@@ -331,6 +331,6 @@
   ],
   "timestamps": {
     "market_as_of": "2026-10-26",
-    "calculated_at": "2026-10-26T18:55:38.701074+09:00"
+    "calculated_at": "2026-10-26T20:24:11.108739+09:00"
   }
 }

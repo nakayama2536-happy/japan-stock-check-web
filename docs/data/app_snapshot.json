@@ -5,11 +5,11 @@
   "analytics_version": "1.2.0-shadow",
   "decision_mode": "SHADOW",
   "run_id": "RUN_20261026_1700",
-  "run_status": "SHADOW_COMMITTED",
+  "run_status": "SHADOW_PARTIAL",
   "latest_decision_run_id": "RUN_20261026_1700",
   "latest_decision_as_of": "2026-10-26",
   "market_run_id": "RUN_20261026_1700",
-  "market_run_status": "SHADOW_COMMITTED",
+  "market_run_status": "SHADOW_PARTIAL",
   "market_environment": [
     {
       "market_id": "NIKKEI225",
@@ -198,8 +198,8 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 157.358002,
-      "change_pct": 0.5521,
+      "value": 157.345001,
+      "change_pct": 0.5438,
       "direction": "UP",
       "as_of": "2026-10-26",
       "unit": "円/USD",
@@ -284,13 +284,13 @@
         },
         {
           "date": "2026-10-26",
-          "value": 157.358002
+          "value": 157.345001
         }
       ]
     }
   ],
-  "updated_at": "2026-10-26T18:55:38.701074+09:00",
-  "market_checked_at": "2026-10-26T18:55:38.701074+09:00",
+  "updated_at": "2026-10-26T20:24:11.108739+09:00",
+  "market_checked_at": "2026-10-26T20:24:11.108739+09:00",
   "next_recheck_at": "2026-10-27T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-10-27T16:15:00+09:00",
@@ -299,7 +299,7 @@
     "run_count": 22,
     "security_check_count": 117,
     "source_fetch_rate": 0.9915,
-    "ohlcv_match_rate": 0.9397,
+    "ohlcv_match_rate": 0.931,
     "decision_sample_count": 0,
     "decision_match_rate": null,
     "production_candidate": false,
@@ -832,18 +832,16 @@
         "6,000円回復",
         "MACD改善"
       ],
-      "data_quality": "PROVISIONAL",
-      "source_gate_reason": "SHADOW_SOURCE_MATCH",
+      "data_quality": "HOLD",
+      "source_gate_reason": "LOW_MISMATCH",
       "source_evidence": {
         "primary": "YFINANCE_REFERENCE",
         "independent": "MONEX_SCOUTER",
-        "crosscheck_match": true,
+        "crosscheck_match": false,
         "diffs": {
           "open": 0.0,
           "high": 0.0,
-          "low": 0.0,
-          "close": 0.0,
-          "volume": 0.0
+          "low": 1.0
         }
       },
       "as_of": "2026-10-26",
