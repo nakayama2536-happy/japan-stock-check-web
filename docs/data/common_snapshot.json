@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-10-27",
+      "as_of": "2026-10-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -84,7 +84,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-10-27",
+      "as_of": "2026-10-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -134,7 +134,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-10-27",
+      "as_of": "2026-10-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -168,7 +168,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-10-27",
+      "as_of": "2026-10-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -237,7 +237,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-10-27",
+      "as_of": "2026-10-28",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -307,7 +307,7 @@
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-10-27",
-    "calculated_at": "2026-10-27T22:11:17.273259+09:00"
+    "market_as_of": "2026-10-28",
+    "calculated_at": "2026-10-28T17:52:09.768216+09:00"
   }
 }
