@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -47,6 +47,15 @@
           "status": "PENDING",
           "impact": "NEUTRAL",
           "required": false,
+          "purpose": "ENTRY"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACD改善",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
           "purpose": "ENTRY"
         },
         {
@@ -74,8 +83,13 @@
       "change_conditions": [
         {
           "target_action": "BUY",
-          "label": "週足悪化なし",
+          "label": "MACD改善",
           "priority": 1
+        },
+        {
+          "target_action": "BUY",
+          "label": "週足悪化なし",
+          "priority": 2
         }
       ]
     },
@@ -84,7 +98,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -134,7 +148,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -168,7 +182,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -237,7 +251,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -269,15 +283,6 @@
           "impact": "NEUTRAL",
           "required": true,
           "purpose": "ADD"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "出来高20日平均以上",
-          "status": "PENDING",
-          "impact": "NEUTRAL",
-          "required": false,
-          "purpose": "ADD"
         }
       ],
       "risk_conditions": [],
@@ -307,7 +312,7 @@
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-10-28",
-    "calculated_at": "2026-10-28T22:59:54.849172+09:00"
+    "market_as_of": "2026-10-29",
+    "calculated_at": "2026-10-29T17:45:45.186233+09:00"
   }
 }
