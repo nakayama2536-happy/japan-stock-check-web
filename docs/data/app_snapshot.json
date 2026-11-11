@@ -198,8 +198,8 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 158.873993,
-      "change_pct": 0.564,
+      "value": 159.128006,
+      "change_pct": 0.7248,
       "direction": "UP",
       "as_of": "2026-11-11",
       "unit": "円/USD",
@@ -284,13 +284,13 @@
         },
         {
           "date": "2026-11-11",
-          "value": 158.873993
+          "value": 159.128006
         }
       ]
     }
   ],
-  "updated_at": "2026-11-11T18:44:25.389682+09:00",
-  "market_checked_at": "2026-11-11T18:44:25.389682+09:00",
+  "updated_at": "2026-11-11T20:44:26.090887+09:00",
+  "market_checked_at": "2026-11-11T20:44:26.090887+09:00",
   "next_recheck_at": "2026-11-12T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-11-12T16:15:00+09:00",
@@ -957,7 +957,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-11-11",
-        "refresh_status": "NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "document_id": "S100ZDE2",
         "submitted_at": "2026-11-11 13:50",
         "period_start": "2026-04-01",
@@ -1125,21 +1125,15 @@
         "deep_dive": {
           "recommended": true,
           "severity": "HIGH",
-          "priority_score": 70,
+          "priority_score": 60,
           "minimum_priority_score": 30,
           "group_scores": {
-            "filing": 10,
             "revenue": 15,
             "operating_profit": 15,
             "net_earnings": 30
           },
-          "reason_count": 5,
+          "reason_count": 4,
           "reasons": [
-            {
-              "code": "NEW_FILING",
-              "label": "新しいEDINET開示を検出",
-              "severity": "INFO"
-            },
             {
               "code": "LARGE_CHANGE",
               "metric": "revenue",
