@@ -1,6 +1,6 @@
 {
   "payload_schema_version": "0.1",
-  "publication_id": "jp-91f2f1e9e3d65122e0ea",
+  "publication_id": "jp-21dacd5466b727147e68",
   "market": "JAPAN",
   "scope": {
     "subject_type": "SECURITY",
@@ -10,8 +10,8 @@
     "codes": [
       "9432"
     ],
-    "history_start": "2026-06-30",
-    "history_end": "2026-11-11",
+    "history_start": "2026-07-01",
+    "history_end": "2026-11-12",
     "history_rows": 90,
     "history_note": "Public PWAに公開された最大90行のチャート履歴。計算本体の全履歴ではありません。"
   },
@@ -29,11 +29,11 @@
       "path": "data/app_snapshot.json",
       "purpose": "market/security snapshot",
       "status": "OK",
-      "sha256": "759b8239efaac6291812f19aa70621b45683ac1dbad01001e18d12567c85ddc7",
-      "bytes": 64078,
+      "sha256": "dcbec00ec3537c3f9ab4322512dd08d5e811da4c020a00138d769c0bef203e2e",
+      "bytes": 65540,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-11",
+      "as_of": "2026-11-12",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -43,11 +43,11 @@
       "path": "data/common_snapshot.json",
       "purpose": "common decision semantics",
       "status": "OK",
-      "sha256": "03b69097f08d58d90218f07b230a945814c1c69e203b6e2a08a8cdc2ffd34d98",
-      "bytes": 8284,
+      "sha256": "32e84512d8a4c13d81d15337ea0048f29649c0f0aff2ee71f78f37a09a4e1e07",
+      "bytes": 8415,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-11",
+      "as_of": "2026-11-12",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -57,13 +57,13 @@
       "path": "data/charts/9432.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "1e78657d1b1658b5c77cd6f8237dbafd1057c0829d4772d35227a718cc8d4a16",
-      "bytes": 16840,
+      "sha256": "19a5f93817dd7c330626ea536ce53fd1fa16acad6c28f924f3f34acd21f3df6b",
+      "bytes": 16853,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-06-30",
-      "history_end": "2026-11-11",
+      "history_start": "2026-07-01",
+      "history_end": "2026-11-12",
       "rows": 90
     }
   ],
@@ -129,29 +129,25 @@
       "ticker": "9432.T",
       "name": "NTT"
     },
-    "price": 162.2,
+    "price": 167.5,
     "formal_decision": "WAIT",
     "shadow_action": "HOLD",
     "reference_signal": "DC_WATCH",
-    "as_of": "2026-11-11",
+    "as_of": "2026-11-12",
     "market_environment": [
       {
         "market_id": "NIKKEI225",
         "ticker": "^N225",
         "name": "日経平均",
         "status": "OK",
-        "value": 61248.589844,
-        "change_pct": 1.305,
-        "direction": "UP",
-        "as_of": "2026-11-11",
+        "value": 60819.359375,
+        "change_pct": -0.7008,
+        "direction": "DOWN",
+        "as_of": "2026-11-12",
         "unit": "円",
         "display_decimals": 0,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 64425.949219
-          },
           {
             "date": "2026-10-16",
             "value": 65324.289062
@@ -223,6 +219,10 @@
           {
             "date": "2026-11-11",
             "value": 61248.589844
+          },
+          {
+            "date": "2026-11-12",
+            "value": 60819.359375
           }
         ]
       },
@@ -231,18 +231,14 @@
         "ticker": "998405.T",
         "name": "TOPIX",
         "status": "OK",
-        "value": 3929.39,
-        "change_pct": 0.9163,
+        "value": 3937.33,
+        "change_pct": 0.2021,
         "direction": "UP",
-        "as_of": "2026-11-11",
+        "as_of": "2026-11-12",
         "unit": "",
         "display_decimals": 2,
         "source": "YAHOO_JAPAN_HISTORY",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 3999.34
-          },
           {
             "date": "2026-10-16",
             "value": 4066.0
@@ -314,6 +310,10 @@
           {
             "date": "2026-11-11",
             "value": 3929.39
+          },
+          {
+            "date": "2026-11-12",
+            "value": 3937.33
           }
         ]
       },
@@ -322,18 +322,14 @@
         "ticker": "JPY=X",
         "name": "USD/JPY",
         "status": "OK",
-        "value": 159.681,
-        "change_pct": 1.0748,
+        "value": 159.677994,
+        "change_pct": 0.6131,
         "direction": "UP",
-        "as_of": "2026-11-11",
+        "as_of": "2026-11-12",
         "unit": "円/USD",
         "display_decimals": 2,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 157.957001
-          },
           {
             "date": "2026-10-16",
             "value": 158.143005
@@ -408,7 +404,11 @@
           },
           {
             "date": "2026-11-11",
-            "value": 159.681
+            "value": 158.705002
+          },
+          {
+            "date": "2026-11-12",
+            "value": 159.677994
           }
         ]
       }
@@ -421,11 +421,11 @@
       "engine_version": "1.3.4",
       "analytics_version": "1.2.0-shadow",
       "decision_mode": "SHADOW",
-      "run_id": "RUN_20261111_1700",
+      "run_id": "RUN_20261112_1700",
       "run_status": "SHADOW_COMMITTED",
-      "latest_decision_run_id": "RUN_20261111_1700",
-      "latest_decision_as_of": "2026-11-11",
-      "market_run_id": "RUN_20261111_1700",
+      "latest_decision_run_id": "RUN_20261112_1700",
+      "latest_decision_as_of": "2026-11-12",
+      "market_run_id": "RUN_20261112_1700",
       "market_run_status": "SHADOW_COMMITTED",
       "market_environment": [
         {
@@ -433,18 +433,14 @@
           "ticker": "^N225",
           "name": "日経平均",
           "status": "OK",
-          "value": 61248.589844,
-          "change_pct": 1.305,
-          "direction": "UP",
-          "as_of": "2026-11-11",
+          "value": 60819.359375,
+          "change_pct": -0.7008,
+          "direction": "DOWN",
+          "as_of": "2026-11-12",
           "unit": "円",
           "display_decimals": 0,
           "source": "YFINANCE_REFERENCE",
           "history": [
-            {
-              "date": "2026-10-15",
-              "value": 64425.949219
-            },
             {
               "date": "2026-10-16",
               "value": 65324.289062
@@ -516,6 +512,10 @@
             {
               "date": "2026-11-11",
               "value": 61248.589844
+            },
+            {
+              "date": "2026-11-12",
+              "value": 60819.359375
             }
           ]
         },
@@ -524,18 +524,14 @@
           "ticker": "998405.T",
           "name": "TOPIX",
           "status": "OK",
-          "value": 3929.39,
-          "change_pct": 0.9163,
+          "value": 3937.33,
+          "change_pct": 0.2021,
           "direction": "UP",
-          "as_of": "2026-11-11",
+          "as_of": "2026-11-12",
           "unit": "",
           "display_decimals": 2,
           "source": "YAHOO_JAPAN_HISTORY",
           "history": [
-            {
-              "date": "2026-10-15",
-              "value": 3999.34
-            },
             {
               "date": "2026-10-16",
               "value": 4066.0
@@ -607,6 +603,10 @@
             {
               "date": "2026-11-11",
               "value": 3929.39
+            },
+            {
+              "date": "2026-11-12",
+              "value": 3937.33
             }
           ]
         },
@@ -615,18 +615,14 @@
           "ticker": "JPY=X",
           "name": "USD/JPY",
           "status": "OK",
-          "value": 159.681,
-          "change_pct": 1.0748,
+          "value": 159.677994,
+          "change_pct": 0.6131,
           "direction": "UP",
-          "as_of": "2026-11-11",
+          "as_of": "2026-11-12",
           "unit": "円/USD",
           "display_decimals": 2,
           "source": "YFINANCE_REFERENCE",
           "history": [
-            {
-              "date": "2026-10-15",
-              "value": 157.957001
-            },
             {
               "date": "2026-10-16",
               "value": 158.143005
@@ -701,22 +697,26 @@
             },
             {
               "date": "2026-11-11",
-              "value": 159.681
+              "value": 158.705002
+            },
+            {
+              "date": "2026-11-12",
+              "value": 159.677994
             }
           ]
         }
       ],
-      "updated_at": "2026-11-11T23:44:18.927404+09:00",
-      "market_checked_at": "2026-11-11T23:44:18.927404+09:00",
-      "next_recheck_at": "2026-11-12T15:45:00+09:00",
+      "updated_at": "2026-11-12T19:05:38.615571+09:00",
+      "market_checked_at": "2026-11-12T19:05:38.615571+09:00",
+      "next_recheck_at": "2026-11-13T15:45:00+09:00",
       "next_recheck_kind": "PRIMARY",
-      "backup_recheck_at": "2026-11-12T16:15:00+09:00",
+      "backup_recheck_at": "2026-11-13T16:15:00+09:00",
       "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
       "shadow_validation": {
-        "run_count": 33,
-        "security_check_count": 172,
-        "source_fetch_rate": 0.9942,
-        "ohlcv_match_rate": 0.9591,
+        "run_count": 34,
+        "security_check_count": 177,
+        "source_fetch_rate": 0.9944,
+        "ohlcv_match_rate": 0.9602,
         "decision_sample_count": 0,
         "decision_match_rate": null,
         "production_candidate": false,
@@ -831,18 +831,14 @@
         "ticker": "^N225",
         "name": "日経平均",
         "status": "OK",
-        "value": 61248.589844,
-        "change_pct": 1.305,
-        "direction": "UP",
-        "as_of": "2026-11-11",
+        "value": 60819.359375,
+        "change_pct": -0.7008,
+        "direction": "DOWN",
+        "as_of": "2026-11-12",
         "unit": "円",
         "display_decimals": 0,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 64425.949219
-          },
           {
             "date": "2026-10-16",
             "value": 65324.289062
@@ -914,6 +910,10 @@
           {
             "date": "2026-11-11",
             "value": 61248.589844
+          },
+          {
+            "date": "2026-11-12",
+            "value": 60819.359375
           }
         ]
       },
@@ -922,18 +922,14 @@
         "ticker": "998405.T",
         "name": "TOPIX",
         "status": "OK",
-        "value": 3929.39,
-        "change_pct": 0.9163,
+        "value": 3937.33,
+        "change_pct": 0.2021,
         "direction": "UP",
-        "as_of": "2026-11-11",
+        "as_of": "2026-11-12",
         "unit": "",
         "display_decimals": 2,
         "source": "YAHOO_JAPAN_HISTORY",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 3999.34
-          },
           {
             "date": "2026-10-16",
             "value": 4066.0
@@ -1005,6 +1001,10 @@
           {
             "date": "2026-11-11",
             "value": 3929.39
+          },
+          {
+            "date": "2026-11-12",
+            "value": 3937.33
           }
         ]
       },
@@ -1013,18 +1013,14 @@
         "ticker": "JPY=X",
         "name": "USD/JPY",
         "status": "OK",
-        "value": 159.681,
-        "change_pct": 1.0748,
+        "value": 159.677994,
+        "change_pct": 0.6131,
         "direction": "UP",
-        "as_of": "2026-11-11",
+        "as_of": "2026-11-12",
         "unit": "円/USD",
         "display_decimals": 2,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-15",
-            "value": 157.957001
-          },
           {
             "date": "2026-10-16",
             "value": 158.143005
@@ -1099,7 +1095,11 @@
           },
           {
             "date": "2026-11-11",
-            "value": 159.681
+            "value": 158.705002
+          },
+          {
+            "date": "2026-11-12",
+            "value": 159.677994
           }
         ]
       }
@@ -1109,7 +1109,7 @@
       "ticker": "9432.T",
       "code": "9432",
       "name": "NTT",
-      "price": 162.2,
+      "price": 167.5,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -1117,63 +1117,63 @@
       "secondary_state": "SELL_WATCH",
       "outlook": {
         "1": {
-          "direction": "NEUTRAL",
-          "score": 14.5,
-          "confidence": "LOW",
+          "direction": "UP",
+          "score": 34.5,
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.21,
-            "historical_up_share_pct": 55.0,
+            "median_return_pct": 0.1,
+            "historical_up_share_pct": 50.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "3": {
-          "direction": "NEUTRAL",
-          "score": 11.8,
-          "confidence": "LOW",
+          "direction": "UP",
+          "score": 36.8,
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.02,
-            "historical_up_share_pct": 77.5,
+            "median_return_pct": 0.53,
+            "historical_up_share_pct": 57.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "5": {
-          "direction": "UP",
-          "score": 16.2,
+          "direction": "STRONG_UP",
+          "score": 41.2,
           "confidence": "HIGH",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.92,
-            "historical_up_share_pct": 67.5,
+            "median_return_pct": 0.15,
+            "historical_up_share_pct": 57.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
           "direction": "UP",
-          "score": 19.0,
-          "confidence": "HIGH",
+          "score": 39.0,
+          "confidence": "MEDIUM",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.04,
-            "historical_up_share_pct": 55.0,
+            "median_return_pct": 0.14,
+            "historical_up_share_pct": 52.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 163.4,
-        "ma25": 171.39,
-        "ma75": 167.76,
-        "ma25_slope5_pct": -0.835,
-        "ma75_slope5_pct": 0.504,
-        "rsi14": 37.21,
-        "macd": -2.451,
-        "macd_signal": -1.108,
-        "macd_hist": -1.343,
+        "ma5": 163.92,
+        "ma25": 171.28,
+        "ma75": 167.97,
+        "ma25_slope5_pct": -0.749,
+        "ma75_slope5_pct": 0.51,
+        "rsi14": 46.71,
+        "macd": -2.253,
+        "macd_signal": -1.337,
+        "macd_hist": -0.916,
         "macd_state": "IMPROVING",
         "macd_cross_state": "DC_ACTIVE",
-        "volume_ratio20": 0.9,
+        "volume_ratio20": 0.873,
         "ichimoku_tenkan": 167.0,
         "ichimoku_kijun": 170.15,
         "price_structure": "RANGE"
@@ -1181,20 +1181,26 @@
       "weekly_trend": "NEUTRAL",
       "levels": {
         "supports": [
-          161.53,
-          158.76
+          167.06,
+          164.06
         ],
         "resistances": [
-          162.81,
-          165.08
+          169.1,
+          171.9
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 1.36,
-        "support_1": 161.53,
-        "resistance_1": 162.81
+        "cluster_width": 1.41,
+        "support_1": 167.06,
+        "resistance_1": 169.1
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
+        {
+          "label": "終値で転換線割れ",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "REDUCE"
+        },
         {
           "label": "価格構造悪化",
           "status": "PENDING",
@@ -1204,8 +1210,8 @@
       ],
       "next_business_day_watch": [
         "データ品質と独立ソース照合を再確認",
-        "価格構造悪化",
-        "MACDデッドクロス"
+        "終値で転換線割れ",
+        "価格構造悪化"
       ],
       "data_quality": "PROVISIONAL",
       "source_gate_reason": "SHADOW_SOURCE_MATCH",
@@ -1221,11 +1227,11 @@
           "volume": 0.0
         }
       },
-      "as_of": "2026-11-11",
+      "as_of": "2026-11-12",
       "audit_context": {
         "schema_version": "1.0",
-        "run_id": "RUN_20261111_1700",
-        "as_of": "2026-11-11",
+        "run_id": "RUN_20261112_1700",
+        "as_of": "2026-11-12",
         "security_id": "SEC_JP_9432",
         "conditions_source": "decision.next_conditions",
         "conditions_state": "RECORDED",
@@ -1242,7 +1248,7 @@
           },
           {
             "label": "終値で転換線割れ",
-            "status": "PASS",
+            "status": "PENDING",
             "required": true,
             "purpose": "REDUCE"
           },
@@ -1270,7 +1276,7 @@
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-11-11",
+        "checked_on": "2026-11-12",
         "refresh_status": "UNCHANGED",
         "document_id": "S100ZCGQ",
         "submitted_at": "2026-11-06 15:37",
@@ -1465,7 +1471,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-11-11",
+      "as_of": "2026-11-12",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -1483,6 +1489,15 @@
         {
           "id": null,
           "category": "TECHNICAL",
+          "label": "終値で転換線割れ",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "REDUCE"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
           "label": "価格構造悪化",
           "status": "PENDING",
           "impact": "NEUTRAL",
@@ -1495,15 +1510,6 @@
           "id": null,
           "category": "TECHNICAL",
           "label": "MACDデッドクロス",
-          "status": "WARN",
-          "impact": "NEGATIVE",
-          "required": true,
-          "purpose": "REDUCE"
-        },
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "終値で転換線割れ",
           "status": "WARN",
           "impact": "NEGATIVE",
           "required": true,
@@ -1524,8 +1530,13 @@
       "change_conditions": [
         {
           "target_action": "REDUCE",
-          "label": "価格構造悪化",
+          "label": "終値で転換線割れ",
           "priority": 1
+        },
+        {
+          "target_action": "REDUCE",
+          "label": "価格構造悪化",
+          "priority": 2
         }
       ]
     },
@@ -1533,724 +1544,724 @@
       "ticker": "9432.T",
       "rows": [
         {
-          "date": "2026-06-30",
-          "volume": 192279600,
-          "high": 146.6999969482422,
-          "close": 145.0,
-          "low": 145.0,
-          "open": 146.0
-        },
-        {
+          "close": 142.8000030517578,
           "date": "2026-07-01",
+          "open": 144.0,
           "volume": 311003900,
           "high": 144.1999969482422,
-          "close": 142.8000030517578,
-          "low": 142.60000610351562,
-          "open": 144.0
+          "low": 142.60000610351562
         },
         {
+          "close": 146.10000610351562,
           "date": "2026-07-02",
+          "open": 143.8000030517578,
           "volume": 263408800,
           "high": 146.10000610351562,
-          "close": 146.10000610351562,
-          "low": 143.5,
-          "open": 143.8000030517578
+          "low": 143.5
         },
         {
+          "close": 146.10000610351562,
           "date": "2026-07-03",
+          "open": 147.10000610351562,
           "volume": 269766300,
           "high": 148.39999389648438,
-          "close": 146.10000610351562,
-          "low": 146.10000610351562,
-          "open": 147.10000610351562
+          "low": 146.10000610351562
         },
         {
+          "close": 147.0,
           "date": "2026-07-06",
+          "open": 146.5,
           "volume": 177637000,
           "high": 147.39999389648438,
-          "close": 147.0,
-          "low": 146.1999969482422,
-          "open": 146.5
+          "low": 146.1999969482422
         },
         {
+          "close": 148.0,
           "date": "2026-07-07",
+          "open": 147.5,
           "volume": 224750100,
           "high": 148.5,
-          "close": 148.0,
-          "low": 146.3000030517578,
-          "open": 147.5
+          "low": 146.3000030517578
         },
         {
+          "close": 149.5,
           "date": "2026-07-08",
+          "open": 148.8000030517578,
           "volume": 294291800,
           "high": 150.60000610351562,
-          "close": 149.5,
-          "low": 148.6999969482422,
-          "open": 148.8000030517578
+          "low": 148.6999969482422
         },
         {
+          "close": 149.0,
           "date": "2026-07-09",
+          "open": 149.5,
           "volume": 178053900,
           "high": 150.10000610351562,
-          "close": 149.0,
-          "low": 148.60000610351562,
-          "open": 149.5
+          "low": 148.60000610351562
         },
         {
+          "close": 147.60000610351562,
           "date": "2026-07-10",
+          "open": 149.0,
           "volume": 197882500,
           "high": 149.10000610351562,
-          "close": 147.60000610351562,
-          "low": 147.60000610351562,
-          "open": 149.0
+          "low": 147.60000610351562
         },
         {
+          "close": 149.10000610351562,
           "date": "2026-07-13",
+          "open": 148.10000610351562,
           "volume": 164233800,
           "high": 149.3000030517578,
-          "close": 149.10000610351562,
-          "low": 147.8000030517578,
-          "open": 148.10000610351562
+          "low": 147.8000030517578
         },
         {
+          "close": 150.1999969482422,
           "date": "2026-07-14",
+          "open": 150.0,
           "volume": 274044800,
           "high": 152.1999969482422,
-          "close": 150.1999969482422,
-          "low": 149.6999969482422,
-          "open": 150.0
+          "low": 149.6999969482422
         },
         {
+          "close": 150.0,
           "date": "2026-07-15",
+          "open": 150.39999389648438,
           "volume": 198521400,
           "high": 151.3000030517578,
-          "close": 150.0,
-          "low": 149.6999969482422,
-          "open": 150.39999389648438
+          "low": 149.6999969482422
         },
         {
+          "close": 150.89999389648438,
           "date": "2026-07-16",
+          "open": 150.5,
           "volume": 190184300,
           "high": 151.60000610351562,
-          "close": 150.89999389648438,
-          "low": 150.0,
-          "open": 150.5
+          "low": 150.0
         },
         {
+          "close": 151.10000610351562,
           "date": "2026-07-17",
+          "open": 151.5,
           "volume": 286935100,
           "high": 152.8000030517578,
-          "close": 151.10000610351562,
-          "low": 151.10000610351562,
-          "open": 151.5
+          "low": 151.10000610351562
         },
         {
+          "close": 151.6999969482422,
           "date": "2026-07-21",
+          "open": 153.0,
           "volume": 249237500,
           "high": 154.1999969482422,
-          "close": 151.6999969482422,
-          "low": 151.5,
-          "open": 153.0
+          "low": 151.5
         },
         {
+          "close": 152.0,
           "date": "2026-07-22",
+          "open": 150.5,
           "volume": 236368500,
           "high": 152.10000610351562,
-          "close": 152.0,
-          "low": 149.6999969482422,
-          "open": 150.5
+          "low": 149.6999969482422
         },
         {
+          "close": 149.6999969482422,
           "date": "2026-07-23",
+          "open": 151.0,
           "volume": 180246900,
           "high": 151.1999969482422,
-          "close": 149.6999969482422,
-          "low": 149.3000030517578,
-          "open": 151.0
+          "low": 149.3000030517578
         },
         {
+          "close": 151.3000030517578,
           "date": "2026-07-24",
+          "open": 150.0,
           "volume": 183169900,
           "high": 151.3000030517578,
-          "close": 151.3000030517578,
-          "low": 149.1999969482422,
-          "open": 150.0
+          "low": 149.1999969482422
         },
         {
+          "close": 154.3000030517578,
           "date": "2026-07-27",
+          "open": 151.5,
           "volume": 226043900,
           "high": 154.3000030517578,
-          "close": 154.3000030517578,
-          "low": 151.5,
-          "open": 151.5
+          "low": 151.5
         },
         {
+          "close": 156.39999389648438,
           "date": "2026-07-28",
+          "open": 155.0,
           "volume": 294176400,
           "high": 156.6999969482422,
-          "close": 156.39999389648438,
-          "low": 154.39999389648438,
-          "open": 155.0
+          "low": 154.39999389648438
         },
         {
+          "close": 160.3000030517578,
           "date": "2026-07-29",
+          "open": 156.39999389648438,
           "volume": 467545800,
           "high": 161.1999969482422,
-          "close": 160.3000030517578,
-          "low": 156.1999969482422,
-          "open": 156.39999389648438
+          "low": 156.1999969482422
         },
         {
+          "close": 159.0,
           "date": "2026-07-30",
+          "open": 160.0,
           "volume": 244892200,
           "high": 160.89999389648438,
-          "close": 159.0,
-          "low": 157.10000610351562,
-          "open": 160.0
+          "low": 157.10000610351562
         },
         {
+          "close": 152.39999389648438,
           "date": "2026-07-31",
+          "open": 155.5,
           "volume": 366355600,
           "high": 155.8000030517578,
-          "close": 152.39999389648438,
-          "low": 151.89999389648438,
-          "open": 155.5
+          "low": 151.89999389648438
         },
         {
+          "close": 152.5,
           "date": "2026-08-03",
+          "open": 152.5,
           "volume": 265678100,
           "high": 152.5,
-          "close": 152.5,
-          "low": 150.1999969482422,
-          "open": 152.5
+          "low": 150.1999969482422
         },
         {
+          "close": 150.39999389648438,
           "date": "2026-08-04",
+          "open": 153.0,
           "volume": 229208900,
           "high": 153.1999969482422,
-          "close": 150.39999389648438,
-          "low": 150.39999389648438,
-          "open": 153.0
+          "low": 150.39999389648438
         },
         {
+          "close": 151.0,
           "date": "2026-08-05",
+          "open": 150.3000030517578,
           "volume": 241102000,
           "high": 151.3000030517578,
-          "close": 151.0,
-          "low": 149.6999969482422,
-          "open": 150.3000030517578
+          "low": 149.6999969482422
         },
         {
+          "close": 154.5,
           "date": "2026-08-06",
+          "open": 150.1999969482422,
           "volume": 354871700,
           "high": 154.5,
-          "close": 154.5,
-          "low": 149.89999389648438,
-          "open": 150.1999969482422
+          "low": 149.89999389648438
         },
         {
+          "close": 158.5,
           "date": "2026-08-07",
+          "open": 154.8000030517578,
           "volume": 350564400,
           "high": 159.3000030517578,
-          "close": 158.5,
-          "low": 154.0,
-          "open": 154.8000030517578
+          "low": 154.0
         },
         {
+          "close": 159.89999389648438,
           "date": "2026-08-10",
+          "open": 157.89999389648438,
           "volume": 227940200,
           "high": 159.89999389648438,
-          "close": 159.89999389648438,
-          "low": 157.0,
-          "open": 157.89999389648438
+          "low": 157.0
         },
         {
+          "close": 158.39999389648438,
           "date": "2026-08-12",
+          "open": 160.0,
           "volume": 240868200,
           "high": 160.5,
-          "close": 158.39999389648438,
-          "low": 158.3000030517578,
-          "open": 160.0
+          "low": 158.3000030517578
         },
         {
+          "close": 160.5,
           "date": "2026-08-13",
+          "open": 159.8000030517578,
           "volume": 239429600,
           "high": 160.6999969482422,
-          "close": 160.5,
-          "low": 159.0,
-          "open": 159.8000030517578
+          "low": 159.0
         },
         {
+          "close": 162.6999969482422,
           "date": "2026-08-14",
+          "open": 160.0,
           "volume": 269560000,
           "high": 162.6999969482422,
-          "close": 162.6999969482422,
-          "low": 159.39999389648438,
-          "open": 160.0
+          "low": 159.39999389648438
         },
         {
+          "close": 161.5,
           "date": "2026-08-17",
+          "open": 163.0,
           "volume": 242864700,
           "high": 163.3000030517578,
-          "close": 161.5,
-          "low": 161.10000610351562,
-          "open": 163.0
+          "low": 161.10000610351562
         },
         {
+          "close": 160.39999389648438,
           "date": "2026-08-18",
+          "open": 160.0,
           "volume": 188431900,
           "high": 161.0,
-          "close": 160.39999389648438,
-          "low": 158.8000030517578,
-          "open": 160.0
+          "low": 158.8000030517578
         },
         {
+          "close": 159.39999389648438,
           "date": "2026-08-19",
+          "open": 161.39999389648438,
           "volume": 202345200,
           "high": 161.60000610351562,
-          "close": 159.39999389648438,
-          "low": 158.89999389648438,
-          "open": 161.39999389648438
+          "low": 158.89999389648438
         },
         {
+          "close": 161.39999389648438,
           "date": "2026-08-20",
+          "open": 161.5,
           "volume": 201840700,
           "high": 162.8000030517578,
-          "close": 161.39999389648438,
-          "low": 160.5,
-          "open": 161.5
+          "low": 160.5
         },
         {
+          "close": 166.10000610351562,
           "date": "2026-08-21",
+          "open": 162.0,
           "volume": 370034500,
           "high": 166.1999969482422,
-          "close": 166.10000610351562,
-          "low": 161.6999969482422,
-          "open": 162.0
+          "low": 161.6999969482422
         },
         {
+          "close": 166.5,
           "date": "2026-08-24",
+          "open": 166.5,
           "volume": 200995800,
           "high": 167.39999389648438,
-          "close": 166.5,
-          "low": 164.89999389648438,
-          "open": 166.5
+          "low": 164.89999389648438
         },
         {
+          "close": 169.1999969482422,
           "date": "2026-08-25",
+          "open": 167.39999389648438,
           "volume": 185852600,
           "high": 169.39999389648438,
-          "close": 169.1999969482422,
-          "low": 167.1999969482422,
-          "open": 167.39999389648438
+          "low": 167.1999969482422
         },
         {
+          "close": 169.60000610351562,
           "date": "2026-08-26",
+          "open": 168.6999969482422,
           "volume": 171766700,
           "high": 170.0,
-          "close": 169.60000610351562,
-          "low": 168.1999969482422,
-          "open": 168.6999969482422
+          "low": 168.1999969482422
         },
         {
+          "close": 168.1999969482422,
           "date": "2026-08-27",
+          "open": 169.1999969482422,
           "volume": 165343300,
           "high": 169.5,
-          "close": 168.1999969482422,
-          "low": 167.39999389648438,
-          "open": 169.1999969482422
+          "low": 167.39999389648438
         },
         {
+          "close": 168.60000610351562,
           "date": "2026-08-28",
+          "open": 168.1999969482422,
           "volume": 183753500,
           "high": 169.60000610351562,
-          "close": 168.60000610351562,
-          "low": 167.3000030517578,
-          "open": 168.1999969482422
+          "low": 167.3000030517578
         },
         {
+          "close": 172.5,
           "date": "2026-08-31",
+          "open": 170.0,
           "volume": 335014100,
           "high": 173.0,
-          "close": 172.5,
-          "low": 169.89999389648438,
-          "open": 170.0
+          "low": 169.89999389648438
         },
         {
+          "close": 175.60000610351562,
           "date": "2026-09-01",
+          "open": 172.6999969482422,
           "volume": 258354500,
           "high": 175.60000610351562,
-          "close": 175.60000610351562,
-          "low": 171.6999969482422,
-          "open": 172.6999969482422
+          "low": 171.6999969482422
         },
         {
+          "close": 175.1999969482422,
           "date": "2026-09-02",
+          "open": 175.10000610351562,
           "volume": 242348800,
           "high": 175.8000030517578,
-          "close": 175.1999969482422,
-          "low": 173.6999969482422,
-          "open": 175.10000610351562
+          "low": 173.6999969482422
         },
         {
+          "close": 173.1999969482422,
           "date": "2026-09-03",
+          "open": 175.0,
           "volume": 206699600,
           "high": 176.0,
-          "close": 173.1999969482422,
-          "low": 172.5,
-          "open": 175.0
+          "low": 172.5
         },
         {
+          "close": 172.60000610351562,
           "date": "2026-09-04",
+          "open": 173.1999969482422,
           "volume": 173891200,
           "high": 173.5,
-          "close": 172.60000610351562,
-          "low": 171.60000610351562,
-          "open": 173.1999969482422
+          "low": 171.60000610351562
         },
         {
+          "close": 168.8000030517578,
           "date": "2026-09-07",
+          "open": 172.60000610351562,
           "volume": 227634800,
           "high": 172.6999969482422,
-          "close": 168.8000030517578,
-          "low": 168.3000030517578,
-          "open": 172.60000610351562
+          "low": 168.3000030517578
         },
         {
+          "close": 172.0,
           "date": "2026-09-08",
+          "open": 168.0,
           "volume": 188185000,
           "high": 172.39999389648438,
-          "close": 172.0,
-          "low": 167.39999389648438,
-          "open": 168.0
+          "low": 167.39999389648438
         },
         {
+          "close": 172.1999969482422,
           "date": "2026-09-09",
+          "open": 170.0,
           "volume": 205235500,
           "high": 173.3000030517578,
-          "close": 172.1999969482422,
-          "low": 169.5,
-          "open": 170.0
+          "low": 169.5
         },
         {
+          "close": 175.1999969482422,
           "date": "2026-09-10",
+          "open": 172.8000030517578,
           "volume": 213162900,
           "high": 175.5,
-          "close": 175.1999969482422,
-          "low": 171.3000030517578,
-          "open": 172.8000030517578
+          "low": 171.3000030517578
         },
         {
+          "close": 175.6999969482422,
           "date": "2026-09-11",
+          "open": 174.0,
           "volume": 209324600,
           "high": 176.39999389648438,
-          "close": 175.6999969482422,
-          "low": 173.89999389648438,
-          "open": 174.0
+          "low": 173.89999389648438
         },
         {
+          "close": 178.3000030517578,
           "date": "2026-09-14",
+          "open": 176.10000610351562,
           "volume": 197564900,
           "high": 178.89999389648438,
-          "close": 178.3000030517578,
-          "low": 176.0,
-          "open": 176.10000610351562
+          "low": 176.0
         },
         {
+          "close": 178.10000610351562,
           "date": "2026-09-15",
+          "open": 178.39999389648438,
           "volume": 159657500,
           "high": 179.3000030517578,
-          "close": 178.10000610351562,
-          "low": 176.5,
-          "open": 178.39999389648438
+          "low": 176.5
         },
         {
+          "close": 177.10000610351562,
           "date": "2026-09-16",
+          "open": 177.8000030517578,
           "volume": 152906500,
           "high": 179.10000610351562,
-          "close": 177.10000610351562,
-          "low": 176.1999969482422,
-          "open": 177.8000030517578
+          "low": 176.1999969482422
         },
         {
+          "close": 180.0,
           "date": "2026-09-17",
+          "open": 177.1999969482422,
           "volume": 171846200,
           "high": 180.0,
-          "close": 180.0,
-          "low": 177.1999969482422,
-          "open": 177.1999969482422
+          "low": 177.1999969482422
         },
         {
+          "close": 177.3000030517578,
           "date": "2026-09-18",
+          "open": 180.0,
           "volume": 251021300,
           "high": 180.10000610351562,
-          "close": 177.3000030517578,
-          "low": 176.1999969482422,
-          "open": 180.0
+          "low": 176.1999969482422
         },
         {
+          "close": 174.89999389648438,
           "date": "2026-09-24",
+          "open": 177.0,
           "volume": 210983400,
           "high": 177.1999969482422,
-          "close": 174.89999389648438,
-          "low": 174.6999969482422,
-          "open": 177.0
+          "low": 174.6999969482422
         },
         {
+          "close": 176.10000610351562,
           "date": "2026-09-25",
+          "open": 175.0,
           "volume": 180233400,
           "high": 176.5,
-          "close": 176.10000610351562,
-          "low": 174.8000030517578,
-          "open": 175.0
+          "low": 174.8000030517578
         },
         {
+          "close": 174.6999969482422,
           "date": "2026-09-28",
+          "open": 176.3000030517578,
           "volume": 223528700,
           "high": 176.8000030517578,
-          "close": 174.6999969482422,
-          "low": 174.39999389648438,
-          "open": 176.3000030517578
+          "low": 174.39999389648438
         },
         {
+          "close": 171.3000030517578,
           "date": "2026-09-29",
+          "open": 172.10000610351562,
           "volume": 208625600,
           "high": 172.6999969482422,
-          "close": 171.3000030517578,
-          "low": 170.39999389648438,
-          "open": 172.10000610351562
+          "low": 170.39999389648438
         },
         {
+          "close": 171.60000610351562,
           "date": "2026-09-30",
+          "open": 171.5,
           "volume": 187752700,
           "high": 172.0,
-          "close": 171.60000610351562,
-          "low": 169.39999389648438,
-          "open": 171.5
+          "low": 169.39999389648438
         },
         {
+          "close": 170.3000030517578,
           "date": "2026-10-01",
+          "open": 170.10000610351562,
           "volume": 239459700,
           "high": 170.8000030517578,
-          "close": 170.3000030517578,
-          "low": 169.10000610351562,
-          "open": 170.10000610351562
+          "low": 169.10000610351562
         },
         {
+          "close": 169.89999389648438,
           "date": "2026-10-02",
+          "open": 169.5,
           "volume": 162762500,
           "high": 170.1999969482422,
-          "close": 169.89999389648438,
-          "low": 168.5,
-          "open": 169.5
+          "low": 168.5
         },
         {
+          "close": 170.0,
           "date": "2026-10-05",
+          "open": 169.8000030517578,
           "volume": 166990100,
           "high": 170.0,
-          "close": 170.0,
-          "low": 167.1999969482422,
-          "open": 169.8000030517578
+          "low": 167.1999969482422
         },
         {
+          "close": 170.10000610351562,
           "date": "2026-10-06",
+          "open": 170.5,
           "volume": 124008700,
           "high": 171.8000030517578,
-          "close": 170.10000610351562,
-          "low": 169.6999969482422,
-          "open": 170.5
+          "low": 169.6999969482422
         },
         {
+          "close": 172.10000610351562,
           "date": "2026-10-07",
+          "open": 169.5,
           "volume": 186043000,
           "high": 173.10000610351562,
-          "close": 172.10000610351562,
-          "low": 169.3000030517578,
-          "open": 169.5
+          "low": 169.3000030517578
         },
         {
+          "close": 172.10000610351562,
           "date": "2026-10-08",
+          "open": 171.60000610351562,
           "volume": 169670000,
           "high": 172.10000610351562,
-          "close": 172.10000610351562,
-          "low": 169.5,
-          "open": 171.60000610351562
+          "low": 169.5
         },
         {
+          "close": 172.89999389648438,
           "date": "2026-10-09",
+          "open": 173.60000610351562,
           "volume": 152027700,
           "high": 174.1999969482422,
-          "close": 172.89999389648438,
-          "low": 171.89999389648438,
-          "open": 173.60000610351562
+          "low": 171.89999389648438
         },
         {
+          "close": 173.3000030517578,
           "date": "2026-10-13",
+          "open": 173.0,
           "volume": 230914000,
           "high": 174.6999969482422,
-          "close": 173.3000030517578,
-          "low": 171.89999389648438,
-          "open": 173.0
+          "low": 171.89999389648438
         },
         {
+          "close": 172.5,
           "date": "2026-10-14",
+          "open": 172.8000030517578,
           "volume": 179453000,
           "high": 173.60000610351562,
-          "close": 172.5,
-          "low": 171.1999969482422,
-          "open": 172.8000030517578
+          "low": 171.1999969482422
         },
         {
+          "close": 173.3000030517578,
           "date": "2026-10-15",
+          "open": 171.6999969482422,
           "volume": 188163000,
           "high": 174.3000030517578,
-          "close": 173.3000030517578,
-          "low": 171.60000610351562,
-          "open": 171.6999969482422
+          "low": 171.60000610351562
         },
         {
+          "close": 174.5,
           "date": "2026-10-16",
+          "open": 174.10000610351562,
           "volume": 152343000,
           "high": 175.10000610351562,
-          "close": 174.5,
-          "low": 173.60000610351562,
-          "open": 174.10000610351562
+          "low": 173.60000610351562
         },
         {
+          "close": 175.10000610351562,
           "date": "2026-10-19",
+          "open": 174.3000030517578,
           "volume": 156930800,
           "high": 176.6999969482422,
-          "close": 175.10000610351562,
-          "low": 174.1999969482422,
-          "open": 174.3000030517578
+          "low": 174.1999969482422
         },
         {
+          "close": 177.10000610351562,
           "date": "2026-10-20",
+          "open": 175.89999389648438,
           "volume": 178537300,
           "high": 177.10000610351562,
-          "close": 177.10000610351562,
-          "low": 174.60000610351562,
-          "open": 175.89999389648438
+          "low": 174.60000610351562
         },
         {
+          "close": 176.1999969482422,
           "date": "2026-10-21",
+          "open": 176.0,
           "volume": 184452200,
           "high": 177.10000610351562,
-          "close": 176.1999969482422,
-          "low": 175.39999389648438,
-          "open": 176.0
+          "low": 175.39999389648438
         },
         {
+          "close": 178.10000610351562,
           "date": "2026-10-22",
+          "open": 176.3000030517578,
           "volume": 171975000,
           "high": 178.6999969482422,
-          "close": 178.10000610351562,
-          "low": 175.8000030517578,
-          "open": 176.3000030517578
+          "low": 175.8000030517578
         },
         {
+          "close": 174.8000030517578,
           "date": "2026-10-23",
+          "open": 181.10000610351562,
           "volume": 247942400,
           "high": 181.3000030517578,
-          "close": 174.8000030517578,
-          "low": 174.39999389648438,
-          "open": 181.10000610351562
+          "low": 174.39999389648438
         },
         {
+          "close": 176.39999389648438,
           "date": "2026-10-26",
+          "open": 176.39999389648438,
           "volume": 158400200,
           "high": 178.0,
-          "close": 176.39999389648438,
-          "low": 175.10000610351562,
-          "open": 176.39999389648438
+          "low": 175.10000610351562
         },
         {
+          "close": 174.0,
           "date": "2026-10-27",
+          "open": 175.0,
           "volume": 222100700,
           "high": 176.10000610351562,
-          "close": 174.0,
-          "low": 173.39999389648438,
-          "open": 175.0
+          "low": 173.39999389648438
         },
         {
+          "close": 171.89999389648438,
           "date": "2026-10-28",
+          "open": 173.3000030517578,
           "volume": 155715700,
           "high": 174.60000610351562,
-          "close": 171.89999389648438,
-          "low": 170.89999389648438,
-          "open": 173.3000030517578
+          "low": 170.89999389648438
         },
         {
+          "close": 171.5,
           "date": "2026-10-29",
+          "open": 171.89999389648438,
           "volume": 262847600,
           "high": 172.8000030517578,
-          "close": 171.5,
-          "low": 170.10000610351562,
-          "open": 171.89999389648438
+          "low": 170.10000610351562
         },
         {
+          "close": 173.3000030517578,
           "date": "2026-10-30",
+          "open": 172.6999969482422,
           "volume": 157446300,
           "high": 174.10000610351562,
-          "close": 173.3000030517578,
-          "low": 172.10000610351562,
-          "open": 172.6999969482422
+          "low": 172.10000610351562
         },
         {
+          "close": 174.5,
           "date": "2026-11-02",
+          "open": 174.39999389648438,
           "volume": 176169900,
           "high": 174.6999969482422,
-          "close": 174.5,
-          "low": 172.8000030517578,
-          "open": 174.39999389648438
+          "low": 172.8000030517578
         },
         {
+          "close": 164.0,
           "date": "2026-11-04",
+          "open": 172.89999389648438,
           "volume": 445285900,
           "high": 175.0,
-          "close": 164.0,
-          "low": 163.10000610351562,
-          "open": 172.89999389648438
+          "low": 163.10000610351562
         },
         {
+          "close": 164.89999389648438,
           "date": "2026-11-05",
+          "open": 166.6999969482422,
           "volume": 332826500,
           "high": 171.1999969482422,
-          "close": 164.89999389648438,
-          "low": 164.3000030517578,
-          "open": 166.6999969482422
+          "low": 164.3000030517578
         },
         {
+          "close": 160.1999969482422,
           "date": "2026-11-06",
+          "open": 163.39999389648438,
           "volume": 339183900,
           "high": 164.8000030517578,
-          "close": 160.1999969482422,
-          "low": 159.0,
-          "open": 163.39999389648438
+          "low": 159.0
         },
         {
+          "close": 165.1999969482422,
           "date": "2026-11-09",
+          "open": 161.5,
           "volume": 221088200,
           "high": 165.8000030517578,
-          "close": 165.1999969482422,
-          "low": 161.10000610351562,
-          "open": 161.5
+          "low": 161.10000610351562
         },
         {
+          "close": 164.5,
           "date": "2026-11-10",
+          "open": 165.5,
           "volume": 207600300,
           "high": 166.1999969482422,
-          "close": 164.5,
-          "low": 163.60000610351562,
-          "open": 165.5
+          "low": 163.60000610351562
         },
         {
+          "close": 162.1999969482422,
           "date": "2026-11-11",
+          "open": 164.5,
           "volume": 195085500,
           "high": 165.6999969482422,
-          "close": 162.1999969482422,
-          "low": 162.1999969482422,
-          "open": 164.5
+          "low": 162.1999969482422
+        },
+        {
+          "close": 167.5,
+          "date": "2026-11-12",
+          "open": 163.60000610351562,
+          "volume": 189658800,
+          "high": 167.5,
+          "low": 163.1999969482422
         }
       ]
     }
