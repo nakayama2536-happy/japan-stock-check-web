@@ -198,8 +198,8 @@
       "ticker": "JPY=X",
       "name": "USD/JPY",
       "status": "OK",
-      "value": 159.677994,
-      "change_pct": 0.6131,
+      "value": 159.653,
+      "change_pct": 0.5973,
       "direction": "UP",
       "as_of": "2026-11-12",
       "unit": "円/USD",
@@ -284,13 +284,13 @@
         },
         {
           "date": "2026-11-12",
-          "value": 159.677994
+          "value": 159.653
         }
       ]
     }
   ],
-  "updated_at": "2026-11-12T19:05:38.615571+09:00",
-  "market_checked_at": "2026-11-12T19:05:38.615571+09:00",
+  "updated_at": "2026-11-12T21:22:49.500431+09:00",
+  "market_checked_at": "2026-11-12T21:22:49.500431+09:00",
   "next_recheck_at": "2026-11-13T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-11-13T16:15:00+09:00",
@@ -1995,7 +1995,7 @@
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
         "checked_on": "2026-11-12",
-        "refresh_status": "NEW_FILING",
+        "refresh_status": "UNCHANGED",
         "document_id": "S100ZDXJ",
         "submitted_at": "2026-11-12 10:37",
         "period_start": "2026-04-01",
@@ -2163,19 +2163,13 @@
         "deep_dive": {
           "recommended": true,
           "severity": "HIGH",
-          "priority_score": 45,
+          "priority_score": 35,
           "minimum_priority_score": 30,
           "group_scores": {
-            "filing": 10,
             "cash_flow": 35
           },
-          "reason_count": 3,
+          "reason_count": 2,
           "reasons": [
-            {
-              "code": "NEW_FILING",
-              "label": "新しいEDINET開示を検出",
-              "severity": "INFO"
-            },
             {
               "code": "LARGE_CHANGE",
               "metric": "operating_cf",
