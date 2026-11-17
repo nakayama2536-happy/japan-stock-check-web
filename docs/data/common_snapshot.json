@@ -25,7 +25,7 @@
       "subject_type": "SECURITY",
       "subject_label": "横河電機",
       "ticker": "6841.T",
-      "as_of": "2026-11-16",
+      "as_of": "2026-11-17",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -84,7 +84,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-11-16",
+      "as_of": "2026-11-17",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -162,7 +162,7 @@
       "subject_type": "SECURITY",
       "subject_label": "神戸物産",
       "ticker": "3038.T",
-      "as_of": "2026-11-16",
+      "as_of": "2026-11-17",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -196,7 +196,7 @@
       "subject_type": "SECURITY",
       "subject_label": "NTT",
       "ticker": "9432.T",
-      "as_of": "2026-11-16",
+      "as_of": "2026-11-17",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -214,6 +214,15 @@
         {
           "id": null,
           "category": "TECHNICAL",
+          "label": "MACDデッドクロス",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "REDUCE"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
           "label": "終値で転換線割れ",
           "status": "PENDING",
           "impact": "NEUTRAL",
@@ -230,17 +239,7 @@
           "purpose": "REDUCE"
         }
       ],
-      "risk_conditions": [
-        {
-          "id": null,
-          "category": "TECHNICAL",
-          "label": "MACDデッドクロス",
-          "status": "WARN",
-          "impact": "NEGATIVE",
-          "required": true,
-          "purpose": "REDUCE"
-        }
-      ],
+      "risk_conditions": [],
       "blocking_conditions": [
         {
           "id": null,
@@ -255,13 +254,18 @@
       "change_conditions": [
         {
           "target_action": "REDUCE",
-          "label": "終値で転換線割れ",
+          "label": "MACDデッドクロス",
           "priority": 1
         },
         {
           "target_action": "REDUCE",
-          "label": "価格構造悪化",
+          "label": "終値で転換線割れ",
           "priority": 2
+        },
+        {
+          "target_action": "REDUCE",
+          "label": "価格構造悪化",
+          "priority": 3
         }
       ]
     },
@@ -270,7 +274,7 @@
       "subject_type": "SECURITY",
       "subject_label": "鹿島建設",
       "ticker": "1812.T",
-      "as_of": "2026-11-16",
+      "as_of": "2026-11-17",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -292,6 +296,15 @@
           "status": "PENDING",
           "impact": "NEUTRAL",
           "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "出来高20日平均以上",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": false,
           "purpose": "ADD"
         }
       ],
@@ -317,7 +330,7 @@
     }
   ],
   "timestamps": {
-    "market_as_of": "2026-11-16",
-    "calculated_at": "2026-11-16T22:54:33.268213+09:00"
+    "market_as_of": "2026-11-17",
+    "calculated_at": "2026-11-17T19:58:31.324173+09:00"
   }
 }
