@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "market": "JAPAN",
-  "publication_id": "jp-bde003eb6e8e97161502",
+  "publication_id": "jp-114147cb930c96ea028e",
   "common_spec_version": "1.0-draft",
   "source_state": "READY",
   "files": [
@@ -10,11 +10,11 @@
       "path": "data/app_snapshot.json",
       "purpose": "market/security snapshot",
       "status": "OK",
-      "sha256": "2f0bd759c605dec936f196c447f2eebe94643abbc3b892a55e8115e9e96110e1",
-      "bytes": 65521,
+      "sha256": "5ffcf0ffb2943754d8ec3a9d0c02a7a75f849dfd732c075fe12089b71ccb3e00",
+      "bytes": 65692,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -24,11 +24,11 @@
       "path": "data/common_snapshot.json",
       "purpose": "common decision semantics",
       "status": "OK",
-      "sha256": "4380aec5d1a8a7d3eebac2fcdc8671c6d2dfda9d0a02c4a1f91b49f292d78fc9",
-      "bytes": 8427,
+      "sha256": "3ebe06a78249e8965b8d3aca2167858f6239b3f72de9d2d0621c4178ab4d4cc5",
+      "bytes": 9240,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -38,13 +38,13 @@
       "path": "data/charts/1812.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "2f749c7c2343c4221dd57528795ad200910d96e94bb6333591c1249b335a4dcf",
+      "sha256": "eb8c363e7cee627a9011a518010f00dd178bc3d4ff8a15fc86c1dfba056f7269",
       "bytes": 13806,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     },
     {
@@ -52,13 +52,13 @@
       "path": "data/charts/3038.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "60ba42c26d660705fded80258ce893a13ea5383ee14532a4a4cb40e359b12afc",
+      "sha256": "67b0f11bd16cf0bd20c7d749dcd9e03621d34a5e209fe3957d324c1c680fb8ac",
       "bytes": 13806,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     },
     {
@@ -66,7 +66,7 @@
       "path": "data/charts/5805.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "5cd55ac23b029a742aa3aa41c3c929e838aef81710c8f936633896ebc9ee931f",
+      "sha256": "c57e22952ad16707de0f5caf72981308ad8689cad1e75320fedd50092d804246",
       "bytes": 13810,
       "revision": null,
       "required_for_bundle": true,
@@ -80,13 +80,13 @@
       "path": "data/charts/6841.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "2b828aaad56acd877fc1769970cadb3efb6f13baa8a4c245a67c2627977de1a7",
+      "sha256": "e8a395ec0dd1463fdead41a6c9ef2e71051f566be9ca29ff7826a655e5efd99e",
       "bytes": 13783,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     },
     {
@@ -94,13 +94,13 @@
       "path": "data/charts/6954.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "75f8046fee52b4db39b5fa567b71745f6e9012ad3f10b5b56246749425d59063",
+      "sha256": "7076ec5f88132d8bf4911abb41315233d3e99a2ecba695db49bd4cc5a709c454",
       "bytes": 13818,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     },
     {
@@ -108,13 +108,13 @@
       "path": "data/charts/9432.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "e66357f317118d71d07d238fc107a081447723287398d1e107bd664879dbe2e7",
-      "bytes": 16879,
+      "sha256": "4d9854ea4a86c1eaa9a81d4a684ca1ba643b7f9d0c7fd883e76fd80cb6d746c3",
+      "bytes": 16892,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     },
     {
@@ -122,8 +122,8 @@
       "path": "data/deep_dive/6841.json",
       "purpose": "assembled public deep-dive source payload",
       "status": "OK",
-      "sha256": "d5de98187708efada89ffba5043847c7bfec17f22bb4adf1c1064883df5d08ab",
-      "bytes": 59006,
+      "sha256": "ba020ec3e4f68f4bdc7722455f5d553d5523cb99d5951e72b5c762a4ea949e47",
+      "bytes": 59926,
       "revision": null,
       "required_for_bundle": false,
       "as_of": null,
@@ -136,8 +136,8 @@
       "path": "data/deep_dive/6954.json",
       "purpose": "assembled public deep-dive source payload",
       "status": "OK",
-      "sha256": "8546b69663b0f87bc2d957fcff987a4bf27effbd2f7456ea32960cfde8da525e",
-      "bytes": 59974,
+      "sha256": "affa76fc0249ea6e77ffd1663a218ff0325fdd15d002a54113306e24680b04bd",
+      "bytes": 60484,
       "revision": null,
       "required_for_bundle": false,
       "as_of": null,
@@ -150,8 +150,8 @@
       "path": "data/deep_dive/3038.json",
       "purpose": "assembled public deep-dive source payload",
       "status": "OK",
-      "sha256": "3c1d8df24bb9e176952cc991d975e6c674ce977fa6aedd9ba4f595dcc6252dd6",
-      "bytes": 55247,
+      "sha256": "9437616856c6e7a09bd672efa828916c71b70abe96c133230a950e0281110967",
+      "bytes": 55267,
       "revision": null,
       "required_for_bundle": false,
       "as_of": null,
@@ -164,8 +164,8 @@
       "path": "data/deep_dive/9432.json",
       "purpose": "assembled public deep-dive source payload",
       "status": "OK",
-      "sha256": "2f245a48d70acd0bcb38ce485d6af4197980879e08a439537f7a581f26ac2b29",
-      "bytes": 62105,
+      "sha256": "9f84984911913ff84f0dcf259d608f052c81d961571d2b8afbc6e2bcabdb1a94",
+      "bytes": 62154,
       "revision": null,
       "required_for_bundle": false,
       "as_of": null,
@@ -178,8 +178,8 @@
       "path": "data/deep_dive/1812.json",
       "purpose": "assembled public deep-dive source payload",
       "status": "OK",
-      "sha256": "4b5c533c2081d52df1275c4a66b5b9d0275ef840042d30d61f8eba18f11d4324",
-      "bytes": 58824,
+      "sha256": "4aeb748bacd3b6a038c7f5e4cb8cdf6bc5b344dc6a766d59b211a22e83795a3a",
+      "bytes": 58434,
       "revision": null,
       "required_for_bundle": false,
       "as_of": null,
@@ -199,8 +199,8 @@
         "ticker": "6841.T",
         "name": "横河電機",
         "path": "data/deep_dive/6841.json",
-        "sha256": "d5de98187708efada89ffba5043847c7bfec17f22bb4adf1c1064883df5d08ab",
-        "bytes": 59006
+        "sha256": "ba020ec3e4f68f4bdc7722455f5d553d5523cb99d5951e72b5c762a4ea949e47",
+        "bytes": 59926
       },
       {
         "security_id": "SEC_JP_6954",
@@ -208,8 +208,8 @@
         "ticker": "6954.T",
         "name": "ファナック",
         "path": "data/deep_dive/6954.json",
-        "sha256": "8546b69663b0f87bc2d957fcff987a4bf27effbd2f7456ea32960cfde8da525e",
-        "bytes": 59974
+        "sha256": "affa76fc0249ea6e77ffd1663a218ff0325fdd15d002a54113306e24680b04bd",
+        "bytes": 60484
       },
       {
         "security_id": "SEC_JP_3038",
@@ -217,8 +217,8 @@
         "ticker": "3038.T",
         "name": "神戸物産",
         "path": "data/deep_dive/3038.json",
-        "sha256": "3c1d8df24bb9e176952cc991d975e6c674ce977fa6aedd9ba4f595dcc6252dd6",
-        "bytes": 55247
+        "sha256": "9437616856c6e7a09bd672efa828916c71b70abe96c133230a950e0281110967",
+        "bytes": 55267
       },
       {
         "security_id": "SEC_JP_9432",
@@ -226,8 +226,8 @@
         "ticker": "9432.T",
         "name": "NTT",
         "path": "data/deep_dive/9432.json",
-        "sha256": "2f245a48d70acd0bcb38ce485d6af4197980879e08a439537f7a581f26ac2b29",
-        "bytes": 62105
+        "sha256": "9f84984911913ff84f0dcf259d608f052c81d961571d2b8afbc6e2bcabdb1a94",
+        "bytes": 62154
       },
       {
         "security_id": "SEC_JP_1812",
@@ -235,8 +235,8 @@
         "ticker": "1812.T",
         "name": "鹿島建設",
         "path": "data/deep_dive/1812.json",
-        "sha256": "4b5c533c2081d52df1275c4a66b5b9d0275ef840042d30d61f8eba18f11d4324",
-        "bytes": 58824
+        "sha256": "4aeb748bacd3b6a038c7f5e4cb8cdf6bc5b344dc6a766d59b211a22e83795a3a",
+        "bytes": 58434
       }
     ]
   }

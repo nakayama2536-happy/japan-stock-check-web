@@ -1,6 +1,6 @@
 {
   "payload_schema_version": "0.1",
-  "publication_id": "jp-bde003eb6e8e97161502",
+  "publication_id": "jp-114147cb930c96ea028e",
   "market": "JAPAN",
   "scope": {
     "subject_type": "SECURITY",
@@ -10,8 +10,8 @@
     "codes": [
       "6954"
     ],
-    "history_start": "2026-07-08",
-    "history_end": "2026-11-19",
+    "history_start": "2026-07-09",
+    "history_end": "2026-11-20",
     "history_rows": 90,
     "history_note": "Public PWAに公開された最大90行のチャート履歴。計算本体の全履歴ではありません。"
   },
@@ -29,11 +29,11 @@
       "path": "data/app_snapshot.json",
       "purpose": "market/security snapshot",
       "status": "OK",
-      "sha256": "2f0bd759c605dec936f196c447f2eebe94643abbc3b892a55e8115e9e96110e1",
-      "bytes": 65521,
+      "sha256": "5ffcf0ffb2943754d8ec3a9d0c02a7a75f849dfd732c075fe12089b71ccb3e00",
+      "bytes": 65692,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -43,11 +43,11 @@
       "path": "data/common_snapshot.json",
       "purpose": "common decision semantics",
       "status": "OK",
-      "sha256": "4380aec5d1a8a7d3eebac2fcdc8671c6d2dfda9d0a02c4a1f91b49f292d78fc9",
-      "bytes": 8427,
+      "sha256": "3ebe06a78249e8965b8d3aca2167858f6239b3f72de9d2d0621c4178ab4d4cc5",
+      "bytes": 9240,
       "revision": null,
       "required_for_bundle": true,
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "history_start": null,
       "history_end": null,
       "rows": null
@@ -57,13 +57,13 @@
       "path": "data/charts/6954.json",
       "purpose": "public chart history (max 90 rows)",
       "status": "OK",
-      "sha256": "75f8046fee52b4db39b5fa567b71745f6e9012ad3f10b5b56246749425d59063",
+      "sha256": "7076ec5f88132d8bf4911abb41315233d3e99a2ecba695db49bd4cc5a709c454",
       "bytes": 13818,
       "revision": null,
       "required_for_bundle": true,
       "as_of": null,
-      "history_start": "2026-07-08",
-      "history_end": "2026-11-19",
+      "history_start": "2026-07-09",
+      "history_end": "2026-11-20",
       "rows": 90
     }
   ],
@@ -153,29 +153,25 @@
       "ticker": "6954.T",
       "name": "ファナック"
     },
-    "price": 5331.0,
+    "price": 5047.0,
     "formal_decision": "WAIT",
     "shadow_action": "HOLD",
     "reference_signal": "REVERSAL_WATCH",
-    "as_of": "2026-11-19",
+    "as_of": "2026-11-20",
     "market_environment": [
       {
         "market_id": "NIKKEI225",
         "ticker": "^N225",
         "name": "日経平均",
         "status": "OK",
-        "value": 59444.210938,
-        "change_pct": 0.7115,
-        "direction": "UP",
-        "as_of": "2026-11-19",
+        "value": 56436.648438,
+        "change_pct": -5.0595,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "円",
         "display_decimals": 0,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 62693.160156
-          },
           {
             "date": "2026-10-26",
             "value": 62189.648438
@@ -247,6 +243,10 @@
           {
             "date": "2026-11-19",
             "value": 59444.210938
+          },
+          {
+            "date": "2026-11-20",
+            "value": 56436.648438
           }
         ]
       },
@@ -255,18 +255,14 @@
         "ticker": "998405.T",
         "name": "TOPIX",
         "status": "OK",
-        "value": 3822.47,
-        "change_pct": -0.04,
-        "direction": "FLAT",
-        "as_of": "2026-11-19",
+        "value": 3674.22,
+        "change_pct": -3.8784,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "",
         "display_decimals": 2,
         "source": "YAHOO_JAPAN_HISTORY",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 3965.81
-          },
           {
             "date": "2026-10-26",
             "value": 3972.98
@@ -338,6 +334,10 @@
           {
             "date": "2026-11-19",
             "value": 3822.47
+          },
+          {
+            "date": "2026-11-20",
+            "value": 3674.22
           }
         ]
       },
@@ -346,18 +346,14 @@
         "ticker": "JPY=X",
         "name": "USD/JPY",
         "status": "OK",
-        "value": 159.882004,
-        "change_pct": 0.237,
-        "direction": "UP",
-        "as_of": "2026-11-19",
+        "value": 158.761002,
+        "change_pct": -0.389,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "円/USD",
         "display_decimals": 2,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 156.494003
-          },
           {
             "date": "2026-10-26",
             "value": 156.830002
@@ -432,7 +428,11 @@
           },
           {
             "date": "2026-11-19",
-            "value": 159.882004
+            "value": 159.380997
+          },
+          {
+            "date": "2026-11-20",
+            "value": 158.761002
           }
         ]
       }
@@ -445,11 +445,11 @@
       "engine_version": "1.3.4",
       "analytics_version": "1.2.0-shadow",
       "decision_mode": "SHADOW",
-      "run_id": "RUN_20261119_1700",
+      "run_id": "RUN_20261120_1700",
       "run_status": "SHADOW_COMMITTED",
-      "latest_decision_run_id": "RUN_20261119_1700",
-      "latest_decision_as_of": "2026-11-19",
-      "market_run_id": "RUN_20261119_1700",
+      "latest_decision_run_id": "RUN_20261120_1700",
+      "latest_decision_as_of": "2026-11-20",
+      "market_run_id": "RUN_20261120_1700",
       "market_run_status": "SHADOW_COMMITTED",
       "market_environment": [
         {
@@ -457,18 +457,14 @@
           "ticker": "^N225",
           "name": "日経平均",
           "status": "OK",
-          "value": 59444.210938,
-          "change_pct": 0.7115,
-          "direction": "UP",
-          "as_of": "2026-11-19",
+          "value": 56436.648438,
+          "change_pct": -5.0595,
+          "direction": "DOWN",
+          "as_of": "2026-11-20",
           "unit": "円",
           "display_decimals": 0,
           "source": "YFINANCE_REFERENCE",
           "history": [
-            {
-              "date": "2026-10-23",
-              "value": 62693.160156
-            },
             {
               "date": "2026-10-26",
               "value": 62189.648438
@@ -540,6 +536,10 @@
             {
               "date": "2026-11-19",
               "value": 59444.210938
+            },
+            {
+              "date": "2026-11-20",
+              "value": 56436.648438
             }
           ]
         },
@@ -548,18 +548,14 @@
           "ticker": "998405.T",
           "name": "TOPIX",
           "status": "OK",
-          "value": 3822.47,
-          "change_pct": -0.04,
-          "direction": "FLAT",
-          "as_of": "2026-11-19",
+          "value": 3674.22,
+          "change_pct": -3.8784,
+          "direction": "DOWN",
+          "as_of": "2026-11-20",
           "unit": "",
           "display_decimals": 2,
           "source": "YAHOO_JAPAN_HISTORY",
           "history": [
-            {
-              "date": "2026-10-23",
-              "value": 3965.81
-            },
             {
               "date": "2026-10-26",
               "value": 3972.98
@@ -631,6 +627,10 @@
             {
               "date": "2026-11-19",
               "value": 3822.47
+            },
+            {
+              "date": "2026-11-20",
+              "value": 3674.22
             }
           ]
         },
@@ -639,18 +639,14 @@
           "ticker": "JPY=X",
           "name": "USD/JPY",
           "status": "OK",
-          "value": 159.882004,
-          "change_pct": 0.237,
-          "direction": "UP",
-          "as_of": "2026-11-19",
+          "value": 158.761002,
+          "change_pct": -0.389,
+          "direction": "DOWN",
+          "as_of": "2026-11-20",
           "unit": "円/USD",
           "display_decimals": 2,
           "source": "YFINANCE_REFERENCE",
           "history": [
-            {
-              "date": "2026-10-23",
-              "value": 156.494003
-            },
             {
               "date": "2026-10-26",
               "value": 156.830002
@@ -725,22 +721,26 @@
             },
             {
               "date": "2026-11-19",
-              "value": 159.882004
+              "value": 159.380997
+            },
+            {
+              "date": "2026-11-20",
+              "value": 158.761002
             }
           ]
         }
       ],
-      "updated_at": "2026-11-19T23:37:18.507982+09:00",
-      "market_checked_at": "2026-11-19T23:37:18.507982+09:00",
-      "next_recheck_at": "2026-11-20T15:45:00+09:00",
+      "updated_at": "2026-11-20T19:19:00.323677+09:00",
+      "market_checked_at": "2026-11-20T19:19:00.323677+09:00",
+      "next_recheck_at": "2026-11-24T15:45:00+09:00",
       "next_recheck_kind": "PRIMARY",
-      "backup_recheck_at": "2026-11-20T16:15:00+09:00",
+      "backup_recheck_at": "2026-11-24T16:15:00+09:00",
       "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
       "shadow_validation": {
-        "run_count": 39,
-        "security_check_count": 202,
-        "source_fetch_rate": 0.995,
-        "ohlcv_match_rate": 0.9652,
+        "run_count": 40,
+        "security_check_count": 207,
+        "source_fetch_rate": 0.9952,
+        "ohlcv_match_rate": 0.966,
         "decision_sample_count": 0,
         "decision_match_rate": null,
         "production_candidate": false,
@@ -855,18 +855,14 @@
         "ticker": "^N225",
         "name": "日経平均",
         "status": "OK",
-        "value": 59444.210938,
-        "change_pct": 0.7115,
-        "direction": "UP",
-        "as_of": "2026-11-19",
+        "value": 56436.648438,
+        "change_pct": -5.0595,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "円",
         "display_decimals": 0,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 62693.160156
-          },
           {
             "date": "2026-10-26",
             "value": 62189.648438
@@ -938,6 +934,10 @@
           {
             "date": "2026-11-19",
             "value": 59444.210938
+          },
+          {
+            "date": "2026-11-20",
+            "value": 56436.648438
           }
         ]
       },
@@ -946,18 +946,14 @@
         "ticker": "998405.T",
         "name": "TOPIX",
         "status": "OK",
-        "value": 3822.47,
-        "change_pct": -0.04,
-        "direction": "FLAT",
-        "as_of": "2026-11-19",
+        "value": 3674.22,
+        "change_pct": -3.8784,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "",
         "display_decimals": 2,
         "source": "YAHOO_JAPAN_HISTORY",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 3965.81
-          },
           {
             "date": "2026-10-26",
             "value": 3972.98
@@ -1029,6 +1025,10 @@
           {
             "date": "2026-11-19",
             "value": 3822.47
+          },
+          {
+            "date": "2026-11-20",
+            "value": 3674.22
           }
         ]
       },
@@ -1037,18 +1037,14 @@
         "ticker": "JPY=X",
         "name": "USD/JPY",
         "status": "OK",
-        "value": 159.882004,
-        "change_pct": 0.237,
-        "direction": "UP",
-        "as_of": "2026-11-19",
+        "value": 158.761002,
+        "change_pct": -0.389,
+        "direction": "DOWN",
+        "as_of": "2026-11-20",
         "unit": "円/USD",
         "display_decimals": 2,
         "source": "YFINANCE_REFERENCE",
         "history": [
-          {
-            "date": "2026-10-23",
-            "value": 156.494003
-          },
           {
             "date": "2026-10-26",
             "value": 156.830002
@@ -1123,7 +1119,11 @@
           },
           {
             "date": "2026-11-19",
-            "value": 159.882004
+            "value": 159.380997
+          },
+          {
+            "date": "2026-11-20",
+            "value": 158.761002
           }
         ]
       }
@@ -1133,7 +1133,7 @@
       "ticker": "6954.T",
       "code": "6954",
       "name": "ファナック",
-      "price": 5331.0,
+      "price": 5047.0,
       "formal_decision": "WAIT",
       "shadow_action": "HOLD",
       "confidence": "NOT_AVAILABLE",
@@ -1141,86 +1141,92 @@
       "secondary_state": "ADD_WAIT",
       "outlook": {
         "1": {
-          "direction": "NEUTRAL",
-          "score": 9.5,
+          "direction": "STRONG_DOWN",
+          "score": -64.8,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.19,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 0.95,
+            "historical_up_share_pct": 67.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "3": {
-          "direction": "NEUTRAL",
-          "score": 1.8,
+          "direction": "STRONG_DOWN",
+          "score": -69.8,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.53,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 1.65,
+            "historical_up_share_pct": 67.5,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "5": {
-          "direction": "NEUTRAL",
-          "score": -13.8,
+          "direction": "STRONG_DOWN",
+          "score": -69.8,
           "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 1.58,
-            "historical_up_share_pct": 65.0,
+            "median_return_pct": 2.12,
+            "historical_up_share_pct": 80.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         },
         "14": {
           "direction": "STRONG_DOWN",
-          "score": -46.0,
-          "confidence": "HIGH",
+          "score": -81.5,
+          "confidence": "LOW",
           "analog": {
             "sample_count": 40,
-            "median_return_pct": 0.31,
-            "historical_up_share_pct": 52.5,
+            "median_return_pct": 2.88,
+            "historical_up_share_pct": 65.0,
             "note": "過去類似局面の割合であり将来確率ではありません"
           }
         }
       },
       "technical": {
-        "ma5": 5330.6,
-        "ma25": 5619.36,
-        "ma75": 5948.21,
-        "ma25_slope5_pct": -2.819,
-        "ma75_slope5_pct": -1.443,
-        "rsi14": 40.05,
-        "macd": -158.397,
-        "macd_signal": -136.042,
-        "macd_hist": -22.356,
-        "macd_state": "IMPROVING",
+        "ma5": 5231.8,
+        "ma25": 5584.96,
+        "ma75": 5927.19,
+        "ma25_slope5_pct": -2.996,
+        "ma75_slope5_pct": -1.487,
+        "rsi14": 33.27,
+        "macd": -178.094,
+        "macd_signal": -144.452,
+        "macd_hist": -33.642,
+        "macd_state": "BEARISH",
         "macd_cross_state": "DC_ACTIVE",
-        "volume_ratio20": 0.718,
-        "ichimoku_tenkan": 5421.5,
-        "ichimoku_kijun": 5719.0,
+        "volume_ratio20": 0.861,
+        "ichimoku_tenkan": 5364.0,
+        "ichimoku_kijun": 5548.5,
         "price_structure": "DOWNTREND"
       },
       "weekly_trend": "DOWN",
       "levels": {
         "supports": [
-          5314.75,
-          5230.6
+          4980.53,
+          4825.5
         ],
         "resistances": [
-          5385.23,
-          5515.82
+          5072.8,
+          5241.09
         ],
         "method": "confirmed_pivot_2x2_atr_cluster",
-        "cluster_width": 65.25,
-        "support_1": 5314.75,
-        "resistance_1": 5385.23
+        "cluster_width": 68.42,
+        "support_1": 4980.53,
+        "resistance_1": 5072.8
       },
       "reason_summary": "独立Source Contract未確定のため正式判断には使用しません",
       "next_conditions": [
         {
           "label": "6,000円回復",
+          "status": "PENDING",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "label": "MACD改善",
           "status": "PENDING",
           "required": true,
           "purpose": "ADD"
@@ -1235,7 +1241,7 @@
       "next_business_day_watch": [
         "データ品質と独立ソース照合を再確認",
         "6,000円回復",
-        "週足悪化なし"
+        "MACD改善"
       ],
       "data_quality": "PROVISIONAL",
       "source_gate_reason": "SHADOW_SOURCE_MATCH",
@@ -1251,11 +1257,11 @@
           "volume": 0.0
         }
       },
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "audit_context": {
         "schema_version": "1.0",
-        "run_id": "RUN_20261119_1700",
-        "as_of": "2026-11-19",
+        "run_id": "RUN_20261120_1700",
+        "as_of": "2026-11-20",
         "security_id": "SEC_JP_6954",
         "conditions_source": "decision.next_conditions",
         "conditions_state": "RECORDED",
@@ -1272,7 +1278,7 @@
           },
           {
             "label": "MACD改善",
-            "status": "PASS",
+            "status": "PENDING",
             "required": true,
             "purpose": "ADD"
           },
@@ -1300,7 +1306,7 @@
         "source": "EDINET",
         "mode": "SHADOW_DISPLAY_ONLY",
         "analysis_use": "DISPLAY_ONLY",
-        "checked_on": "2026-11-19",
+        "checked_on": "2026-11-20",
         "refresh_status": "UNCHANGED",
         "document_id": "S100ZDE2",
         "submitted_at": "2026-11-11 13:50",
@@ -1521,7 +1527,7 @@
       "subject_type": "SECURITY",
       "subject_label": "ファナック",
       "ticker": "6954.T",
-      "as_of": "2026-11-19",
+      "as_of": "2026-11-20",
       "mode": "SHADOW",
       "phase": "DECISION",
       "eligibility": "NOT_ELIGIBLE",
@@ -1540,6 +1546,15 @@
           "id": null,
           "category": "TECHNICAL",
           "label": "6,000円回復",
+          "status": "PENDING",
+          "impact": "NEUTRAL",
+          "required": true,
+          "purpose": "ADD"
+        },
+        {
+          "id": null,
+          "category": "TECHNICAL",
+          "label": "MACD改善",
           "status": "PENDING",
           "impact": "NEUTRAL",
           "required": true,
@@ -1575,8 +1590,13 @@
         },
         {
           "target_action": "ADD",
-          "label": "週足悪化なし",
+          "label": "MACD改善",
           "priority": 2
+        },
+        {
+          "target_action": "ADD",
+          "label": "週足悪化なし",
+          "priority": 3
         }
       ]
     },
@@ -1584,724 +1604,724 @@
       "ticker": "6954.T",
       "rows": [
         {
-          "close": 6700.0,
-          "open": 6922.0,
-          "date": "2026-07-08",
-          "volume": 7987400,
-          "low": 6700.0,
-          "high": 6985.0
-        },
-        {
-          "close": 6851.0,
+          "low": 6765.0,
+          "volume": 4478800,
+          "high": 6919.0,
           "open": 6789.0,
           "date": "2026-07-09",
-          "volume": 4478800,
-          "low": 6765.0,
-          "high": 6919.0
+          "close": 6851.0
         },
         {
-          "close": 7156.0,
+          "low": 7037.0,
+          "volume": 6055500,
+          "high": 7239.0,
           "open": 7051.0,
           "date": "2026-07-10",
-          "volume": 6055500,
-          "low": 7037.0,
-          "high": 7239.0
+          "close": 7156.0
         },
         {
-          "close": 6957.0,
+          "low": 6856.0,
+          "volume": 5036400,
+          "high": 7205.0,
           "open": 7050.0,
           "date": "2026-07-13",
-          "volume": 5036400,
-          "low": 6856.0,
-          "high": 7205.0
+          "close": 6957.0
         },
         {
-          "close": 6839.0,
+          "low": 6674.0,
+          "volume": 5016300,
+          "high": 6898.0,
           "open": 6857.0,
           "date": "2026-07-14",
-          "volume": 5016300,
-          "low": 6674.0,
-          "high": 6898.0
+          "close": 6839.0
         },
         {
-          "close": 7008.0,
+          "low": 6792.0,
+          "volume": 3773900,
+          "high": 7030.0,
           "open": 6939.0,
           "date": "2026-07-15",
-          "volume": 3773900,
-          "low": 6792.0,
-          "high": 7030.0
+          "close": 7008.0
         },
         {
-          "close": 7020.0,
+          "low": 6885.0,
+          "volume": 5808800,
+          "high": 7059.0,
           "open": 6897.0,
           "date": "2026-07-16",
-          "volume": 5808800,
-          "low": 6885.0,
-          "high": 7059.0
+          "close": 7020.0
         },
         {
-          "close": 6637.0,
+          "low": 6394.0,
+          "volume": 7839600,
+          "high": 6706.0,
           "open": 6690.0,
           "date": "2026-07-17",
-          "volume": 7839600,
-          "low": 6394.0,
-          "high": 6706.0
+          "close": 6637.0
         },
         {
-          "close": 6776.0,
+          "low": 6473.0,
+          "volume": 6301600,
+          "high": 6808.0,
           "open": 6621.0,
           "date": "2026-07-21",
-          "volume": 6301600,
-          "low": 6473.0,
-          "high": 6808.0
+          "close": 6776.0
         },
         {
-          "close": 6873.0,
+          "low": 6856.0,
+          "volume": 7494800,
+          "high": 7057.0,
           "open": 6897.0,
           "date": "2026-07-22",
-          "volume": 7494800,
-          "low": 6856.0,
-          "high": 7057.0
+          "close": 6873.0
         },
         {
-          "close": 6938.0,
+          "low": 6861.0,
+          "volume": 3445500,
+          "high": 6982.0,
           "open": 6897.0,
           "date": "2026-07-23",
-          "volume": 3445500,
-          "low": 6861.0,
-          "high": 6982.0
+          "close": 6938.0
         },
         {
-          "close": 6624.0,
+          "low": 6577.0,
+          "volume": 4740900,
+          "high": 6860.0,
           "open": 6838.0,
           "date": "2026-07-24",
-          "volume": 4740900,
-          "low": 6577.0,
-          "high": 6860.0
+          "close": 6624.0
         },
         {
-          "close": 6785.0,
+          "low": 6641.0,
+          "volume": 5712300,
+          "high": 6835.0,
           "open": 6724.0,
           "date": "2026-07-27",
-          "volume": 5712300,
-          "low": 6641.0,
-          "high": 6835.0
+          "close": 6785.0
         },
         {
-          "close": 6373.0,
+          "low": 6321.0,
+          "volume": 6478600,
+          "high": 6609.0,
           "open": 6585.0,
           "date": "2026-07-28",
-          "volume": 6478600,
-          "low": 6321.0,
-          "high": 6609.0
+          "close": 6373.0
         },
         {
-          "close": 6463.0,
+          "low": 6223.0,
+          "volume": 9585200,
+          "high": 6617.0,
           "open": 6473.0,
           "date": "2026-07-29",
-          "volume": 9585200,
-          "low": 6223.0,
-          "high": 6617.0
+          "close": 6463.0
         },
         {
-          "close": 6624.0,
+          "low": 6360.0,
+          "volume": 7958800,
+          "high": 6752.0,
           "open": 6383.0,
           "date": "2026-07-30",
-          "volume": 7958800,
-          "low": 6360.0,
-          "high": 6752.0
+          "close": 6624.0
         },
         {
-          "close": 7135.0,
+          "low": 6959.0,
+          "volume": 9476000,
+          "high": 7240.0,
           "open": 7080.0,
           "date": "2026-07-31",
-          "volume": 9476000,
-          "low": 6959.0,
-          "high": 7240.0
+          "close": 7135.0
         },
         {
-          "close": 6114.0,
+          "low": 5808.0,
+          "volume": 21706000,
+          "high": 6386.0,
           "open": 6385.0,
           "date": "2026-08-03",
-          "volume": 21706000,
-          "low": 5808.0,
-          "high": 6386.0
+          "close": 6114.0
         },
         {
-          "close": 6187.0,
+          "low": 6001.0,
+          "volume": 11268600,
+          "high": 6187.0,
           "open": 6115.0,
           "date": "2026-08-04",
-          "volume": 11268600,
-          "low": 6001.0,
-          "high": 6187.0
+          "close": 6187.0
         },
         {
-          "close": 6460.0,
+          "low": 6327.0,
+          "volume": 8569100,
+          "high": 6495.0,
           "open": 6487.0,
           "date": "2026-08-05",
-          "volume": 8569100,
-          "low": 6327.0,
-          "high": 6495.0
+          "close": 6460.0
         },
         {
-          "close": 6430.0,
+          "low": 6316.0,
+          "volume": 6885700,
+          "high": 6556.0,
           "open": 6500.0,
           "date": "2026-08-06",
-          "volume": 6885700,
-          "low": 6316.0,
-          "high": 6556.0
+          "close": 6430.0
         },
         {
-          "close": 6535.0,
+          "low": 6422.0,
+          "volume": 8458700,
+          "high": 6759.0,
           "open": 6530.0,
           "date": "2026-08-07",
-          "volume": 8458700,
-          "low": 6422.0,
-          "high": 6759.0
+          "close": 6535.0
         },
         {
-          "close": 6507.0,
+          "low": 6481.0,
+          "volume": 4994400,
+          "high": 6618.0,
           "open": 6507.0,
           "date": "2026-08-10",
-          "volume": 4994400,
-          "low": 6481.0,
-          "high": 6618.0
+          "close": 6507.0
         },
         {
-          "close": 6720.0,
+          "low": 6475.0,
+          "volume": 7176100,
+          "high": 6720.0,
           "open": 6505.0,
           "date": "2026-08-12",
-          "volume": 7176100,
-          "low": 6475.0,
-          "high": 6720.0
+          "close": 6720.0
         },
         {
-          "close": 6505.0,
+          "low": 6504.0,
+          "volume": 9206400,
+          "high": 6666.0,
           "open": 6620.0,
           "date": "2026-08-13",
-          "volume": 9206400,
-          "low": 6504.0,
-          "high": 6666.0
+          "close": 6505.0
         },
         {
-          "close": 6435.0,
+          "low": 6418.0,
+          "volume": 7640400,
+          "high": 6616.0,
           "open": 6594.0,
           "date": "2026-08-14",
-          "volume": 7640400,
-          "low": 6418.0,
-          "high": 6616.0
+          "close": 6435.0
         },
         {
-          "close": 6523.0,
+          "low": 6327.0,
+          "volume": 5031200,
+          "high": 6525.0,
           "open": 6335.0,
           "date": "2026-08-17",
-          "volume": 5031200,
-          "low": 6327.0,
-          "high": 6525.0
+          "close": 6523.0
         },
         {
-          "close": 6285.0,
+          "low": 6266.0,
+          "volume": 5128500,
+          "high": 6568.0,
           "open": 6445.0,
           "date": "2026-08-18",
-          "volume": 5128500,
-          "low": 6266.0,
-          "high": 6568.0
+          "close": 6285.0
         },
         {
-          "close": 6063.0,
+          "low": 5971.0,
+          "volume": 6974800,
+          "high": 6148.0,
           "open": 6000.0,
           "date": "2026-08-19",
-          "volume": 6974800,
-          "low": 5971.0,
-          "high": 6148.0
+          "close": 6063.0
         },
         {
-          "close": 6116.0,
+          "low": 6067.0,
+          "volume": 3811900,
+          "high": 6165.0,
           "open": 6163.0,
           "date": "2026-08-20",
-          "volume": 3811900,
-          "low": 6067.0,
-          "high": 6165.0
+          "close": 6116.0
         },
         {
-          "close": 6035.0,
+          "low": 5946.0,
+          "volume": 5143500,
+          "high": 6083.0,
           "open": 6016.0,
           "date": "2026-08-21",
-          "volume": 5143500,
-          "low": 5946.0,
-          "high": 6083.0
+          "close": 6035.0
         },
         {
-          "close": 6052.0,
+          "low": 6016.0,
+          "volume": 3486600,
+          "high": 6137.0,
           "open": 6031.0,
           "date": "2026-08-24",
-          "volume": 3486600,
-          "low": 6016.0,
-          "high": 6137.0
+          "close": 6052.0
         },
         {
-          "close": 6047.0,
+          "low": 5924.0,
+          "volume": 4158700,
+          "high": 6047.0,
           "open": 5964.0,
           "date": "2026-08-25",
-          "volume": 4158700,
-          "low": 5924.0,
-          "high": 6047.0
+          "close": 6047.0
         },
         {
-          "close": 6023.0,
+          "low": 5976.0,
+          "volume": 3447900,
+          "high": 6076.0,
           "open": 6020.0,
           "date": "2026-08-26",
-          "volume": 3447900,
-          "low": 5976.0,
-          "high": 6076.0
+          "close": 6023.0
         },
         {
-          "close": 6023.0,
+          "low": 5995.0,
+          "volume": 4362600,
+          "high": 6208.0,
           "open": 6169.0,
           "date": "2026-08-27",
-          "volume": 4362600,
-          "low": 5995.0,
-          "high": 6208.0
+          "close": 6023.0
         },
         {
-          "close": 6052.0,
+          "low": 6031.0,
+          "volume": 4605400,
+          "high": 6147.0,
           "open": 6031.0,
           "date": "2026-08-28",
-          "volume": 4605400,
-          "low": 6031.0,
-          "high": 6147.0
+          "close": 6052.0
         },
         {
-          "close": 6055.0,
+          "low": 5870.0,
+          "volume": 5069500,
+          "high": 6078.0,
           "open": 5890.0,
           "date": "2026-08-31",
-          "volume": 5069500,
-          "low": 5870.0,
-          "high": 6078.0
+          "close": 6055.0
         },
         {
-          "close": 5989.0,
+          "low": 5973.0,
+          "volume": 3468300,
+          "high": 6063.0,
           "open": 5990.0,
           "date": "2026-09-01",
-          "volume": 3468300,
-          "low": 5973.0,
-          "high": 6063.0
+          "close": 5989.0
         },
         {
-          "close": 5725.0,
+          "low": 5716.0,
+          "volume": 6324800,
+          "high": 5897.0,
           "open": 5889.0,
           "date": "2026-09-02",
-          "volume": 6324800,
-          "low": 5716.0,
-          "high": 5897.0
+          "close": 5725.0
         },
         {
-          "close": 5761.0,
+          "low": 5702.0,
+          "volume": 5248700,
+          "high": 5838.0,
           "open": 5791.0,
           "date": "2026-09-03",
-          "volume": 5248700,
-          "low": 5702.0,
-          "high": 5838.0
+          "close": 5761.0
         },
         {
-          "close": 5931.0,
+          "low": 5784.0,
+          "volume": 5339000,
+          "high": 5958.0,
           "open": 5796.0,
           "date": "2026-09-04",
-          "volume": 5339000,
-          "low": 5784.0,
-          "high": 5958.0
+          "close": 5931.0
         },
         {
-          "close": 6011.0,
+          "low": 5978.0,
+          "volume": 3793900,
+          "high": 6084.0,
           "open": 6050.0,
           "date": "2026-09-07",
-          "volume": 3793900,
-          "low": 5978.0,
-          "high": 6084.0
+          "close": 6011.0
         },
         {
-          "close": 5797.0,
+          "low": 5793.0,
+          "volume": 4422000,
+          "high": 6003.0,
           "open": 6000.0,
           "date": "2026-09-08",
-          "volume": 4422000,
-          "low": 5793.0,
-          "high": 6003.0
+          "close": 5797.0
         },
         {
-          "close": 5848.0,
+          "low": 5774.0,
+          "volume": 4384700,
+          "high": 5913.0,
           "open": 5785.0,
           "date": "2026-09-09",
-          "volume": 4384700,
-          "low": 5774.0,
-          "high": 5913.0
+          "close": 5848.0
         },
         {
-          "close": 5794.0,
+          "low": 5706.0,
+          "volume": 4887300,
+          "high": 5794.0,
           "open": 5748.0,
           "date": "2026-09-10",
-          "volume": 4887300,
-          "low": 5706.0,
-          "high": 5794.0
+          "close": 5794.0
         },
         {
-          "close": 5735.0,
+          "low": 5592.0,
+          "volume": 7214400,
+          "high": 5740.0,
           "open": 5600.0,
           "date": "2026-09-11",
-          "volume": 7214400,
-          "low": 5592.0,
-          "high": 5740.0
+          "close": 5735.0
         },
         {
-          "close": 5776.0,
+          "low": 5625.0,
+          "volume": 3827900,
+          "high": 5795.0,
           "open": 5690.0,
           "date": "2026-09-14",
-          "volume": 3827900,
-          "low": 5625.0,
-          "high": 5795.0
+          "close": 5776.0
         },
         {
-          "close": 5716.0,
+          "low": 5656.0,
+          "volume": 3324400,
+          "high": 5802.0,
           "open": 5700.0,
           "date": "2026-09-15",
-          "volume": 3324400,
-          "low": 5656.0,
-          "high": 5802.0
+          "close": 5716.0
         },
         {
-          "close": 5838.0,
+          "low": 5736.0,
+          "volume": 2470700,
+          "high": 5838.0,
           "open": 5778.0,
           "date": "2026-09-16",
-          "volume": 2470700,
-          "low": 5736.0,
-          "high": 5838.0
+          "close": 5838.0
         },
         {
-          "close": 5794.0,
+          "low": 5784.0,
+          "volume": 3052900,
+          "high": 5937.0,
           "open": 5907.0,
           "date": "2026-09-17",
-          "volume": 3052900,
-          "low": 5784.0,
-          "high": 5937.0
+          "close": 5794.0
         },
         {
-          "close": 5852.0,
+          "low": 5780.0,
+          "volume": 4699800,
+          "high": 5900.0,
           "open": 5894.0,
           "date": "2026-09-18",
-          "volume": 4699800,
-          "low": 5780.0,
-          "high": 5900.0
+          "close": 5852.0
         },
         {
-          "close": 6021.0,
+          "low": 5940.0,
+          "volume": 5134100,
+          "high": 6050.0,
           "open": 5952.0,
           "date": "2026-09-24",
-          "volume": 5134100,
-          "low": 5940.0,
-          "high": 6050.0
+          "close": 6021.0
         },
         {
-          "close": 5985.0,
+          "low": 5857.0,
+          "volume": 4706800,
+          "high": 6008.0,
           "open": 5941.0,
           "date": "2026-09-25",
-          "volume": 4706800,
-          "low": 5857.0,
-          "high": 6008.0
+          "close": 5985.0
         },
         {
-          "close": 5943.0,
+          "low": 5925.0,
+          "volume": 4340900,
+          "high": 6034.0,
           "open": 6033.0,
           "date": "2026-09-28",
-          "volume": 4340900,
-          "low": 5925.0,
-          "high": 6034.0
+          "close": 5943.0
         },
         {
-          "close": 5911.0,
+          "low": 5831.0,
+          "volume": 5199800,
+          "high": 5927.0,
           "open": 5852.0,
           "date": "2026-09-29",
-          "volume": 5199800,
-          "low": 5831.0,
-          "high": 5927.0
+          "close": 5911.0
         },
         {
-          "close": 5943.0,
+          "low": 5908.0,
+          "volume": 5965400,
+          "high": 6007.0,
           "open": 5953.0,
           "date": "2026-09-30",
-          "volume": 5965400,
-          "low": 5908.0,
-          "high": 6007.0
+          "close": 5943.0
         },
         {
-          "close": 6127.0,
+          "low": 5903.0,
+          "volume": 5459500,
+          "high": 6127.0,
           "open": 5903.0,
           "date": "2026-10-01",
-          "volume": 5459500,
-          "low": 5903.0,
-          "high": 6127.0
+          "close": 6127.0
         },
         {
-          "close": 6075.0,
+          "low": 6002.0,
+          "volume": 3569200,
+          "high": 6109.0,
           "open": 6031.0,
           "date": "2026-10-02",
-          "volume": 3569200,
-          "low": 6002.0,
-          "high": 6109.0
+          "close": 6075.0
         },
         {
-          "close": 6186.0,
+          "low": 6135.0,
+          "volume": 3752100,
+          "high": 6223.0,
           "open": 6186.0,
           "date": "2026-10-05",
-          "volume": 3752100,
-          "low": 6135.0,
-          "high": 6223.0
+          "close": 6186.0
         },
         {
-          "close": 6220.0,
+          "low": 6111.0,
+          "volume": 3180100,
+          "high": 6249.0,
           "open": 6186.0,
           "date": "2026-10-06",
-          "volume": 3180100,
-          "low": 6111.0,
-          "high": 6249.0
+          "close": 6220.0
         },
         {
-          "close": 6164.0,
+          "low": 6131.0,
+          "volume": 3680100,
+          "high": 6310.0,
           "open": 6264.0,
           "date": "2026-10-07",
-          "volume": 3680100,
-          "low": 6131.0,
-          "high": 6310.0
+          "close": 6164.0
         },
         {
-          "close": 6019.0,
+          "low": 6007.0,
+          "volume": 3601000,
+          "high": 6150.0,
           "open": 6118.0,
           "date": "2026-10-08",
-          "volume": 3601000,
-          "low": 6007.0,
-          "high": 6150.0
+          "close": 6019.0
         },
         {
-          "close": 6103.0,
+          "low": 5910.0,
+          "volume": 4914400,
+          "high": 6103.0,
           "open": 5981.0,
           "date": "2026-10-09",
-          "volume": 4914400,
-          "low": 5910.0,
-          "high": 6103.0
+          "close": 6103.0
         },
         {
-          "close": 6192.0,
+          "low": 6050.0,
+          "volume": 5593600,
+          "high": 6230.0,
           "open": 6141.0,
           "date": "2026-10-13",
-          "volume": 5593600,
-          "low": 6050.0,
-          "high": 6230.0
+          "close": 6192.0
         },
         {
-          "close": 6250.0,
+          "low": 6172.0,
+          "volume": 5325600,
+          "high": 6310.0,
           "open": 6192.0,
           "date": "2026-10-14",
-          "volume": 5325600,
-          "low": 6172.0,
-          "high": 6310.0
+          "close": 6250.0
         },
         {
-          "close": 5907.0,
+          "low": 5879.0,
+          "volume": 7360600,
+          "high": 6038.0,
           "open": 5992.0,
           "date": "2026-10-15",
-          "volume": 7360600,
-          "low": 5879.0,
-          "high": 6038.0
+          "close": 5907.0
         },
         {
-          "close": 5987.0,
+          "low": 5927.0,
+          "volume": 5201200,
+          "high": 6084.0,
           "open": 5940.0,
           "date": "2026-10-16",
-          "volume": 5201200,
-          "low": 5927.0,
-          "high": 6084.0
+          "close": 5987.0
         },
         {
-          "close": 5946.0,
+          "low": 5802.0,
+          "volume": 4372700,
+          "high": 5997.0,
           "open": 5820.0,
           "date": "2026-10-19",
-          "volume": 4372700,
-          "low": 5802.0,
-          "high": 5997.0
+          "close": 5946.0
         },
         {
-          "close": 5788.0,
+          "low": 5763.0,
+          "volume": 4307800,
+          "high": 5955.0,
           "open": 5923.0,
           "date": "2026-10-20",
-          "volume": 4307800,
-          "low": 5763.0,
-          "high": 5955.0
+          "close": 5788.0
         },
         {
-          "close": 5823.0,
+          "low": 5815.0,
+          "volume": 3668500,
+          "high": 5950.0,
           "open": 5928.0,
           "date": "2026-10-21",
-          "volume": 3668500,
-          "low": 5815.0,
-          "high": 5950.0
+          "close": 5823.0
         },
         {
-          "close": 5624.0,
+          "low": 5621.0,
+          "volume": 4531500,
+          "high": 5836.0,
           "open": 5803.0,
           "date": "2026-10-22",
-          "volume": 4531500,
-          "low": 5621.0,
-          "high": 5836.0
+          "close": 5624.0
         },
         {
-          "close": 5587.0,
+          "low": 5322.0,
+          "volume": 7186300,
+          "high": 5587.0,
           "open": 5424.0,
           "date": "2026-10-23",
-          "volume": 7186300,
-          "low": 5322.0,
-          "high": 5587.0
+          "close": 5587.0
         },
         {
-          "close": 5639.0,
+          "low": 5620.0,
+          "volume": 13619500,
+          "high": 5934.0,
           "open": 5887.0,
           "date": "2026-10-26",
-          "volume": 13619500,
-          "low": 5620.0,
-          "high": 5934.0
+          "close": 5639.0
         },
         {
-          "close": 5820.0,
+          "low": 5630.0,
+          "volume": 6914300,
+          "high": 5830.0,
           "open": 5767.0,
           "date": "2026-10-27",
-          "volume": 6914300,
-          "low": 5630.0,
-          "high": 5830.0
+          "close": 5820.0
         },
         {
-          "close": 5908.0,
+          "low": 5846.0,
+          "volume": 6261900,
+          "high": 5970.0,
           "open": 5920.0,
           "date": "2026-10-28",
-          "volume": 6261900,
-          "low": 5846.0,
-          "high": 5970.0
+          "close": 5908.0
         },
         {
-          "close": 5795.0,
+          "low": 5671.0,
+          "volume": 10698800,
+          "high": 5864.0,
           "open": 5842.0,
           "date": "2026-10-29",
-          "volume": 10698800,
-          "low": 5671.0,
-          "high": 5864.0
+          "close": 5795.0
         },
         {
-          "close": 5704.0,
+          "low": 5661.0,
+          "volume": 6305600,
+          "high": 5831.0,
           "open": 5774.0,
           "date": "2026-10-30",
-          "volume": 6305600,
-          "low": 5661.0,
-          "high": 5831.0
+          "close": 5704.0
         },
         {
-          "close": 5648.0,
+          "low": 5606.0,
+          "volume": 5963200,
+          "high": 5748.0,
           "open": 5625.0,
           "date": "2026-11-02",
-          "volume": 5963200,
-          "low": 5606.0,
-          "high": 5748.0
+          "close": 5648.0
         },
         {
-          "close": 5630.0,
+          "low": 5378.0,
+          "volume": 11468500,
+          "high": 5721.0,
           "open": 5700.0,
           "date": "2026-11-04",
-          "volume": 11468500,
-          "low": 5378.0,
-          "high": 5721.0
+          "close": 5630.0
         },
         {
-          "close": 5653.0,
+          "low": 5587.0,
+          "volume": 11472500,
+          "high": 5796.0,
           "open": 5782.0,
           "date": "2026-11-05",
-          "volume": 11472500,
-          "low": 5587.0,
-          "high": 5796.0
+          "close": 5653.0
         },
         {
-          "close": 5312.0,
+          "low": 5248.0,
+          "volume": 15509200,
+          "high": 5432.0,
           "open": 5355.0,
           "date": "2026-11-06",
-          "volume": 15509200,
-          "low": 5248.0,
-          "high": 5432.0
+          "close": 5312.0
         },
         {
-          "close": 5339.0,
+          "low": 5338.0,
+          "volume": 8635600,
+          "high": 5493.0,
           "open": 5412.0,
           "date": "2026-11-09",
-          "volume": 8635600,
-          "low": 5338.0,
-          "high": 5493.0
+          "close": 5339.0
         },
         {
-          "close": 5530.0,
+          "low": 5502.0,
+          "volume": 6352400,
+          "high": 5645.0,
           "open": 5586.0,
           "date": "2026-11-10",
-          "volume": 6352400,
-          "low": 5502.0,
-          "high": 5645.0
+          "close": 5530.0
         },
         {
-          "close": 5670.0,
+          "low": 5550.0,
+          "volume": 5092100,
+          "high": 5671.0,
           "open": 5550.0,
           "date": "2026-11-11",
-          "volume": 5092100,
-          "low": 5550.0,
-          "high": 5671.0
+          "close": 5670.0
         },
         {
-          "close": 5521.0,
+          "low": 5503.0,
+          "volume": 5810500,
+          "high": 5715.0,
           "open": 5690.0,
           "date": "2026-11-12",
-          "volume": 5810500,
-          "low": 5503.0,
-          "high": 5715.0
+          "close": 5521.0
         },
         {
-          "close": 5541.0,
+          "low": 5517.0,
+          "volume": 5679800,
+          "high": 5715.0,
           "open": 5683.0,
           "date": "2026-11-13",
-          "volume": 5679800,
-          "low": 5517.0,
-          "high": 5715.0
+          "close": 5541.0
         },
         {
-          "close": 5343.0,
+          "low": 5343.0,
+          "volume": 5591000,
+          "high": 5568.0,
           "open": 5501.0,
           "date": "2026-11-16",
-          "volume": 5591000,
-          "low": 5343.0,
-          "high": 5568.0
+          "close": 5343.0
         },
         {
-          "close": 5232.0,
+          "low": 5185.0,
+          "volume": 5701100,
+          "high": 5276.0,
           "open": 5243.0,
           "date": "2026-11-17",
-          "volume": 5701100,
-          "low": 5185.0,
-          "high": 5276.0
+          "close": 5232.0
         },
         {
-          "close": 5206.0,
+          "low": 5128.0,
+          "volume": 7927800,
+          "high": 5358.0,
           "open": 5332.0,
           "date": "2026-11-18",
-          "volume": 7927800,
-          "low": 5128.0,
-          "high": 5358.0
+          "close": 5206.0
         },
         {
-          "close": 5331.0,
+          "low": 5208.0,
+          "volume": 5613200,
+          "high": 5331.0,
           "open": 5297.0,
           "date": "2026-11-19",
-          "volume": 5613200,
-          "low": 5208.0,
-          "high": 5331.0
+          "close": 5331.0
+        },
+        {
+          "low": 5013.0,
+          "volume": 6830400,
+          "high": 5207.0,
+          "open": 5200.0,
+          "date": "2026-11-20",
+          "close": 5047.0
         }
       ]
     }
