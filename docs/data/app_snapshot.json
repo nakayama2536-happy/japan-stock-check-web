@@ -8,8 +8,8 @@
   "run_status": "SHADOW_COMMITTED",
   "latest_decision_run_id": "RUN_20261120_1700",
   "latest_decision_as_of": "2026-11-20",
-  "market_run_id": "RUN_20261120_1700",
-  "market_run_status": "SHADOW_COMMITTED",
+  "market_run_id": "RUN_20261123_1700",
+  "market_run_status": "NO_NEW_TARGET",
   "market_environment": [
     {
       "market_id": "NIKKEI225",
@@ -290,11 +290,11 @@
     }
   ],
   "updated_at": "2026-11-20T23:15:48.036582+09:00",
-  "market_checked_at": "2026-11-20T23:15:48.036582+09:00",
+  "market_checked_at": "2026-11-23T20:02:16.268548+09:00",
   "next_recheck_at": "2026-11-24T15:45:00+09:00",
   "next_recheck_kind": "PRIMARY",
   "backup_recheck_at": "2026-11-24T16:15:00+09:00",
-  "market_message": "Shadow Run。独立Source Adapterで照合を試行しますが、Production Source Contractには未接続のため正式売買判断には使用しません。",
+  "market_message": "JPX_HOLIDAY",
   "shadow_validation": {
     "run_count": 40,
     "security_check_count": 207,
